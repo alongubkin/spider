@@ -898,3 +898,17 @@ describe('for statement:', function () {
   it('for loop with initialiser, condition and update',
     generateTest('for var i = 0; i > 0; i++ { }', 'for (var i = 0; i > 0; i++) {\n}'));      
 });
+
+describe('function declarations:', function () {
+  it('func decl without arguments',
+    generateTest('func fn() { }', 'function fn() {\n}'));
+    
+  it('func decl with 1 argument',
+    generateTest('func fn(a) { }', 'function fn(a) {\n}'));
+
+  it('func decl with 2 arguments',
+    generateTest('func fn(a, b) { }', 'function fn(a, b) {\n}'));
+
+  it('func decl with 3 arguments',
+    generateTest('func fn(a, b, c) { }', 'function fn(a, b, c) {\n}'));    
+});
