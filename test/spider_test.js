@@ -186,9 +186,39 @@ describe('member and null propagating member expressions:', function () {
 describe('call expressions and statements:', function () {
   it('call statement without arguments',
     generateTest('fn();', 'fn();'));
+     
+  it('call statement with 1 argument',
+    generateTest('fn(1);', 'fn(1);'));
     
+  it('call statement with 2 arguments',
+    generateTest('fn(1, true);', 
+      'fn(1, true);'));
+    
+  it('call statement with 3 arguments',
+    generateTest('fn(1, true, "test");', 
+      'fn(1, true, "test");'));
+    
+  it('call statement with 4 arguments',
+    generateTest('fn(1, true, "test", { a: 1 });', 
+      'fn(1, true, "test", { a: 1 });'));
+      
   it('call expression without arguments',
     generateTest('var a = fn();', 'var a = fn();'));
+    
+  it('call expression with 1 argument',
+    generateTest('var a = fn(1);', 'var a = fn(1);'));
+    
+  it('call expression with 2 arguments',
+    generateTest('var a = fn(1, true);', 
+      'var a = fn(1, true);'));
+    
+  it('call expression with 3 arguments',
+    generateTest('var a = fn(1, true, "test");', 
+      'var a = fn(1, true, "test");'));
+    
+  it('call expression with 4 arguments',
+    generateTest('var a = fn(1, true, "test", { a: 1 });', 
+      'var a = fn(1, true, "test", { a: 1 });'));
 });
 
 describe('call statements with member expressions:', function () {
@@ -410,6 +440,22 @@ describe('null check call expressions:', function () {
     generateTest('var x = a?();', 
       'var x = typeof a === \"function\" ? a() : null;'));
       
+  it('null check call expression with 1 argument',
+    generateTest('var a = fn?(1);', 
+      'var a = typeof fn === \"function\" ? fn(1) : null;'));
+    
+  it('null check call expression with 2 arguments',
+    generateTest('var a = fn?(1, true);', 
+      'var a = typeof fn === \"function\" ? fn(1, true) : null;'));
+    
+  it('null check call expression with 3 arguments',
+    generateTest('var a = fn?(1, true, "test");', 
+      'var a = typeof fn === \"function\" ? fn(1, true, \"test\") : null;'));
+    
+  it('null check call expression with 4 arguments',
+    generateTest('var a = fn?(1, true, "test", { a: 1 });', 
+      'var a = typeof fn === \"function\" ? fn(1, true, \"test\", { a: 1 }) : null;'));
+      
   it('call expression with null check call expression',
     generateTest('var x = a?()();', 
       'var x = (typeof a === \"function\" ? a() : null)();'));
@@ -471,6 +517,22 @@ describe('null check call statements:', function () {
   it('null check call statement',
     generateTest('a?();', 
       'if (typeof a === \"function\") {\n    a();\n}'));
+      
+  it('null check call statement with 1 argument',
+    generateTest('fn?(1);', 
+      'if (typeof fn === \"function\") {\n    fn(1);\n}'));
+    
+  it('null check call statement with 2 arguments',
+    generateTest('fn?(1, true);', 
+      'if (typeof fn === \"function\") {\n    fn(1, true);\n}'));
+    
+  it('null check call statement with 3 arguments',
+    generateTest('fn?(1, true, "test");', 
+      'if (typeof fn === \"function\") {\n    fn(1, true, \"test\");\n}'));
+    
+  it('null check call statement with 4 arguments',
+    generateTest('fn?(1, true, "test", { a: 1 });', 
+      'if (typeof fn === \"function\") {\n    fn(1, true, \"test\", { a: 1 });\n}'));
       
   it('call statement with null check call expression',
     generateTest('a?()();', 
