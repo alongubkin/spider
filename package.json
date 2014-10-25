@@ -1,0 +1,47 @@
+{
+  "name": "spider",
+  "version": "0.0.0",
+  "main": "lib/spider.js",
+  "description": "The best module ever.",
+  "homepage": "https://github.com/alongubkin/spider",
+  "bugs": "https://github.com/alongubkin/spider/issues",
+  "author": {
+    "name": "Alon Gubkin",
+    "email": "alon.gubkin@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alongubkin/spider"
+  },
+  "license": "MIT",
+  "files": [
+    "lib"
+  ],
+  "keywords": [
+    "spider",
+    ""
+  ],
+  "devDependencies": {
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-nodeunit": "^0.3.3",
+    "grunt-contrib-watch": "^0.6.1",
+    "load-grunt-tasks": "^0.4.0",
+    "time-grunt": "^0.3.1",
+    "grunt-mocha-cli": "^1.9.0",
+    "jshint-stylish": "^0.2.0",
+    "should": "~4.1.0",
+    "shelljs-nodecli": "~0.1.1"
+  },
+  "scripts": {
+    "test": "grunt"
+  },
+  "bin": {
+    "spider": "cli.js"
+  },
+  "preferGlobal": "true",
+  "dependencies": {
+    "escodegen": "~1.4.1",
+    "eslint": "~0.8.2",
+    "jison": "~0.4.15"
+  }
+}
