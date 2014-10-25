@@ -861,8 +861,20 @@ describe('assignment expressions:', function () {
   it('assignment statement',
     generateTest('a = 1;', 'a = 1;'));
     
+  it('assignment statement with 2 variables',
+    generateTest('a = b = 1;', 'a = b = 1;'));
+    
+  it('assignment statement with 3 variables',
+    generateTest('a = b = c = 1;', 'a = b = c = 1;'));
+    
   it('assignment expression',
     generateTest('var x = a = 1;', 'var x = a = 1;'));
+    
+  it('assignment expression with 2 variables',
+    generateTest('var x = a = b = 1;', 'var x = a = b = 1;'));
+    
+  it('assignment expression with 3 variables',
+    generateTest('var x = a = b = c = 1;', 'var x = a = b = c = 1;'));    
 });
 
 describe('if statement:', function () {
