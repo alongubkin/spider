@@ -912,3 +912,21 @@ describe('function declarations:', function () {
   it('func decl with 3 arguments',
     generateTest('func fn(a, b, c) { }', 'function fn(a, b, c) {\n}'));    
 });
+
+describe('function expressions:', function () {
+  it('function expression without arguments',
+    generateTest('var a = () -> { };', 
+      'var a = function () {\n};'));
+    
+  it('function expression with 1 argument',
+    generateTest('var a = (a) -> { };', 
+      'var a = function (a) {\n};'));
+
+  it('function expression with 2 arguments',
+    generateTest('var a = (a, b) -> { };', 
+      'var a = function (a, b) {\n};'));
+
+  it('function expression with 3 arguments',
+    generateTest('var a = (a, b, c) -> { };', 
+      'var a = function (a, b, c) {\n};'));      
+});
