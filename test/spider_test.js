@@ -958,3 +958,13 @@ describe('function expressions:', function () {
     generateTest('var a = (a, b, c) => { };', 
       'var a = function (a, b, c) {\n};')); 
 });
+
+it('return statement:', function () {
+  it('function declaration with a return statement',
+    generateTest('func x() { return 1; }',
+      'function x() {\n    return 1;\n}'));
+      
+  it('function expression with a return statement',
+    generateTest('var a = () -> { return 1; }',
+      'var a = function () {\n    return 1;\n}'));   
+});
