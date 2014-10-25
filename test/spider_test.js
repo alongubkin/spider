@@ -931,7 +931,7 @@ describe('function expressions:', function () {
       'var a = function () {\n    return 1;\n};'));
     
   it('function expression with 1 argument',
-    generateTest('var a = (a) -> a;', 
+    generateTest('var a = (a) => a;', 
       'var a = function (a) {\n    return a;\n};'));
 
   it('function expression with 2 arguments',
@@ -939,7 +939,7 @@ describe('function expressions:', function () {
       'var a = function (a, b) {\n    return a + b;\n};'));
 
   it('function expression with 3 arguments',
-    generateTest('var a = (a, b, c) -> a+b-c;', 
+    generateTest('var a = (a, b, c) => a+b-c;', 
       'var a = function (a, b, c) {\n    return a + b - c;\n};')); 
       
   it('block function expression without arguments',
@@ -947,7 +947,7 @@ describe('function expressions:', function () {
       'var a = function () {\n};'));
     
   it('block function expression with 1 argument',
-    generateTest('var a = (a) -> { };', 
+    generateTest('var a = (a) => { };', 
       'var a = function (a) {\n};'));
 
   it('block function expression with 2 arguments',
@@ -955,6 +955,6 @@ describe('function expressions:', function () {
       'var a = function (a, b) {\n};'));
 
   it('block function expression with 3 arguments',
-    generateTest('var a = (a, b, c) -> { };', 
+    generateTest('var a = (a, b, c) => { };', 
       'var a = function (a, b, c) {\n};')); 
 });
