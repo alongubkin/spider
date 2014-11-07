@@ -5,7 +5,7 @@ module.exports = function(grunt) {
   require('time-grunt')(grunt);
   // Load all grunt tasks
   require('load-grunt-tasks')(grunt);
-
+  
   // Project configuration.
   grunt.initConfig({
     nodeunit: {
@@ -20,7 +20,10 @@ module.exports = function(grunt) {
         src: 'Gruntfile.js'
       },
       lib: {
-        src: ['lib/**/*.js']
+        src: [
+          'lib/**/*.js',
+          '!lib/parser.js'
+        ]
       },
       test: {
         src: ['test/**/*.js']
@@ -47,9 +50,15 @@ module.exports = function(grunt) {
         files: '<%= jshint.test.src %>',
         tasks: ['jshint:test', 'mochacli']
       }
+    },
+    peg: {
+      spider: {
+        src: "lib/spider.pegjs",
+        dest: "lib/parser.js"
+      }
     }
   });
 
   // Default task.
-  grunt.registerTask('default', ['jshint', 'mochacli']);
+  grunt.registerTask('default', ['peg', 'jshint', 'mochacli']);
 };

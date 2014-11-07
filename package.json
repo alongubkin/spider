@@ -30,7 +30,8 @@
     "grunt-mocha-cli": "^1.9.0",
     "jshint-stylish": "^0.2.0",
     "should": "~4.1.0",
-    "shelljs-nodecli": "~0.1.1"
+    "shelljs-nodecli": "~0.1.1",
+    "grunt-peg": "~1.5.0"
   },
   "scripts": {
     "test": "grunt"
@@ -42,6 +43,6 @@
   "dependencies": {
     "escodegen": "~1.4.1",
     "eslint": "~0.8.2",
-    "jison": "~0.4.15"
+    "pegjs": "~0.8.0"
   }
 }

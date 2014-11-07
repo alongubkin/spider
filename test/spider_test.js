@@ -806,9 +806,17 @@ describe('logical expressions:', function () {
   it('2 worded OR expressions',
     generateTest('var x = a or b or c;', 'var x = !!(!!a || !!b) || !!c;'));
     
-  it('order of logical expressions',
+  it('order of logical expressions 1',
+    generateTest('var x = a && b || c;', 
+      'var x = !!(!!a && !!b) || !!c;'));
+      
+  it('order of logical expressions 2',
+    generateTest('var x = a && b || c && d;', 
+      'var x = !!(!!a && !!b) || !!(!!c && !!d);'));
+      
+  it('order of logical expressions 3',
     generateTest('var x = a && b || c && (d || e || f && g);', 
-      'var x = !!(!!(!!a && !!b) || !!c) && !!(!!(!!(!!d || !!e) || !!f) && !!g);'));
+      'var x = !!(!!a && !!b) || !!(!!c && !!(!!(!!d || !!e) || !!(!!f && !!g)));'));
 });
 
 describe('binary expressions:', function () {
@@ -929,7 +937,7 @@ describe('function expressions:', function () {
   it('function expression without arguments',
     generateTest('var a = () -> 1;', 
       'var a = function () {\n    return 1;\n};'));
-    
+      
   it('function expression with 1 argument',
     generateTest('var a = (a) => a;', 
       'var a = function (a) {\n    return a;\n};'));
@@ -957,6 +965,38 @@ describe('function expressions:', function () {
   it('block function expression with 3 arguments',
     generateTest('var a = (a, b, c) => { };', 
       'var a = function (a, b, c) {\n};')); 
+      
+  it('block function expression (func syntax) without arguments',
+    generateTest('var a = func () { };', 
+      'var a = function () {\n};'));
+    
+  it('block function expression (func syntax) with 1 argument',
+    generateTest('var a = func (a) { };', 
+      'var a = function (a) {\n};'));
+
+  it('block function expression (func syntax) with 2 arguments',
+    generateTest('var a = func (a, b) { };', 
+      'var a = function (a, b) {\n};'));
+
+  it('block function expression (func syntax) with 3 arguments',
+    generateTest('var a = func (a, b, c) { };', 
+      'var a = function (a, b, c) {\n};'));
+
+  it('block function expression (func syntax with id) without arguments',
+    generateTest('var a = func f() { };', 
+      'var a = function f() {\n};'));
+    
+  it('block function expression (func syntax with id) with 1 argument',
+    generateTest('var a = func f(a) { };', 
+      'var a = function f(a) {\n};'));
+
+  it('block function expression (func syntax with id) with 2 arguments',
+    generateTest('var a = func f(a, b) { };', 
+      'var a = function f(a, b) {\n};'));
+
+  it('block function expression (func syntax with id) with 3 arguments',
+    generateTest('var a = func f(a, b, c) { };', 
+      'var a = function f(a, b, c) {\n};'));        
 });
 
 it('return statement:', function () {
