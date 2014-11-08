@@ -2,6 +2,7 @@
 
 "use strict";
 
+var util = require("util");
 var vm = require("vm");
 var fs = require("fs");
 var chalk = require('chalk');
@@ -38,6 +39,15 @@ if (!opts.compile) {
   context = vm.createContext(global);
 }
 
+function generateSpace(len) {
+  var chars = [];
+  for (var i = 0; i < len; i++) {
+    chars.push(' ');
+  }
+  
+  return chars.join('');
+}
+
 function generateErrorColumnString(errorStartIndex, errorEndIndex) {
   var chars = [];
   var i = 0;
@@ -69,34 +79,65 @@ opts.files.forEach(function (fileName, fileIndex) {
     var js = spider.compile(content, opts.verbose, errors);
     
     if (errors.length > 0) {
-      console.log(chalk.white(fileName));
+      var output = [];
+      
+      var maxCol = 0;
+      var maxLine = 0;
+      
+      output.push(chalk.white(fileName), "\n");
       
       var lines = content.split("\n");
+      var tabCharacter = "__SPIDER_TAB";
       errors.forEach(function (error, errorIndex) {
-        var errorString = [chalk.gray("  line ", error.loc.start.line, 
-                                      "  col ", error.loc.start.column + 1), 
-                           "  ", chalk.red(error.message), "\n"];
+        var line = error.loc.start.line;
+        var column = error.loc.start.column + 1;
+
+        var lineCharCount = line.toString().length;
+        var columnCharCount = column.toString().length;
+        
+        maxCol = Math.max(maxCol, columnCharCount);
+        maxLine = Math.max(maxCol, lineCharCount);
+        
+        output.push(tabCharacter);
+        output.push(chalk.gray("line", line));
+        output.push(tabCharacter, lineCharCount);
+        output.push(chalk.gray("col", column));
+        output.push(tabCharacter, columnCharCount);
+                                
+        output.push(chalk.red(error.message), "\n");
         
         if (error.loc && error.loc.start) {
           var start = error.loc.start;
           var end = error.loc.end;
           
           if (start.line > 0 && start.line <= lines.length) {
-            errorString.push("      ");
-            errorString.push(chalk.green(lines[start.line - 1].replace("\n", ""), "\n"), 
-              chalk.red(generateErrorColumnString(start.column + 6, end ? end.column - 1 + 6 : 0)));
+            output.push(tabCharacter, tabCharacter, tabCharacter);
+            
+            output.push(chalk.green(lines[start.line - 1].replace(/(\r\n|\n|\r)/gm, ""), 
+              "\n", tabCharacter, tabCharacter, tabCharacter));
+            output.push(chalk.red(generateErrorColumnString(start.column, end ? end.column - 1 : 0)));
           }
         }
         
-        console.log(errorString.join(""));
+        output.push("\n");
         problems++;
         
         if (problems > 0 && 
             fileIndex === opts.files.length - 1 
             && errorIndex === errors.length - 1)  {
-          console.log(chalk.red(problems + (problems === 1 ? " problem" : " problems")));
+          output.push(chalk.red(problems + (problems === 1 ? " problem" : " problems")), "\n");
         }
       });
+      
+      var str = output.join("");
+      var tabLength = Math.max(maxLine, maxCol);
+      
+      for (var i = 1; i <= tabLength; i++) {
+        var regex = new RegExp(tabCharacter + i, "g");
+        str = str.replace(regex, generateSpace(Math.max(2 + tabLength - i, 2)));
+      }
+      
+      util.print(str.replace(new RegExp(tabCharacter, "g"), generateSpace(2)));
     } else {
       if (opts.compile) {
         var outFileName = fileName.substring(0, 
