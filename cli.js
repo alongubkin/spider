@@ -33,24 +33,56 @@ if (!opts.compile) {
   context = vm.createContext(global);
 }
 
+function generateErrorColumnString(offset, column) {
+  var chars = [];
+  var i = 0;
+  
+  var errorStartIndex = offset;
+  var errorEndIndex = column;
+  
+  if (offset > column) {
+    errorStartIndex = column - 1;
+    errorEndIndex = column - 1;
+  }
+  
+  for (; i < errorStartIndex; i++) {
+    chars.push(' ');
+  }
+  
+  for (i = errorStartIndex; i <= errorEndIndex; i++) {
+    chars.push('^');
+  }
+  
+  return chars.join('');
+}
+
 opts.files.forEach(function (fileName) {
   fs.readFile(fileName, "utf-8", function (error, content) {
     if (error) {
       return console.log(error);
     }
     
-    var js = spider.compile(content);
+    var errors = [];
+    var js = spider.compile(content, false, errors);
     
-    if (opts.compile) {
-      var outFileName = fileName.substring(0, 
-        fileName.lastIndexOf('.')) + ".js";
-      fs.writeFile(outFileName, js, function (error) {
-        if (error) {
-          return console.log(error);
-        }
+    if (errors.length > 0) { 
+      var lines = content.match(/^.*([\n\r]+|$)/gm);
+      errors.forEach(function (error) {
+        console.log([fileName, ":", error.line, ":", error.column, ": error: ", error.message, "\n", 
+          lines[error.line - 1].replace("\n", ""), "\n", generateErrorColumnString(error.offset, error.column)].join(''));
       });
     } else {
-      vm.runInContext(js, context);
+      if (opts.compile) {
+        var outFileName = fileName.substring(0, 
+          fileName.lastIndexOf('.')) + ".js";
+        fs.writeFile(outFileName, js, function (error) {
+          if (error) {
+            return console.log(error);
+          }
+        });
+      } else {
+        vm.runInContext(js, context);
+      }
     }
   });
 });
