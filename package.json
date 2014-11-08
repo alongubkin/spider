@@ -42,7 +42,6 @@
   "preferGlobal": "true",
   "dependencies": {
     "escodegen": "~1.4.1",
-    "eslint": "~0.8.2",
     "pegjs": "~0.8.0",
     "nomnom": "~1.8.1",
     "chalk": "~0.5.1"
