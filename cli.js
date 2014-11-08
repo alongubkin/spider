@@ -114,7 +114,7 @@ opts.files.forEach(function (fileName, fileIndex) {
             output.push(tabCharacter, tabCharacter, tabCharacter);
             
             output.push(chalk.green(lines[start.line - 1].replace(/(\r\n|\n|\r)/gm, ""), 
-              "\n", tabCharacter, tabCharacter, tabCharacter));
+              "\n", tabCharacter, tabCharacter));
             output.push(chalk.red(generateErrorColumnString(start.column, end ? end.column - 1 : 0)));
           }
         }
