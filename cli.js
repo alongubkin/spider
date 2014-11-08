@@ -80,7 +80,7 @@ opts.files.forEach(function (fileName, fileIndex) {
     var outFileName = fileName.substring(0, 
           fileName.lastIndexOf('.')) + ".js";
     var compilerOutput = spider.compile(content, opts.verbose, errors, 
-      opts.compile ? path.basename(fileName) : false, outFileName + ".map");
+      opts.compile ? path.basename(fileName) : false, outFileName + ".map", true, true);
     
     if (errors.length > 0) {
       var output = [];
