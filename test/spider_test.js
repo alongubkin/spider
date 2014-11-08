@@ -6,7 +6,7 @@ var should = require('should'),
 
 function generateTest(code, expectation) {
   return function () {
-    should(spider.compile(code, false))
+    should(spider.compile(code, false, []))
       .be.exactly(expectation);
   };
 }

@@ -68,8 +68,15 @@ opts.files.forEach(function (fileName) {
     if (errors.length > 0) { 
       var lines = content.match(/^.*([\n\r]+|$)/gm);
       errors.forEach(function (error) {
-        console.log([fileName, ":", error.line, ":", error.column, ": error: ", error.message, "\n", 
-          lines[error.line - 1].replace("\n", ""), "\n", generateErrorColumnString(error.offset, error.column)].join(''));
+        var errorString = [fileName, ":", error.line, ":", error.column, ": error: ", error.message, "\n"];
+        
+        // append line
+        if (error.line > 0 && error.line < lines.length) {
+          errorString.push(lines[error.line - 1].replace("\n", ""), "\n", 
+            generateErrorColumnString(error.offset, error.column));
+        }
+        
+        console.log(errorString.join(""));
       });
     } else {
       if (opts.compile) {
