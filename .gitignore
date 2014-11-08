@@ -1,3 +1,7 @@
 /node_modules/
 npm-debug.log
-output.js
+
+test.js
+test.js.map
+test.spider
+lib/parser.js
