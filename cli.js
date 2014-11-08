@@ -72,15 +72,16 @@ opts.files.forEach(function (fileName, fileIndex) {
       console.log();
       console.log(chalk.white(fileName));
       
-      var lines = content.match(/^.*([\n\r]+|$)/gm);
+      var lines = content.split("\n");
       errors.forEach(function (error, errorIndex) {
         var errorString = [chalk.gray("  line ", error.loc.start.line, 
-                                      "  col ", error.loc.start.column), 
+                                      "  col ", error.loc.start.column + 1), 
                            "  ", chalk.red(error.message), "\n"];
         
         if (error.loc && error.loc.start) {
           var start = error.loc.start;
           var end = error.loc.end;
+          
           if (start.line > 0 && start.line <= lines.length) {
             errorString.push("      ");
             errorString.push(chalk.green(lines[start.line - 1].replace("\n", ""), "\n"), 
@@ -88,7 +89,7 @@ opts.files.forEach(function (fileName, fileIndex) {
           }
         }
         
-        console.log(errorString.join(""), "\n");
+        console.log(errorString.join(""));
         problems++;
         
         if (problems > 0 && 
