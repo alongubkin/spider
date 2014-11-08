@@ -1,4 +1,4 @@
-var b = 1;
-var a = b;
+use console;
+var a = 5;
 
-::console.log(a);
+console.::log(a);
