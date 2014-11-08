@@ -1,20 +1,13 @@
 /*global describe,it*/
 'use strict';
+
 var should = require('should'),
   spider = require('../lib/spider.js');
 
-function generateTest(code, expectation, test) {
-  test = test || false;
-  
-  return function (done) {
-    spider.compile(code, false, test, function (js, output) {
-      if (test) { 
-        should(output).be.exactly('');
-      }
-      
-      should(js).be.exactly(expectation);
-      done();
-    });
+function generateTest(code, expectation) {
+  return function () {
+    should(spider.compile(code, false))
+      .be.exactly(expectation);
   };
 }
 
