@@ -1,4 +1,7 @@
-use console;
-var a = 5;
+var console;
+console
 
-console.::log(a);
+
+
+
+.log      ();
