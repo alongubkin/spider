@@ -69,7 +69,6 @@ opts.files.forEach(function (fileName, fileIndex) {
     var js = spider.compile(content, opts.verbose, errors);
     
     if (errors.length > 0) {
-      console.log();
       console.log(chalk.white(fileName));
       
       var lines = content.split("\n");
