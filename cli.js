@@ -77,8 +77,10 @@ opts.files.forEach(function (fileName, fileIndex) {
     }
     
     var errors = [];
+    var outFileName = fileName.substring(0, 
+          fileName.lastIndexOf('.')) + ".js";
     var compilerOutput = spider.compile(content, opts.verbose, errors, 
-      opts.compile ? path.basename(fileName) : false);
+      opts.compile ? path.basename(fileName) : false, outFileName + ".map");
     
     if (errors.length > 0) {
       var output = [];
@@ -143,9 +145,7 @@ opts.files.forEach(function (fileName, fileIndex) {
       util.print(str.replace(new RegExp(tabCharacter, "g"), generateSpace(2)));
     } else {
       if (opts.compile) {
-        var outFileName = fileName.substring(0, 
-          fileName.lastIndexOf('.')) + ".js";
-        var code = [compilerOutput.code, "\n\n", "//# sourceMappingURL=", outFileName, ".map"].join('');
+        var code = compilerOutput.code;
         
         fs.writeFile(outFileName, code, function (error) {
           if (error) {
