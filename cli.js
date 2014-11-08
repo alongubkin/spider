@@ -3,7 +3,6 @@
 "use strict";
 
 var path = require("path");
-var util = require("util");
 var vm = require("vm");
 var fs = require("fs");
 var chalk = require('chalk');
@@ -130,7 +129,7 @@ opts.files.forEach(function (fileName, fileIndex) {
         if (problems > 0 && 
             fileIndex === opts.files.length - 1 
             && errorIndex === errors.length - 1)  {
-          output.push(chalk.red(problems + (problems === 1 ? " problem" : " problems")), "\n");
+          output.push("\n", chalk.red(problems + (problems === 1 ? " problem" : " problems")));
         }
       });
       
@@ -142,7 +141,7 @@ opts.files.forEach(function (fileName, fileIndex) {
         str = str.replace(regex, generateSpace(Math.max(2 + tabLength - i, 2)));
       }
       
-      util.print(str.replace(new RegExp(tabCharacter, "g"), generateSpace(2)));
+      console.log(str.replace(new RegExp(tabCharacter, "g"), generateSpace(2)));
     } else {
       if (opts.compile) {
         var code = compilerOutput.code;
