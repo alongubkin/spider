@@ -57,7 +57,9 @@ function generateErrorColumnString(errorStartIndex, errorEndIndex) {
   return chars.join('');
 }
 
-opts.files.forEach(function (fileName) {
+var problems = 0;
+
+opts.files.forEach(function (fileName, fileIndex) {
   fs.readFile(fileName, "utf-8", function (error, content) {
     if (error) {
       return console.log(error);
@@ -71,8 +73,7 @@ opts.files.forEach(function (fileName) {
       console.log(chalk.white(fileName));
       
       var lines = content.match(/^.*([\n\r]+|$)/gm);
-      errors.forEach(function (error) {
-        
+      errors.forEach(function (error, errorIndex) {
         var errorString = [chalk.gray("  line ", error.loc.start.line, 
                                       "  col ", error.loc.start.column), 
                            "  ", chalk.red(error.message), "\n"];
@@ -88,6 +89,13 @@ opts.files.forEach(function (fileName) {
         }
         
         console.log(errorString.join(""), "\n");
+        problems++;
+        
+        if (problems > 0 && 
+            fileIndex === opts.files.length - 1 
+            && errorIndex === errors.length - 1)  {
+          console.log(chalk.red(problems + (problems === 1 ? " problem" : " problems")));
+        }
       });
     } else {
       if (opts.compile) {
