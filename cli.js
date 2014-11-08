@@ -17,8 +17,12 @@ var opts = require("nomnom")
     flag: true,
     help: "compile to JavaScript and save as .js files"
   })
-  .option("version", {
+  .option("verbose", {
     abbr: "v",
+    flag: true,
+    help: "verbose mode"
+  })  
+  .option("version", {
     flag: true,
     help: "display the version number",
     callback: function () {
@@ -63,7 +67,7 @@ opts.files.forEach(function (fileName) {
     }
     
     var errors = [];
-    var js = spider.compile(content, false, errors);
+    var js = spider.compile(content, opts.verbose, errors);
     
     if (errors.length > 0) { 
       var lines = content.match(/^.*([\n\r]+|$)/gm);
