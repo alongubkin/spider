@@ -2,6 +2,7 @@
 
 "use strict";
 
+var path = require("path");
 var util = require("util");
 var vm = require("vm");
 var fs = require("fs");
@@ -76,7 +77,8 @@ opts.files.forEach(function (fileName, fileIndex) {
     }
     
     var errors = [];
-    var js = spider.compile(content, opts.verbose, errors);
+    var compilerOutput = spider.compile(content, opts.verbose, errors, 
+      opts.compile ? path.basename(fileName) : false);
     
     if (errors.length > 0) {
       var output = [];
@@ -88,6 +90,7 @@ opts.files.forEach(function (fileName, fileIndex) {
       
       var lines = content.split("\n");
       var tabCharacter = "__SPIDER_TAB";
+      
       errors.forEach(function (error, errorIndex) {
         var line = error.loc.start.line;
         var column = error.loc.start.column + 1;
@@ -142,13 +145,22 @@ opts.files.forEach(function (fileName, fileIndex) {
       if (opts.compile) {
         var outFileName = fileName.substring(0, 
           fileName.lastIndexOf('.')) + ".js";
-        fs.writeFile(outFileName, js, function (error) {
+        var code = [compilerOutput.code, "\n\n", "//# sourceMappingURL=", outFileName, ".map"].join('');
+        
+        fs.writeFile(outFileName, code, function (error) {
           if (error) {
             return console.log(error);
           }
         });
+        fs.writeFile(outFileName + ".map", 
+          compilerOutput.map.toString(), 
+          function (error) {
+            if (error) {
+              return console.log(error);
+            }
+          });        
       } else {
-        vm.runInContext(js, context);
+        vm.runInContext(compilerOutput, context);
       }
     }
   });
