@@ -4,6 +4,7 @@
 
 var vm = require("vm");
 var fs = require("fs");
+var chalk = require('chalk');
 var spider = require("./lib/spider");
 
 var opts = require("nomnom")
@@ -37,16 +38,12 @@ if (!opts.compile) {
   context = vm.createContext(global);
 }
 
-function generateErrorColumnString(offset, column) {
+function generateErrorColumnString(errorStartIndex, errorEndIndex) {
   var chars = [];
   var i = 0;
   
-  var errorStartIndex = offset;
-  var errorEndIndex = column;
-  
-  if (offset > column) {
-    errorStartIndex = column - 1;
-    errorEndIndex = column - 1;
+  if (!errorEndIndex) {
+    errorEndIndex = errorStartIndex;
   }
   
   for (; i < errorStartIndex; i++) {
@@ -69,18 +66,28 @@ opts.files.forEach(function (fileName) {
     var errors = [];
     var js = spider.compile(content, opts.verbose, errors);
     
-    if (errors.length > 0) { 
+    if (errors.length > 0) {
+      console.log();
+      console.log(chalk.white(fileName));
+      
       var lines = content.match(/^.*([\n\r]+|$)/gm);
       errors.forEach(function (error) {
-        var errorString = [fileName, ":", error.line, ":", error.column, ": error: ", error.message, "\n"];
         
-        // append line
-        if (error.line > 0 && error.line < lines.length) {
-          errorString.push(lines[error.line - 1].replace("\n", ""), "\n", 
-            generateErrorColumnString(error.offset, error.column));
+        var errorString = [chalk.gray("  line ", error.loc.start.line, 
+                                      "  col ", error.loc.start.column), 
+                           "  ", chalk.red(error.message), "\n"];
+        
+        if (error.loc && error.loc.start) {
+          var start = error.loc.start;
+          var end = error.loc.end;
+          if (start.line > 0 && start.line <= lines.length) {
+            errorString.push("      ");
+            errorString.push(chalk.green(lines[start.line - 1].replace("\n", ""), "\n"), 
+              chalk.red(generateErrorColumnString(start.column + 6, end ? end.column - 1 + 6 : 0)));
+          }
         }
         
-        console.log(errorString.join(""));
+        console.log(errorString.join(""), "\n");
       });
     } else {
       if (opts.compile) {

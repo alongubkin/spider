@@ -20,7 +20,7 @@ describe('variable statement:', function () {
     
   it('create variable with string literal', 
     generateTest('var a = "test";', 'var a = "test";'));
-
+  
   it('create variable with boolean literal', 
     generateTest('var a = true;', 'var a = true;'));
     
