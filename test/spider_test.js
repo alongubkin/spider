@@ -2,12 +2,26 @@
 'use strict';
 
 var should = require('should'),
-  spider = require('../lib/spider.js');
-
+    spider = require('../lib/spider.js');
+    
 function generateTest(code, expectation) {
   return function () {
     should(spider.compile(code, false, []))
       .be.exactly(expectation);
+  };
+}
+
+function generateErrorTest(code, expectedErrors) {
+  return function () {
+    var errors = [];
+    spider.compile(code, false, errors);
+    
+    should(errors.map(function (error) {
+      delete error.message;
+      delete error.loc;
+      
+      return error;
+    })).match(expectedErrors);
   };
 }
 
@@ -992,12 +1006,48 @@ describe('function expressions:', function () {
       'var a = function f(a, b, c) {\n};'));        
 });
 
-it('return statement:', function () {
+describe('return statement:', function () {
   it('function declaration with a return statement',
     generateTest('func x() { return 1; }',
       'function x() {\n    return 1;\n}'));
       
   it('function expression with a return statement',
-    generateTest('var a = () -> { return 1; }',
-      'var a = function () {\n    return 1;\n}'));   
+    generateTest('var a = () -> { return 1; };',
+      'var a = function () {\n    return 1;\n};'));   
+});
+
+describe('global identifiers and use statements:', function () {
+  it('global function call', 
+    generateErrorTest('x("test");', 
+      [{ type: 'UndefinedIdentifier', 'identifier': 'x' }]));
+
+  it('global function call with :: operator', 
+    generateTest('::x("test");', 'x("test");'));
+    
+  it('global function call with use statement', 
+    generateTest('use x; x("test");', 'x("test");'));
+
+  it('global function call with use statement and :: operator', 
+    generateTest('use x; ::x("test");', 'x("test");'));
+    
+  it('global function call with use statement after the function call', 
+    generateErrorTest('x("test"); use x;', 
+      [{ type: 'UndefinedIdentifier', 'identifier': 'x' }]));
+      
+  it('global member expression', 
+    generateErrorTest('var x = a.b;', 
+      [{ type: 'UndefinedIdentifier', 'identifier': 'a' }]));
+
+  it('global member expression with :: operator', 
+    generateTest('var x = ::a.b;', 'var x = a.b;'));
+
+  it('global member expression with use statement', 
+    generateTest('use a; var x = a.b;', 'var x = a.b;'));
+
+  it('global member expression with use statement and :: operator', 
+    generateTest('use a; var x = ::a.b;', 'var x = a.b;'));
+    
+  it('global member expression with use statement after the member expression', 
+    generateErrorTest('var x = a.b; use a;', 
+      [{ type: 'UndefinedIdentifier', 'identifier': 'a' }]));    
 });
