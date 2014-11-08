@@ -1,5 +1,7 @@
-{
-  var a = 5;
+func f(a) {
+  use console;
+  console.log((func x(a) { return a; })(a));
 }
 
-console.log(a);
+::console.log(((a) -> a)(5));
+f(1);
