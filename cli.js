@@ -123,7 +123,6 @@ opts.files.forEach(function (fileName, fileIndex) {
           }
         }
         
-        output.push("\n");
         problems++;
         
         if (problems > 0 && 
