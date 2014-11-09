@@ -1162,3 +1162,9 @@ describe('super keyword:', function () {
     generateTest('func B() extends ::A {} B.prototype = { test: () -> { var x = (() -> { return super.x; })(); } };', 
       'function B() {\n    A.call(this);\n}\nB.prototype = Object.create(A);\nB.prototype = {\n    test: function () {\n        var _self = this;\n        var x = function () {\n            return _self.x;\n        }();\n    }\n};'));   
 });
+
+describe('string interpolation', function () {
+  it('string interpolation', 
+    generateTest('var x = "test \\(a) test \\(2+a) \\(Math.pow(2, a)) test test";',
+      'var x = \"test \" + a + \" test \" + (2 + a) + \" \" + Math.pow(2, a) + \" test test\";'));    
+});
