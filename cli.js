@@ -123,12 +123,14 @@ opts.files.forEach(function (fileName, fileIndex) {
           }
         }
         
+        output.push("\n");
+        
         problems++;
         
         if (problems > 0 && 
             fileIndex === opts.files.length - 1 
             && errorIndex === errors.length - 1)  {
-          output.push("\n", chalk.red(problems + (problems === 1 ? " problem" : " problems")));
+          output.push(chalk.red(problems + (problems === 1 ? " problem" : " problems")));
         }
       });
       
