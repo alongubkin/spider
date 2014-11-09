@@ -1,5 +1,5 @@
 {
-  "name": "spider",
+  "name": "spider-script",
   "version": "0.0.0",
   "main": "lib/spider.js",
   "description": "The Next-Gen Programming Language for the Web",
