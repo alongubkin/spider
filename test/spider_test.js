@@ -1051,3 +1051,114 @@ describe('global identifiers and use statements:', function () {
     generateErrorTest('var x = a.b; use a;', 
       [{ type: 'UndefinedIdentifier', 'identifier': 'a' }]));    
 });
+
+describe('this keyword:', function () {
+  it('call statement with this', 
+    generateTest('this.x();', 'this.x();'));
+  it('call expression with this', 
+    generateTest('var a = this.x();', 'var a = this.x();'));
+  it('member expression with this', 
+    generateTest('var a = this.x;', 'var a = this.x;'));
+  it('call statement and member expression with this', 
+    generateTest('this.a.b();', 'this.a.b();'));     
+});
+
+describe('func extends:', function () {
+  it('extended function with no constructor', 
+    generateTest('func A() {} func B() extends A {}', 
+      'function A() {\n}\nfunction B() {\n    A.call(this);\n}\nB.prototype = Object.create(A);'));
+
+  it('extended function with empty constructor', 
+    generateTest('func A() {} func B() extends A() {}', 
+      'function A() {\n}\nfunction B() {\n    A.call(this);\n}\nB.prototype = Object.create(A);'));
+
+  it('extended function with 1-param constructor', 
+    generateTest('func A() {} func B() extends A(1) {}', 
+      'function A() {\n}\nfunction B() {\n    A.call(this, 1);\n}\nB.prototype = Object.create(A);'));
+
+  it('extended function with 2-params constructor', 
+    generateTest('func A() {} func B(a) extends A(1, a) {}', 
+      'function A() {\n}\nfunction B(a) {\n    A.call(this, 1, a);\n}\nB.prototype = Object.create(A);'));
+      
+  it('extended function with global identifier', 
+    generateTest('func B() extends ::A {}', 
+      'function B() {\n    A.call(this);\n}\nB.prototype = Object.create(A);'));
+      
+  it('extended function expression with no constructor', 
+    generateTest('var A = func () {}; var B = func () extends A {};', 
+      'var A = function () {\n};\nvar functionExpression0 = function () {\n    A.call(this);\n};\nfunctionExpression0.prototype = Object.create(A);\nvar B = functionExpression0;'));
+
+  it('extended function expression with empty constructor', 
+    generateTest('var A = func () {}; var b = func () extends A() {};', 
+      'var A = function () {\n};\nvar functionExpression0 = function () {\n    A.call(this);\n};\nfunctionExpression0.prototype = Object.create(A);\nvar b = functionExpression0;'));
+
+  it('extended function expression with 1-param constructor', 
+    generateTest('var A = func () {}; var B = func () extends A(1) {};', 
+      'var A = function () {\n};\nvar functionExpression0 = function () {\n    A.call(this, 1);\n};\nfunctionExpression0.prototype = Object.create(A);\nvar B = functionExpression0;'));
+
+  it('extended function expression with 2-params constructor', 
+    generateTest('var A = func () {}; var B = func (a) extends A(1, a) {};', 
+      'var A = function () {\n};\nvar functionExpression0 = function (a) {\n    A.call(this, 1, a);\n};\nfunctionExpression0.prototype = Object.create(A);\nvar B = functionExpression0;'));
+      
+  it('extended function expression with global identifier', 
+    generateTest('var B = func () extends ::A {};', 
+      'var functionExpression0 = function () {\n    A.call(this);\n};\nfunctionExpression0.prototype = Object.create(A);\nvar B = functionExpression0;'));
+});
+
+describe('super keyword:', function () {
+  it('super call statement in a method', 
+    generateTest('func B() extends ::A { this.test = func () { super.test(); }; }', 
+      'function B() {\n    A.call(this);\n    var _self = this;\n    var _test = this.test;\n    this.test = function () {\n        _test.call(_self);\n    };\n}\nB.prototype = Object.create(A);'));
+      
+  it('super call statement in a method inside an anonymous function', 
+    generateTest('func B() extends ::A { this.test = func () { (() -> { return super.test(); })(); }; }', 
+      'function B() {\n    A.call(this);\n    var _self = this;\n    var _test = this.test;\n    this.test = function () {\n        (function () {\n            return _test.call(_self);\n        }());\n    };\n}\nB.prototype = Object.create(A);'));
+  
+  it('super call statement in a method inside 2 anonymous functions', 
+    generateTest('func B() extends ::A { this.test = func () { (() -> () -> { return super.test(); } )()(); }; }', 
+      'function B() {\n    A.call(this);\n    var _self = this;\n    var _test = this.test;\n    this.test = function () {\n        (function () {\n            return function () {\n                return _test.call(_self);\n            };\n        }()());\n    };\n}\nB.prototype = Object.create(A);'));
+  
+  it('super member expression in a method', 
+    generateTest('func B() extends ::A { this.test = func () { var x = super.x; }; }', 
+      'function B() {\n    A.call(this);\n    var _x = this.x;\n    this.test = function () {\n        var x = _x;\n    };\n}\nB.prototype = Object.create(A);'));
+      
+  it('super member expression in a method inside an anonymous function', 
+    generateTest('func B() extends ::A { this.test = func () { var x = (() -> super.x)(); }; }', 
+      'function B() {\n    A.call(this);\n    var _x = this.x;\n    this.test = function () {\n        var x = function () {\n            return _x;\n        }();\n    };\n}\nB.prototype = Object.create(A);'));
+  
+  it('super member expression in a method inside 2 anonymous functions', 
+    generateTest('func B() extends ::A { this.test = func () { var x = (() -> () -> super.x)()(); }; }', 
+      'function B() {\n    A.call(this);\n    var _x = this.x;\n    this.test = function () {\n        var x = function () {\n            return function () {\n                return _x;\n            };\n        }()();\n    };\n}\nB.prototype = Object.create(A);'));
+
+  it('super call statement in a prototype function', 
+    generateTest('func B() extends ::A {} B.prototype.test = () -> { super.test(); };', 
+      'function B() {\n    A.call(this);\n}\nB.prototype = Object.create(A);\nB.prototype.test = function () {\n    A.prototype.test.call(this);\n};'));
+      
+  it('super call statement in a prototype function inside an anonymous function', 
+    generateTest('func B() extends ::A {} B.prototype.test = () -> { (() -> super.test())(); };', 
+      'function B() {\n    A.call(this);\n}\nB.prototype = Object.create(A);\nB.prototype.test = function () {\n    var _self = this;\n    (function () {\n        return A.prototype.test.call(_self);\n    }());\n};'));
+      
+  it('super member expression in a prototype function', 
+    generateTest('func B() extends ::A {} B.prototype.test = () -> { var x = super.x; };', 
+      'function B() {\n    A.call(this);\n}\nB.prototype = Object.create(A);\nB.prototype.test = function () {\n    var x = this.x;\n};'));
+  
+  it('super member expression in a prototype function inside an anonymous function', 
+    generateTest('func B() extends ::A {} B.prototype.test = () -> { var x = (() -> { return super.x; })(); };', 
+      'function B() {\n    A.call(this);\n}\nB.prototype = Object.create(A);\nB.prototype.test = function () {\n    var _self = this;\n    var x = function () {\n        return _self.x;\n    }();\n};'));
+  
+  it('super call statement in a prototype object', 
+    generateTest('func B() extends ::A {} B.prototype = { test: () -> { super.test(); } };', 
+      'function B() {\n    A.call(this);\n}\nB.prototype = Object.create(A);\nB.prototype = {\n    test: function () {\n        A.prototype.test.call(this);\n    }\n};'));
+      
+  it('super call statement in a prototype object inside an anonymous function', 
+    generateTest('func B() extends ::A {} B.prototype = { test: () -> { (() -> super.test())(); } };', 
+      'function B() {\n    A.call(this);\n}\nB.prototype = Object.create(A);\nB.prototype = {\n    test: function () {\n        var _self = this;\n        (function () {\n            return A.prototype.test.call(_self);\n        }());\n    }\n};'));
+      
+  it('super member expression in a prototype object', 
+    generateTest('func B() extends ::A {} B.prototype = { test: () -> { var x = super.x; } };', 
+      'function B() {\n    A.call(this);\n}\nB.prototype = Object.create(A);\nB.prototype = {\n    test: function () {\n        var x = this.x;\n    }\n};'));
+  
+  it('super member expression in a prototype object inside an anonymous function', 
+    generateTest('func B() extends ::A {} B.prototype = { test: () -> { var x = (() -> { return super.x; })(); } };', 
+      'function B() {\n    A.call(this);\n}\nB.prototype = Object.create(A);\nB.prototype = {\n    test: function () {\n        var _self = this;\n        var x = function () {\n            return _self.x;\n        }();\n    }\n};'));   
+});
