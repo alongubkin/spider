@@ -1069,7 +1069,13 @@ describe('global identifiers and use statements:', function () {
     
   it('global member expression with use statement after the member expression', 
     generateErrorTest('var x = a.b; use a;', 
-      [{ type: 'UndefinedIdentifier', 'identifier': 'a' }]));    
+      [{ type: 'UndefinedIdentifier', 'identifier': 'a' }]));
+
+  it('use statement with 2 identifiers', 
+    generateTest('use a, b; var x = a + b;', 'var x = a + b;'));      
+
+  it('use statement with 3 identifiers', 
+    generateTest('use a, b, c; var x = a + b + c;', 'var x = a + b + c;'));
 });
 
 describe('this keyword:', function () {
