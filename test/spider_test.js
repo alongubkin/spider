@@ -1168,3 +1168,14 @@ describe('string interpolation', function () {
     generateTest('var x = "test \\(a) test \\(2+a) \\(Math.pow(2, a)) test test";',
       'var x = \"test \" + a + \" test \" + (2 + a) + \" \" + Math.pow(2, a) + \" test test\";'));    
 });
+
+describe('bitwise opreators', function () {
+  it('bitwise AND', generateTest('var x = a & b;', 'var x = a & b;'));
+  it('bitwise OR',  generateTest('var x = a | b;', 'var x = a | b;'));
+  it('bitwise XOR', generateTest('var x = a ^ b;', 'var x = a ^ b;'));
+  
+  it('arithmetic shift left',  generateTest('var x = a << b;', 'var x = a << b;'));  
+  it('arithmetic shift right', generateTest('var x = a >> b;', 'var x = a >> b;'));  
+  
+  it('logical shift right', generateTest('var x = a >>> b;', 'var x = a >>> b;'));
+});
