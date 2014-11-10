@@ -1213,3 +1213,8 @@ describe('throw statement:', function () {
   it('throw number', generateTest('throw 5;', 'throw 5;'));
   it('throw object', generateTest('throw { message: "test" };', 'throw { message: "test" };'));
 });
+
+describe('control flow statements:', function () {
+  it('break statement', generateTest('break;', 'break;'));
+  it('continue statement', generateTest('continue;', 'continue;'));
+});
