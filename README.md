@@ -1,5 +1,7 @@
-Spider  [![Build Status](https://secure.travis-ci.org/alongubkin/spider.png?branch=master)](http://travis-ci.org/alongubkin/spider)
+Spider  
 ===
+
+[![NPM Version](http://img.shields.io/npm/v/spider-script.svg)](https://www.npmjs.org/package/spider-script) [![Build Status](https://secure.travis-ci.org/alongubkin/spider.png?branch=master)](http://travis-ci.org/alongubkin/spider) [![Dependencies](https://david-dm.org/alongubkin/spider.png)](https://david-dm.org/alongubkin/spider)
 
 The Next-Gen Programming Language for the Web. [Learn more](https://medium.com/@alongubkin/introducing-spider-f611d97bb47e)
 
