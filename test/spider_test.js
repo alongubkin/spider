@@ -889,7 +889,19 @@ describe('assignment expressions:', function () {
     generateTest('var x = a = b = 1;', 'var x = a = b = 1;'));
     
   it('assignment expression with 3 variables',
-    generateTest('var x = a = b = c = 1;', 'var x = a = b = c = 1;'));    
+    generateTest('var x = a = b = c = 1;', 'var x = a = b = c = 1;'));  
+
+  it('addition assignment',            generateTest('x += a;',   'x += a;'));
+  it('subtraction assignment',         generateTest('x -= a;',   'x -= a;'));
+  it('multiplication assignment',      generateTest('x *= a;',   'x *= a;'));  
+  it('division assignment',            generateTest('x /= a;',   'x /= a;'));
+  it('remainder assignment',           generateTest('x %= a;',   'x %= a;'));
+  it('left shift assignment',          generateTest('x <<= a;',  'x <<= a;'));
+  it('right shift assignment',         generateTest('x >>= a;',  'x >>= a;'));
+  it('logical right shift assignment', generateTest('x >>>= a;', 'x >>>= a;'));
+  it('bitwise AND assignment',         generateTest('x &= a;',   'x &= a;'));
+  it('bitwise XOR assignment',         generateTest('x ^= a;',   'x ^= a;'));
+  it('bitwise OR assignment',          generateTest('x |= a;',   'x |= a;'));
 });
 
 describe('if statement:', function () {
