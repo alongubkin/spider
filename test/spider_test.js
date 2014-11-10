@@ -1175,13 +1175,13 @@ describe('super keyword:', function () {
       'function B() {\n    A.call(this);\n}\nB.prototype = Object.create(A);\nB.prototype = {\n    test: function () {\n        var _self = this;\n        var x = function () {\n            return _self.x;\n        }();\n    }\n};'));   
 });
 
-describe('string interpolation', function () {
+describe('string interpolation:', function () {
   it('string interpolation', 
     generateTest('var x = "test \\(a) test \\(2+a) \\(Math.pow(2, a)) test test";',
       'var x = \"test \" + a + \" test \" + (2 + a) + \" \" + Math.pow(2, a) + \" test test\";'));    
 });
 
-describe('bitwise opreators', function () {
+describe('bitwise opreators:', function () {
   it('bitwise AND', generateTest('var x = a & b;', 'var x = a & b;'));
   it('bitwise OR',  generateTest('var x = a | b;', 'var x = a | b;'));
   it('bitwise XOR', generateTest('var x = a ^ b;', 'var x = a ^ b;'));
@@ -1190,4 +1190,9 @@ describe('bitwise opreators', function () {
   it('arithmetic shift right', generateTest('var x = a >> b;', 'var x = a >> b;'));  
   
   it('logical shift right', generateTest('var x = a >>> b;', 'var x = a >>> b;'));
+});
+
+describe('throw statement:', function () {
+  it('throw number', generateTest('throw 5;', 'throw 5;'));
+  it('throw object', generateTest('throw { message: "test" };', 'throw { message: "test" };'));
 });
