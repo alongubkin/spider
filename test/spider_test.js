@@ -1025,7 +1025,15 @@ describe('return statement:', function () {
       
   it('function expression with a return statement',
     generateTest('var a = () -> { return 1; };',
-      'var a = function () {\n    return 1;\n};'));   
+      'var a = function () {\n    return 1;\n};'));
+
+  it('function declaration with empty return statement',
+    generateTest('func x() { return; }',
+      'function x() {\n    return;\n}'));
+      
+  it('function expression with empty return statement',
+    generateTest('var a = () -> { return; };',
+      'var a = function () {\n    return;\n};'));
 });
 
 describe('global identifiers and use statements:', function () {
