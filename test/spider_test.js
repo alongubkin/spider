@@ -1072,10 +1072,13 @@ describe('global identifiers and use statements:', function () {
       [{ type: 'UndefinedIdentifier', 'identifier': 'a' }]));
 
   it('use statement with 2 identifiers', 
-    generateTest('use a, b; var x = a + b;', 'var x = a + b;'));      
+    generateErrorTest('use a, b; var x = a + b;', []));      
 
   it('use statement with 3 identifiers', 
-    generateTest('use a, b, c; var x = a + b + c;', 'var x = a + b + c;'));
+    generateErrorTest('use a, b, c; var x = a + b + c;', []));
+    
+  it(':browser use statement', 
+    generateErrorTest('use :browser; var x = document + console + window;', []));    
 });
 
 describe('this keyword:', function () {
