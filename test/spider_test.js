@@ -785,7 +785,31 @@ describe('arithmetic expressions:', function () {
     
   it('order of operators',
     generateTest('var x = 3+4*5-(3+4)*5/(a+b-c*d);', 
-      'var x = 3 + 4 * 5 - (3 + 4) * 5 / (a + b - c * d);'));       
+      'var x = 3 + 4 * 5 - (3 + 4) * 5 / (a + b - c * d);'));    
+
+  it('exponentiation with 2 elements',
+    generateTest('var x = a**b;', 'var x = Math.pow(a, b);'));
+    
+  it('exponentiation with 3 elements',
+    generateTest('var x = a**b**c;', 'var x = Math.pow(Math.pow(a, b), c);'));
+  
+  it('integer division with 2 elements',
+    generateTest('var x = a#b;', 'var x = Math.floor(a / b);'));
+
+  it('integer division with 3 elements',
+    generateTest('var x = a#b#c;', 'var x = Math.floor(Math.floor(a / b) / c);'));
+    
+  it('modulo with 2 elements',
+    generateTest('var x = a%b;', 'var x = a % b;'));
+    
+  it('modulo with 3 elements',
+    generateTest('var x = a%b%c;', 'var x = a % b % c;'));    
+  
+  it('math modulo with 2 elements',
+    generateTest('var x = a%%b;', 'var x = (a % b + b) % b;'));
+
+  it('math modulo with 3 elements',
+    generateTest('var x = a%%b%%c;', 'var x = ((a % b + b) % b % c + c) % c;'));    
 });
 
 describe('logical expressions:', function () {
