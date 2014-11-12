@@ -1242,3 +1242,41 @@ describe('control flow statements:', function () {
   it('break statement', generateTest('break;', 'break;'));
   it('continue statement', generateTest('continue;', 'continue;'));
 });
+
+describe('range expressions:', function () {
+  it('upward small inclusive numeric range expression',
+    generateTest('var x = [1..5];', 'var x = [\n    1,\n    2,\n    3,\n    4,\n    5\n];'));
+    
+  it('downward small inclusive numeric range expression',
+    generateTest('var x = [5..1];', 'var x = [\n    5,\n    4,\n    3,\n    2,\n    1\n];'));
+    
+  it('upward small exclusive numeric range expression',
+    generateTest('var x = [1...5];', 'var x = [\n    1,\n    2,\n    3,\n    4\n];'));
+    
+  it('downward small exclusive numeric range expression',
+    generateTest('var x = [5...1];', 'var x = [\n    5,\n    4,\n    3,\n    2\n];'));
+    
+  it('upward large inclusive numeric range expression',
+    generateTest('var x = [1..25];', 'var x = function () {\n    var _results = [];\n    for (var _i = 1; _i <= 25; _i++) {\n        _results.push(_i);\n    }\n    return _results;\n}.apply(this);'));
+    
+  it('downward large inclusive numeric range expression',
+    generateTest('var x = [25..1];', 'var x = function () {\n    var _results = [];\n    for (var _i = 25; _i >= 1; _i--) {\n        _results.push(_i);\n    }\n    return _results;\n}.apply(this);'));
+    
+  it('upward large exclusive numeric range expression',
+    generateTest('var x = [1...25];', 'var x = function () {\n    var _results = [];\n    for (var _i = 1; _i < 25; _i++) {\n        _results.push(_i);\n    }\n    return _results;\n}.apply(this);'));
+    
+  it('downward large exclusive numeric range expression',
+    generateTest('var x = [25...1];', 'var x = function () {\n    var _results = [];\n    for (var _i = 25; _i > 1; _i--) {\n        _results.push(_i);\n    }\n    return _results;\n}.apply(this);'));    
+    
+  it('inclusive identifiers range expression',
+    generateTest('var x = [a..b];', 'var x = function () {\n    var _results = [];\n    for (var _i = a; a <= b ? _i <= b : _i >= b; a <= b ? _i++ : _i--) {\n        _results.push(_i);\n    }\n    return _results;\n}.apply(this);'));
+  
+  it('exclusive identifiers range expression',
+    generateTest('var x = [a...b];', 'var x = function () {\n    var _results = [];\n    for (var _i = a; a <= b ? _i < b : _i > b; a <= b ? _i++ : _i--) {\n        _results.push(_i);\n    }\n    return _results;\n}.apply(this);'));
+  
+  it('inclusive call range expression',
+    generateTest('var x = [a()..b()];', 'var x = function () {\n    var _results = [], _start = a(), _end = b();\n    for (var _i = _start; _start <= _end ? _i <= _end : _i >= _end; _start <= _end ? _i++ : _i--) {\n        _results.push(_i);\n    }\n    return _results;\n}.apply(this);'));
+  
+  it('exclusive call range expression',
+    generateTest('var x = [a()...b()];', 'var x = function () {\n    var _results = [], _start = a(), _end = b();\n    for (var _i = _start; _start <= _end ? _i < _end : _i > _end; _start <= _end ? _i++ : _i--) {\n        _results.push(_i);\n    }\n    return _results;\n}.apply(this);'));
+});
