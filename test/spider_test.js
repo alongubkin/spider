@@ -942,7 +942,13 @@ describe('if statement:', function () {
     generateTest('if true { }', 'if (true) {\n}'));
     
   it('if statement with else clause',
-    generateTest('if true { } else { }', 'if (true) {\n} else {\n}'));    
+    generateTest('if true { } else { }', 'if (true) {\n} else {\n}'));
+
+  it('if statement without block',
+    generateTest('if true a();', 'if (true) {\n    a();\n}')); 
+
+  it('if statement with else without block',
+    generateTest('if true a(); else b();', 'if (true) {\n    a();\n} else {\n    b();\n}'));     
 });
 
 describe('for statement:', function () {
