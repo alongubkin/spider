@@ -1289,3 +1289,7 @@ describe('range expressions:', function () {
   it('exclusive call range expression',
     generateTest('var x = [a()...b()];', 'var x = function () {\n    var _results = [], _start = a(), _end = b();\n    for (var _i = _start; _start <= _end ? _i < _end : _i > _end; _start <= _end ? _i++ : _i--) {\n        _results.push(_i);\n    }\n    return _results;\n}.apply(this);'));
 });
+
+describe('debugger statement:', function () {
+  it('debugger statement', generateTest('debugger;', 'debugger;'));
+});
