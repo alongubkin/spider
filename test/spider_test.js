@@ -868,6 +868,15 @@ describe('binary expressions:', function () {
     
   it('smaller or equals expression',
     generateTest('var x = a <= b;', 'var x = a <= b;'));
+    
+  it('chained comparisons',
+    generateTest('var x = a > x > c;', 'var x = a > x && x > c;'));
+    
+  it('chained comparisons with 2 components',
+    generateTest('var x = a > x > c > d;', 'var x = a > x && x > c && c > d;'));
+
+  it('chained comparisons with 3 components',
+    generateTest('var x = a > x > c > d > e;', 'var x = a > x && x > c && c > d && d > e;'));    
 });
 
 describe('update expressions:', function () {
