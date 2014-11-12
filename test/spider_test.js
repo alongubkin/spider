@@ -1299,3 +1299,11 @@ describe('range expressions:', function () {
 describe('debugger statement:', function () {
   it('debugger statement', generateTest('debugger;', 'debugger;'));
 });
+
+describe('while and until statements:', function () {
+  it('while statement', generateTest('while (true) {}', 'while (true) {\n}'));
+  it('while statement without block', generateTest('while (true) a();', 'while (true) {\n    a();\n}'));
+  
+  it('until statement', generateTest('until (true) {}', 'while (!true) {\n}'));
+  it('until statement without block', generateTest('until (true) a();', 'while (!true) {\n    a();\n}'));  
+});
