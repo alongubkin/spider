@@ -56,9 +56,28 @@ module.exports = function(grunt) {
         src: "lib/spider.pegjs",
         dest: "lib/parser.js"
       }
+    },
+    mocha_istanbul: {
+      coverage: {
+        src: 'test',
+        options: {
+          mask: '*.js'
+        },
+      },
+      coveralls: {
+        src: ['test'],
+        options: {
+          coverage: true,
+          root: './lib',
+          reportFormats: ['cobertura', 'lcovonly']
+        }
+      }
     }
   });
 
   // Default task.
   grunt.registerTask('default', ['peg', 'jshint', 'mochacli']);
+  
+  grunt.registerTask('coveralls', ['mocha_istanbul:coveralls']);
+  grunt.registerTask('coverage', ['mocha_istanbul:coverage']);  
 };

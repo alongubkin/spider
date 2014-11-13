@@ -1,7 +1,7 @@
 Spider  
 ===
 
-[![NPM Version](http://img.shields.io/npm/v/spider-script.svg?style=flat)](https://www.npmjs.org/package/spider-script) [![Build Status](https://img.shields.io/travis/alongubkin/spider.svg?style=flat)](http://travis-ci.org/alongubkin/spider) [![Dependencies](http://img.shields.io/david/alongubkin/spider.svg?style=flat)](https://david-dm.org/alongubkin/spider)
+[![NPM Version](http://img.shields.io/npm/v/spider-script.svg?style=flat)](https://www.npmjs.org/package/spider-script) [![Build Status](https://img.shields.io/travis/alongubkin/spider.svg?style=flat)](http://travis-ci.org/alongubkin/spider) [![Dependencies](http://img.shields.io/david/alongubkin/spider.svg?style=flat)](https://david-dm.org/alongubkin/spider) [![Test Coverage](http://img.shields.io/coveralls/alongubkin/spider.svg?style=flat)](https://coveralls.io/r/alongubkin/spider)
 
 The Next-Gen Programming Language for the Web. [Learn more](https://medium.com/@alongubkin/introducing-spider-f611d97bb47e)
 
