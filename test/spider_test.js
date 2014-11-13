@@ -38,6 +38,9 @@ describe('variable statement:', function () {
   it('create variable with boolean literal', 
     generateTest('var a = true;', 'var a = true;'));
     
+  it('create variable with null literal', 
+    generateTest('var a = null;', 'var a = null;'));
+    
   it('create variable with identifier value', 
     generateTest('var a = b;', 'var a = b;'));
     
