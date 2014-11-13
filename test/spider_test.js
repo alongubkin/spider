@@ -21,11 +21,13 @@ function generateErrorTest(code, expectedErrors) {
       delete error.loc;
       
       return error;
-    })).match(expectedErrors);
+    })).eql(expectedErrors);
   };
 }
 
 describe('variable statement:', function () {
+  it('syntax error', generateErrorTest('var x = y^', [{ type: "SyntaxError" }]));
+
   it('create variable', 
     generateTest('var a;', 'var a;'));
     
