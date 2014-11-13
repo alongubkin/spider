@@ -1307,3 +1307,91 @@ describe('while and until statements:', function () {
   it('until statement', generateTest('until (true) {}', 'while (!true) {\n}'));
   it('until statement without block', generateTest('until (true) a();', 'while (!true) {\n    a();\n}'));  
 });
+
+describe('array slicing:', function () {
+  it('inclusive array slice with empty from and to', 
+    generateTest('var x = a[..];', 'var x = a.slice(0);'));
+    
+  it('inclusive array slice with numeric from and empty to', 
+    generateTest('var x = a[1..];', 'var x = a.slice(1);'));
+    
+  it('inclusive array slice with empty from and numeric to', 
+    generateTest('var x = a[..1];', 'var x = a.slice(0, 2);'));
+
+  it('inclusive array slice with numeric from and numeric to', 
+    generateTest('var x = a[1..2];', 'var x = a.slice(1, 3);'));
+
+  it('inclusive array slice with identifier from and empty to', 
+    generateTest('var x = a[c..];', 'var x = a.slice(c);'));
+    
+  it('inclusive array slice with empty from and identifier to', 
+    generateTest('var x = a[..c];', 'var x = a.slice(0, c + 1);'));
+
+  it('inclusive array slice with identifier from and identifier to', 
+    generateTest('var x = a[c..d];', 'var x = a.slice(c, d + 1);'));
+
+  it('exclusive array slice with empty from and to', 
+    generateTest('var x = a[...];', 'var x = a.slice(0);'));
+    
+  it('exclusive array slice with numeric from and empty to', 
+    generateTest('var x = a[1...];', 'var x = a.slice(1);'));
+    
+  it('exclusive array slice with empty from and numeric to', 
+    generateTest('var x = a[...1];', 'var x = a.slice(0, 1);'));
+
+  it('exclusive array slice with numeric from and numeric to', 
+    generateTest('var x = a[1...2];', 'var x = a.slice(1, 2);'));
+
+  it('exclusive array slice with identifier from and empty to', 
+    generateTest('var x = a[c...];', 'var x = a.slice(c);'));
+    
+  it('exclusive array slice with empty from and identifier to', 
+    generateTest('var x = a[...c];', 'var x = a.slice(0, c);'));
+
+  it('exclusive array slice with identifier from and identifier to', 
+    generateTest('var x = a[c...d];', 'var x = a.slice(c, d);'));     
+});
+
+describe('array splicing:', function () {
+  it('inclusive array splicing with empty from and to', 
+    generateTest('a[..] = [x];', '[].splice.apply(a, [\n    0,\n    9000000000\n].concat([x]));'));
+    
+  it('inclusive array splicing with numeric from and empty to', 
+    generateTest('a[1..] = [x];', '[].splice.apply(a, [\n    1,\n    9000000000\n].concat([x]));'));
+
+  it('inclusive array splicing with empty from and numeric to', 
+    generateTest('a[..3] = [x];', '[].splice.apply(a, [\n    0,\n    4\n].concat([x]));'));
+
+  it('inclusive array splicing with numeric from and numeric to', 
+    generateTest('a[2..3] = [x];', '[].splice.apply(a, [\n    2,\n    2\n].concat([x]));'));
+
+  it('inclusive array splicing with identifier from and empty to', 
+    generateTest('a[t..] = [x];', '[].splice.apply(a, [\n    t,\n    9000000000\n].concat([x]));'));
+
+  it('inclusive array splicing with empty from and numeric to', 
+    generateTest('a[..v] = [x];', '[].splice.apply(a, [\n    0,\n    v + 1\n].concat([x]));'));
+
+  it('inclusive array splicing with numeric from and numeric to', 
+    generateTest('a[t..v] = [x];', '[].splice.apply(a, [\n    t,\n    v - t + 1\n].concat([x]));'));  
+
+  it('exclusive array splicing with empty from and to', 
+    generateTest('a[...] = [x];', '[].splice.apply(a, [\n    0,\n    9000000000\n].concat([x]));'));
+    
+  it('exclusive array splicing with numeric from and empty to', 
+    generateTest('a[1...] = [x];', '[].splice.apply(a, [\n    1,\n    9000000000\n].concat([x]));'));
+
+  it('exclusive array splicing with empty from and numeric to', 
+    generateTest('a[...3] = [x];', '[].splice.apply(a, [\n    0,\n    3\n].concat([x]));'));
+
+  it('exclusive array splicing with numeric from and numeric to', 
+    generateTest('a[2...3] = [x];', '[].splice.apply(a, [\n    2,\n    1\n].concat([x]));'));
+
+  it('exclusive array splicing with identifier from and empty to', 
+    generateTest('a[t...] = [x];', '[].splice.apply(a, [\n    t,\n    9000000000\n].concat([x]));'));
+
+  it('exclusive array splicing with empty from and numeric to', 
+    generateTest('a[...v] = [x];', '[].splice.apply(a, [\n    0,\n    v\n].concat([x]));'));
+
+  it('exclusive array splicing with numeric from and numeric to', 
+    generateTest('a[t...v] = [x];', '[].splice.apply(a, [\n    t,\n    v - t\n].concat([x]));'));      
+});
