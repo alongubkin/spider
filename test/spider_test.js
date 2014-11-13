@@ -440,6 +440,9 @@ describe('null coalescing expressions:', function () {
   it('null coalescing expression with 2 call expressions and null propagating member expressions',
     generateTest('var x = a.b()?.c() ?? d?.e().f();', 
       'var nullPropagating0 = a.b();\nvar nullCoalescing0 = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.c() : null;\nvar x = nullCoalescing0 === null ? typeof d !== \"undefined\" && d !== null ? d.e().f() : null : nullCoalescing0;'));    
+
+  it('null coalescing statement',
+    generateTest('a() ?? b();', 'var nullCoalescing0 = a();\nif (nullCoalescing0 === null) {\n    b();\n}'));
 });
 
 describe('null check call expressions:', function () {
