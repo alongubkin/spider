@@ -63,21 +63,11 @@ module.exports = function(grunt) {
         options: {
           mask: '*.js'
         },
-      },
-      coveralls: {
-        src: ['test'],
-        options: {
-          coverage: true,
-          root: './lib',
-          reportFormats: ['cobertura', 'lcovonly']
-        }
       }
     }
   });
-
+    
   // Default task.
   grunt.registerTask('default', ['peg', 'jshint', 'mochacli']);
-  
-  grunt.registerTask('coveralls', ['mocha_istanbul:coveralls']);
   grunt.registerTask('coverage', ['mocha_istanbul:coverage']);  
 };
