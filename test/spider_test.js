@@ -1398,3 +1398,14 @@ describe('array splicing:', function () {
   it('exclusive array splicing with numeric from and numeric to', 
     generateTest('a[t...v] = [x];', '[].splice.apply(a, [\n    t,\n    v - t\n].concat([x]));'));      
 });
+
+describe('new expressions:', function () {
+  it('new expression with 0 arguments', 
+    generateTest('var x = new A();', 'var x = new A();'));
+    
+  it('new expression with 1 argument', 
+    generateTest('var x = new A(1);', 'var x = new A(1);'));
+    
+  it('new expression with 2 argument', 
+    generateTest('var x = new A(1, b());', 'var x = new A(1, b());'));    
+});
