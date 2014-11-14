@@ -1493,3 +1493,41 @@ describe('splat in function declaration:', function () {
   it('multiple splats in func decl',
     generateErrorTest('func f(a..., b...) {}', [{ type: "MultipleSplatsDisallowed" }]));
 });
+
+describe('splat in call expressions:', function () {
+  it('call expression with a splat', 
+    generateTest('f(a...);', 'f.apply(null, a);'));
+    
+  it('call expression with splat, argument',
+    generateTest('f(a..., b);', 'f.apply(null, [].slice.call(a).concat([b]));'));
+    
+  it('call expression with argument, splat',
+    generateTest('f(a, b...);', 'f.apply(null, [a].concat([].slice.call(b)));'));
+    
+  it('call expression with splat, argument, argument',
+    generateTest('f(a..., b, c);', 'f.apply(null, [].slice.call(a).concat([b], [c]));'));
+    
+  it('call expression with argument, splat, argument',
+    generateTest('f(a, b..., c);', 'f.apply(null, [a].concat([].slice.call(b), [c]));'));
+    
+  it('call expression with argument, argument, splat, argument',
+    generateTest('f(a, b, c..., d);', 'f.apply(null, [\n    a,\n    b\n].concat([].slice.call(c), [d]));'));
+    
+  it('null check call expression with a splat', 
+    generateTest('f?(a...);', 'if (typeof f === \"function\") {\n    f.apply(null, a);\n}'));
+
+  it('null check call expression with splat, argument',
+    generateTest('f?(a..., b);', 'if (typeof f === \"function\") {\n    f.apply(null, [].slice.call(a).concat([b]));\n}'));
+    
+  it('null check call expression with argument, splat',
+    generateTest('f?(a, b...);', 'if (typeof f === \"function\") {\n    f.apply(null, [a].concat([].slice.call(b)));\n}'));
+    
+  it('null check call expression with splat, argument, argument',
+    generateTest('f?(a..., b, c);', 'if (typeof f === \"function\") {\n    f.apply(null, [].slice.call(a).concat([b], [c]));\n}'));
+    
+  it('null check call expression with argument, splat, argument',
+    generateTest('f?(a, b..., c);', 'if (typeof f === \"function\") {\n    f.apply(null, [a].concat([].slice.call(b), [c]));\n}'));
+    
+  it('null check call expression with argument, argument, splat, argument',
+    generateTest('f?(a, b, c..., d);', 'if (typeof f === \"function\") {\n    f.apply(null, [\n        a,\n        b\n    ].concat([].slice.call(c), [d]));\n}'));
+});
