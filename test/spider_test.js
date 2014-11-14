@@ -764,6 +764,14 @@ describe('unary expressions:', function () {
     
   it('unary minus',
     generateTest('var x = -5;', 'var x = -5;'));
+    
+  it('typeof identifier',
+    generateTest('var x = typeof a;', 
+      'var x = typeof a === \"undefined\" ? \"undefined\" : {}.toString.call(a).match(\"/\\\\s([a-zA-Z]+)/\")[1].toLowerCase();'));
+      
+  it('typeof call expression',
+    generateTest('var x = typeof a();', 
+      'var x = {}.toString.call(a()).match(\"/\\\\s([a-zA-Z]+)/\")[1].toLowerCase();'));    
 });
 
 describe('arithmetic expressions:', function () {
