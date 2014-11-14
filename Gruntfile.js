@@ -61,7 +61,8 @@ module.exports = function(grunt) {
       coverage: {
         src: 'test',
         options: {
-          mask: '*.js'
+          mask: '*.js',
+          excludes: ['lib/parser.js']
         },
       }
     }
