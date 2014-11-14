@@ -1531,3 +1531,8 @@ describe('splat in call expressions:', function () {
   it('null check call expression with argument, argument, splat, argument',
     generateTest('f?(a, b, c..., d);', 'if (typeof f === \"function\") {\n    f.apply(null, [\n        a,\n        b\n    ].concat([].slice.call(c), [d]));\n}'));
 });
+
+describe('conditional expressions:', function () {
+  it('conditional expression',
+    generateTest('var x = a() if b else c();', 'var x = b ? a() : c();'));
+});
