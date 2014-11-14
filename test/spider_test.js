@@ -1463,5 +1463,33 @@ describe('default func param value:', function () {
   it('func expression with 3 params with default values',
     generateTest('var x = func (a = 5, b = 3, k = { test: 1 }) {};', 
       'var x = function (a, b, k) {\n    if (a == null) {\n        a = 5;\n    }\n    if (b == null) {\n        b = 3;\n    }\n    if (k == null) {\n        k = { test: 1 };\n    }\n};'));    
+});
 
+describe('splat in function declaration:', function () {
+  it('func decl with splat',
+    generateTest('func f(a...) {}', 
+      'function f() {\n    var __splat, a = 1 <= arguments.length ? [].slice.call(arguments, 0) : [];\n}'));
+    
+  it('func decl with splat, parameter',
+    generateTest('func f(a..., b) {}', 
+      'function f() {\n    var __splat, a = 2 <= arguments.length ? [].slice.call(arguments, 0, __splat = arguments.length - 1) : (__splat = 0, []), b = arguments[__splat++];\n}'));
+    
+  it('func decl with parameter, splat',
+    generateTest('func f(a, b...) {}', 
+      'function f() {\n    var __splat, a = arguments[0], b = 2 <= arguments.length ? [].slice.call(arguments, 1) : [];\n}'));
+    
+  it('func decl with parameter, splat, parameter',
+    generateTest('func f(a, b..., c) {}', 
+      'function f() {\n    var __splat, a = arguments[0], b = 3 <= arguments.length ? [].slice.call(arguments, 1, __splat = arguments.length - 1) : (__splat = 1, []), c = arguments[__splat++];\n}'));
+    
+  it('func decl with parameter, parameter, splat, parameter',
+    generateTest('func f(a, b, c..., d) {}', 
+      'function f() {\n    var __splat, a = arguments[0], b = arguments[1], c = 4 <= arguments.length ? [].slice.call(arguments, 2, __splat = arguments.length - 1) : (__splat = 2, []), d = arguments[__splat++];\n}'));
+    
+  it('func decl with parameter, splat, parameter, parameter',
+    generateTest('func f(a, b..., c, d) {}', 
+      'function f() {\n    var __splat, a = arguments[0], b = 4 <= arguments.length ? [].slice.call(arguments, 1, __splat = arguments.length - 2) : (__splat = 1, []), c = arguments[__splat++], d = arguments[__splat++];\n}'));    
+
+  it('multiple splats in func decl',
+    generateErrorTest('func f(a..., b...) {}', [{ type: "MultipleSplatsDisallowed" }]));
 });
