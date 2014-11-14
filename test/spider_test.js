@@ -1536,3 +1536,31 @@ describe('conditional expressions:', function () {
   it('conditional expression',
     generateTest('var x = a() if b else c();', 'var x = b ? a() : c();'));
 });
+
+describe('for in statement:', function () {
+  it('for in statement without index',
+    generateTest('for item in array {}', 
+      'array.forEach(function (item) {\n}, this);'));
+    
+  it('for in statement with index',
+    generateTest('for item, index in array {}', 
+      'array.forEach(function (item, index) {\n}, this);'));  
+});
+
+describe('for of statement:', function () {
+  it('for of statement without value',
+    generateTest('for key of object {}', 
+      'Object.keys(object).forEach(function (key) {\n}, this);'));
+    
+  it('for of statement with value',
+    generateTest('for key, value of object {}', 
+      'Object.keys(object).forEach(function (key) {\n    var value = object[key];\n}, this);'));  
+    
+  it('for of statement of call expression without value',
+    generateTest('for key of f() {}', 
+      'Object.keys(f()).forEach(function (key) {\n}, this);'));
+    
+  it('for of statement of call expression  with value',
+    generateTest('for key, value of f() {}', 
+      'var forOf0 = f();\nObject.keys(forOf0).forEach(function (key) {\n    var value = forOf0[key];\n}, this);'));    
+});
