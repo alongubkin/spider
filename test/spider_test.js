@@ -1422,3 +1422,46 @@ describe('new expressions:', function () {
   it('new expression with 2 argument', 
     generateTest('var x = new A(1, b());', 'var x = new A(1, b());'));    
 });
+
+describe('default func param value:', function () {
+  it('func decl with 1 param with default value',
+    generateTest('func f(a = 5) {}', 
+      'function f(a) {\n    if (a == null) {\n        a = 5;\n    }\n}'));
+    
+  it('func decl with 2 params with default values',
+    generateTest('func f(a = 5, b = 3) {}', 
+      'function f(a, b) {\n    if (a == null) {\n        a = 5;\n    }\n    if (b == null) {\n        b = 3;\n    }\n}'));
+    
+  it('func decl with 2 params - first with default value and second without',
+    generateTest('func f(a = 5, b) {}', 
+      'function f(a, b) {\n    if (a == null) {\n        a = 5;\n    }\n}'));
+    
+  it('func decl with 2 params - second with default value and first without',
+    generateTest('func f(a, b = 3) {}', 
+      'function f(a, b) {\n    if (b == null) {\n        b = 3;\n    }\n}'));  
+
+  it('func decl with 3 params with default values',
+    generateTest('func f(a = 5, b = 3, k = { test: 1 }) {}', 
+      'function f(a, b, k) {\n    if (a == null) {\n        a = 5;\n    }\n    if (b == null) {\n        b = 3;\n    }\n    if (k == null) {\n        k = { test: 1 };\n    }\n}'));    
+   
+  it('func expression with 1 param with default value',
+    generateTest('var x = (a = 5) -> a;', 
+      'var x = function (a) {\n    if (a == null) {\n        a = 5;\n    }\n    return a;\n};'));
+    
+  it('func expression with 2 params with default values',
+    generateTest('var x = func (a = 5, b = 3) {};', 
+      'var x = function (a, b) {\n    if (a == null) {\n        a = 5;\n    }\n    if (b == null) {\n        b = 3;\n    }\n};'));
+    
+  it('func expression with 2 params - first with default value and second without',
+    generateTest('var x = func (a = 5, b) {};', 
+      'var x = function (a, b) {\n    if (a == null) {\n        a = 5;\n    }\n};'));
+    
+  it('func expression with 2 params - second with default value and first without',
+    generateTest('var x = func (a, b = 3) {};', 
+      'var x = function (a, b) {\n    if (b == null) {\n        b = 3;\n    }\n};'));  
+
+  it('func expression with 3 params with default values',
+    generateTest('var x = func (a = 5, b = 3, k = { test: 1 }) {};', 
+      'var x = function (a, b, k) {\n    if (a == null) {\n        a = 5;\n    }\n    if (b == null) {\n        b = 3;\n    }\n    if (k == null) {\n        k = { test: 1 };\n    }\n};'));    
+
+});
