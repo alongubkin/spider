@@ -70,129 +70,129 @@ describe('member expressions:', function () {
 describe('null propagating member expressions:', function () {
   it('null propagating member expression with 2 nodes', 
     generateTest('var a = b?.c;', 
-      'var a = typeof b !== "undefined" && b !== null ? b.c : null;'));
+      'var a = typeof b !== "undefined" && b !== null ? b.c : void 0;'));
     
   it('null propagating member expression with 3 nodes', 
     generateTest('var a = b?.c?.d;', 
-      'var a = typeof b !== "undefined" && (b !== null && b.c !== null) ? b.c.d : null;'));
+      'var a = typeof b !== "undefined" && (b !== null && b.c !== null) ? b.c.d : void 0;'));
       
   it('null propagating member expression with 4 nodes', 
     generateTest('var a = b?.c?.d?.e;', 
-      'var a = typeof b !== "undefined" && (b !== null && b.c !== null && b.c.d !== null) ? b.c.d.e : null;'));
+      'var a = typeof b !== "undefined" && (b !== null && b.c !== null && b.c.d !== null) ? b.c.d.e : void 0;'));
 });
 
 describe('member and null propagating member expressions:', function () {
   it('1 member expression and 1 null propagating member expression', 
     generateTest('var a = b.c?.d;', 
-      'var a = typeof b.c !== "undefined" && b.c !== null ? b.c.d : null;'));
+      'var a = typeof b.c !== "undefined" && b.c !== null ? b.c.d : void 0;'));
       
   it('2 member expressions and 1 null propagating member expression', 
     generateTest('var a = b.c.d?.e;', 
-      'var a = typeof b.c.d !== "undefined" && b.c.d !== null ? b.c.d.e : null;'));
+      'var a = typeof b.c.d !== "undefined" && b.c.d !== null ? b.c.d.e : void 0;'));
       
   it('3 member expressions and 1 null propagating member expression', 
     generateTest('var a = b.c.d.e?.f;', 
-      'var a = typeof b.c.d.e !== "undefined" && b.c.d.e !== null ? b.c.d.e.f : null;'));
+      'var a = typeof b.c.d.e !== "undefined" && b.c.d.e !== null ? b.c.d.e.f : void 0;'));
       
   it('1 member expression and 2 null propagating member expressions', 
     generateTest('var a = b.c?.d?.e;', 
-      'var a = typeof b.c !== "undefined" && (b.c !== null && b.c.d !== null) ? b.c.d.e : null;'));
+      'var a = typeof b.c !== "undefined" && (b.c !== null && b.c.d !== null) ? b.c.d.e : void 0;'));
       
   it('1 member expression and 3 null propagating member expressions', 
     generateTest('var a = b.c?.d?.e?.f;', 
-      'var a = typeof b.c !== "undefined" && (b.c !== null && b.c.d !== null && b.c.d.e !== null) ? b.c.d.e.f : null;'));
+      'var a = typeof b.c !== "undefined" && (b.c !== null && b.c.d !== null && b.c.d.e !== null) ? b.c.d.e.f : void 0;'));
       
   it('2 member expressions and 2 null propagating member expressions', 
     generateTest('var a = b.c.d?.e?.f;', 
-      'var a = typeof b.c.d !== "undefined" && (b.c.d !== null && b.c.d.e !== null) ? b.c.d.e.f : null;'));
+      'var a = typeof b.c.d !== "undefined" && (b.c.d !== null && b.c.d.e !== null) ? b.c.d.e.f : void 0;'));
       
   it('3 member expressions and 3 null propagating member expressions', 
     generateTest('var a = b.c.d.e?.f?.g?.h;', 
-      'var a = typeof b.c.d.e !== \"undefined\" && (b.c.d.e !== null && b.c.d.e.f !== null && b.c.d.e.f.g !== null) ? b.c.d.e.f.g.h : null;'));
+      'var a = typeof b.c.d.e !== \"undefined\" && (b.c.d.e !== null && b.c.d.e.f !== null && b.c.d.e.f.g !== null) ? b.c.d.e.f.g.h : void 0;'));
       
   it('1 null propagating member expression and 1 member expression', 
     generateTest('var a = b?.c;', 
-      'var a = typeof b !== \"undefined\" && b !== null ? b.c : null;')); 
+      'var a = typeof b !== \"undefined\" && b !== null ? b.c : void 0;')); 
  
   it('2 null propagating member expressions and 1 member expression', 
     generateTest('var a = b?.c?.d.e;', 
-      'var a = typeof b !== "undefined" && (b !== null && b.c !== null) ? b.c.d.e : null;')); 
+      'var a = typeof b !== "undefined" && (b !== null && b.c !== null) ? b.c.d.e : void 0;')); 
       
   it('3 null propagating member expressions and 1 member expression', 
     generateTest('var a = b?.c?.d?.e.f;', 
-      'var a = typeof b !== "undefined" && (b !== null && b.c !== null && b.c.d !== null) ? b.c.d.e.f : null;'));
+      'var a = typeof b !== "undefined" && (b !== null && b.c !== null && b.c.d !== null) ? b.c.d.e.f : void 0;'));
       
   it('1 null propagating member expression and 2 member expressions', 
     generateTest('var a = b?.c.d;', 
-      'var a = typeof b !== "undefined" && b !== null ? b.c.d : null;'));
+      'var a = typeof b !== "undefined" && b !== null ? b.c.d : void 0;'));
 
   it('1 null propagating member expression and 3 member expressions', 
     generateTest('var a = b?.c.d.e;', 
-      'var a = typeof b !== "undefined" && b !== null ? b.c.d.e : null;'));
+      'var a = typeof b !== "undefined" && b !== null ? b.c.d.e : void 0;'));
       
   it('2 null propagating member expressions and 2 member expressions', 
     generateTest('var a = b?.c?.d.e.f;', 
-      'var a = typeof b !== "undefined" && (b !== null && b.c !== null) ? b.c.d.e.f : null;'));
+      'var a = typeof b !== "undefined" && (b !== null && b.c !== null) ? b.c.d.e.f : void 0;'));
 
   it('3 null propagating member expression and 2 member expressions', 
     generateTest('var a = b?.c?.d?.e.f.g;', 
-      'var a = typeof b !== "undefined" && (b !== null && b.c !== null && b.c.d !== null) ? b.c.d.e.f.g : null;'));
+      'var a = typeof b !== "undefined" && (b !== null && b.c !== null && b.c.d !== null) ? b.c.d.e.f.g : void 0;'));
 
   it('3 null propagating member expression and 3 member expressions', 
     generateTest('var a = b?.c?.d?.e.f.g.h;', 
-      'var a = typeof b !== "undefined" && (b !== null && b.c !== null && b.c.d !== null) ? b.c.d.e.f.g.h : null;'));
+      'var a = typeof b !== "undefined" && (b !== null && b.c !== null && b.c.d !== null) ? b.c.d.e.f.g.h : void 0;'));
 
   it('1 member expression, 1 null propagating member expression, 1 member expression', 
     generateTest('var a = b.c?.d.e;', 
-      'var a = typeof b.c !== "undefined" && b.c !== null ? b.c.d.e : null;'));
+      'var a = typeof b.c !== "undefined" && b.c !== null ? b.c.d.e : void 0;'));
       
   it('2 member expressions, 1 null propagating member expression, 1 member expression', 
     generateTest('var a = b.c.d?.e.f;', 
-      'var a = typeof b.c.d !== "undefined" && b.c.d !== null ? b.c.d.e.f : null;')); 
+      'var a = typeof b.c.d !== "undefined" && b.c.d !== null ? b.c.d.e.f : void 0;')); 
 
   it('1 member expression, 2 null propagating member expressions, 1 member expression', 
     generateTest('var a = b.c?.d?.e.f;', 
-      'var a = typeof b.c !== \"undefined\" && (b.c !== null && b.c.d !== null) ? b.c.d.e.f : null;'));
+      'var a = typeof b.c !== \"undefined\" && (b.c !== null && b.c.d !== null) ? b.c.d.e.f : void 0;'));
 
   it('1 member expression, 1 null propagating member expression, 2 member expressions', 
     generateTest('var a = b.c?.d.e.f;', 
-      'var a = typeof b.c !== "undefined" && b.c !== null ? b.c.d.e.f : null;'));
+      'var a = typeof b.c !== "undefined" && b.c !== null ? b.c.d.e.f : void 0;'));
 
   it('1 null propagating member expression, 1 member expression, 1 null propagating member expression', 
     generateTest('var a = b?.c.d?.e;', 
-      'var nullPropagating0 = typeof b !== \"undefined\" && b !== null ? b.c.d : null;\nvar a = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.e : null;'));
+      'var nullPropagating0 = typeof b !== \"undefined\" && b !== null ? b.c.d : void 0;\nvar a = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.e : void 0;'));
   
   it('2 null propagating member expressions, 1 member expression, 1 null propagating member expression', 
     generateTest('var a = b?.c?.d.e?.f;', 
-      'var nullPropagating0 = typeof b !== \"undefined\" && (b !== null && b.c !== null) ? b.c.d.e : null;\nvar a = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.f : null;'));
+      'var nullPropagating0 = typeof b !== \"undefined\" && (b !== null && b.c !== null) ? b.c.d.e : void 0;\nvar a = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.f : void 0;'));
   
   it('3 null propagating member expressions, 1 member expression, 1 null propagating member expression', 
     generateTest('var a = b?.c?.d?.e.f?.h;', 
-      'var nullPropagating0 = typeof b !== \"undefined\" && (b !== null && b.c !== null && b.c.d !== null) ? b.c.d.e.f : null;\nvar a = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.h : null;'));
+      'var nullPropagating0 = typeof b !== \"undefined\" && (b !== null && b.c !== null && b.c.d !== null) ? b.c.d.e.f : void 0;\nvar a = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.h : void 0;'));
   
   it('1 null propagating member expression, 2 member expressions, 1 null propagating member expression', 
     generateTest('var a = b?.c.d.e?.f;', 
-      'var nullPropagating0 = typeof b !== \"undefined\" && b !== null ? b.c.d.e : null;\nvar a = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.f : null;'));
+      'var nullPropagating0 = typeof b !== \"undefined\" && b !== null ? b.c.d.e : void 0;\nvar a = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.f : void 0;'));
   
   it('1 null propagating member expression, 3 member expressions, 1 null propagating member expression', 
     generateTest('var a = b?.c.d.e.f?.h;', 
-      'var nullPropagating0 = typeof b !== \"undefined\" && b !== null ? b.c.d.e.f : null;\nvar a = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.h : null;'));
+      'var nullPropagating0 = typeof b !== \"undefined\" && b !== null ? b.c.d.e.f : void 0;\nvar a = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.h : void 0;'));
   
   it('1 null propagating member expression, 1 member expression, 2 null propagating member expressions', 
     generateTest('var a = b?.c.d?.e?.f;', 
-      'var nullPropagating0 = typeof b !== \"undefined\" && b !== null ? b.c.d : null;\nvar a = typeof nullPropagating0 !== \"undefined\" && (nullPropagating0 !== null && nullPropagating0.e !== null) ? nullPropagating0.e.f : null;'));      
+      'var nullPropagating0 = typeof b !== \"undefined\" && b !== null ? b.c.d : void 0;\nvar a = typeof nullPropagating0 !== \"undefined\" && (nullPropagating0 !== null && nullPropagating0.e !== null) ? nullPropagating0.e.f : void 0;'));      
       
   it('1 null propagating member expression, 1 member expression, 3 null propagating member expressions', 
     generateTest('var a = b?.c.d?.e?.f?.h;', 
-      'var nullPropagating0 = typeof b !== \"undefined\" && b !== null ? b.c.d : null;\nvar a = typeof nullPropagating0 !== \"undefined\" && (nullPropagating0 !== null && nullPropagating0.e !== null && nullPropagating0.e.f !== null) ? nullPropagating0.e.f.h : null;'));        
+      'var nullPropagating0 = typeof b !== \"undefined\" && b !== null ? b.c.d : void 0;\nvar a = typeof nullPropagating0 !== \"undefined\" && (nullPropagating0 !== null && nullPropagating0.e !== null && nullPropagating0.e.f !== null) ? nullPropagating0.e.f.h : void 0;'));        
   
   it('scramble member and null propagating member expressions (1)',
     generateTest('var a = b?.c.d?.e.f;', 
-      'var nullPropagating0 = typeof b !== \"undefined\" && b !== null ? b.c.d : null;\nvar a = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.e.f : null;'));
+      'var nullPropagating0 = typeof b !== \"undefined\" && b !== null ? b.c.d : void 0;\nvar a = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.e.f : void 0;'));
      
   it('scramble member and null propagating member expressions (2)',
     generateTest('var a = b?.c?.d.e?.f?.g.h?.i;', 
-      'var nullPropagating0 = typeof b !== \"undefined\" && (b !== null && b.c !== null) ? b.c.d.e : null;\nvar nullPropagating1 = typeof nullPropagating0 !== \"undefined\" && (nullPropagating0 !== null && nullPropagating0.f !== null) ? nullPropagating0.f.g.h : null;\nvar a = typeof nullPropagating1 !== \"undefined\" && nullPropagating1 !== null ? nullPropagating1.i : null;'));
+      'var nullPropagating0 = typeof b !== \"undefined\" && (b !== null && b.c !== null) ? b.c.d.e : void 0;\nvar nullPropagating1 = typeof nullPropagating0 !== \"undefined\" && (nullPropagating0 !== null && nullPropagating0.f !== null) ? nullPropagating0.f.g.h : void 0;\nvar a = typeof nullPropagating1 !== \"undefined\" && nullPropagating1 !== null ? nullPropagating1.i : void 0;'));
 });
 
 describe('call expressions and statements:', function () {
@@ -270,19 +270,19 @@ describe('call statements with null propagating member expressions:', function (
     
   it('1 null propagating member expression and 2 call statements', 
     generateTest('a?.fn1()?.fn2();', 
-      'var nullPropagating0 = typeof a !== \"undefined\" && a !== null ? a.fn1() : null;\nif (typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null) {\n    nullPropagating0.fn2();\n}'));
+      'var nullPropagating0 = typeof a !== \"undefined\" && a !== null ? a.fn1() : void 0;\nif (typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null) {\n    nullPropagating0.fn2();\n}'));
     
   it('1 null propagating member expression and 3 call statements', 
     generateTest('a?.fn1()?.fn2()?.fn3();', 
-      'var nullPropagating0 = typeof a !== \"undefined\" && a !== null ? a.fn1() : null;\nvar nullPropagating1 = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.fn2() : null;\nif (typeof nullPropagating1 !== \"undefined\" && nullPropagating1 !== null) {\n    nullPropagating1.fn3();\n}'));
+      'var nullPropagating0 = typeof a !== \"undefined\" && a !== null ? a.fn1() : void 0;\nvar nullPropagating1 = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.fn2() : void 0;\nif (typeof nullPropagating1 !== \"undefined\" && nullPropagating1 !== null) {\n    nullPropagating1.fn3();\n}'));
     
   it('1 null propagating member expression, 1 call statement, 1 null propagating member expression, 1 call statement', 
     generateTest('a?.fn1()?.b?.fn2();', 
-      'var nullPropagating0 = typeof a !== \"undefined\" && a !== null ? a.fn1() : null;\nif (typeof nullPropagating0 !== \"undefined\" && (nullPropagating0 !== null && nullPropagating0.b !== null)) {\n    nullPropagating0.b.fn2();\n}'));
+      'var nullPropagating0 = typeof a !== \"undefined\" && a !== null ? a.fn1() : void 0;\nif (typeof nullPropagating0 !== \"undefined\" && (nullPropagating0 !== null && nullPropagating0.b !== null)) {\n    nullPropagating0.b.fn2();\n}'));
     
   it('2 null propagating member expression, 2 call statement, 2 null propagating member expression, 2 call statement', 
     generateTest('a?.b?.fn1()?.fn2()?.c?.d?.fn3()?.fn4();', 
-      'var nullPropagating0 = typeof a !== \"undefined\" && (a !== null && a.b !== null) ? a.b.fn1() : null;\nvar nullPropagating1 = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.fn2() : null;\nvar nullPropagating2 = typeof nullPropagating1 !== \"undefined\" && (nullPropagating1 !== null && nullPropagating1.c !== null && nullPropagating1.c.d !== null) ? nullPropagating1.c.d.fn3() : null;\nif (typeof nullPropagating2 !== \"undefined\" && nullPropagating2 !== null) {\n    nullPropagating2.fn4();\n}'));
+      'var nullPropagating0 = typeof a !== \"undefined\" && (a !== null && a.b !== null) ? a.b.fn1() : void 0;\nvar nullPropagating1 = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.fn2() : void 0;\nvar nullPropagating2 = typeof nullPropagating1 !== \"undefined\" && (nullPropagating1 !== null && nullPropagating1.c !== null && nullPropagating1.c.d !== null) ? nullPropagating1.c.d.fn3() : void 0;\nif (typeof nullPropagating2 !== \"undefined\" && nullPropagating2 !== null) {\n    nullPropagating2.fn4();\n}'));
 });
 
 describe('call statements with member and null propagating member expressions:', function () {
@@ -312,15 +312,15 @@ describe('call statements with member and null propagating member expressions:',
       
   it('2 null propagating member expression, 1 call statement, 1 member expression, 1 call statement',
     generateTest('a?.b()?.c().d();', 
-      'var nullPropagating0 = typeof a !== \"undefined\" && a !== null ? a.b() : null;\nif (typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null) {\n    nullPropagating0.c().d();\n}'));
+      'var nullPropagating0 = typeof a !== \"undefined\" && a !== null ? a.b() : void 0;\nif (typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null) {\n    nullPropagating0.c().d();\n}'));
       
   it('1 null propagating member expression, 2 call statement, 1 member expression, 1 call statement',
     generateTest('a?.b()?.c.d();', 
-      'var nullPropagating0 = typeof a !== \"undefined\" && a !== null ? a.b() : null;\nif (typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null) {\n    nullPropagating0.c.d();\n}'));        
+      'var nullPropagating0 = typeof a !== \"undefined\" && a !== null ? a.b() : void 0;\nif (typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null) {\n    nullPropagating0.c.d();\n}'));        
 
   it('scramble call statements with member and null propagating member expressions',
     generateTest('a?.b()?.c.d().e.f.g?.h?.i?.j.k();', 
-      'var nullPropagating0 = typeof a !== \"undefined\" && a !== null ? a.b() : null;\nvar nullPropagating1 = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.c.d().e.f.g : null;\nif (typeof nullPropagating1 !== \"undefined\" && (nullPropagating1 !== null && nullPropagating1.h !== null && nullPropagating1.h.i !== null)) {\n    nullPropagating1.h.i.j.k();\n}'));          
+      'var nullPropagating0 = typeof a !== \"undefined\" && a !== null ? a.b() : void 0;\nvar nullPropagating1 = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.c.d().e.f.g : void 0;\nif (typeof nullPropagating1 !== \"undefined\" && (nullPropagating1 !== null && nullPropagating1.h !== null && nullPropagating1.h.i !== null)) {\n    nullPropagating1.h.i.j.k();\n}'));          
 });
 
 describe('call expressions with member expressions:', function () {
@@ -348,69 +348,69 @@ describe('call expressions with member expressions:', function () {
 
 describe('call expressions with null propagating member expressions:', function () {
   it('1 null propagating member expression and 1 call expression', 
-    generateTest('var x = a?.fn();', 'var x = typeof a !== \"undefined\" && a !== null ? a.fn() : null;'));
+    generateTest('var x = a?.fn();', 'var x = typeof a !== \"undefined\" && a !== null ? a.fn() : void 0;'));
     
   it('2 null propagating member expressions and 1 call expression', 
     generateTest('var x = a?.b?.fn();', 
-      'var x = typeof a !== \"undefined\" && (a !== null && a.b !== null) ? a.b.fn() : null;'));
+      'var x = typeof a !== \"undefined\" && (a !== null && a.b !== null) ? a.b.fn() : void 0;'));
     
   it('3 null propagating member expressions and 1 call expression', 
     generateTest('var x = a?.b?.c?.fn();', 
-      'var x = typeof a !== \"undefined\" && (a !== null && a.b !== null && a.b.c !== null) ? a.b.c.fn() : null;'));  
+      'var x = typeof a !== \"undefined\" && (a !== null && a.b !== null && a.b.c !== null) ? a.b.c.fn() : void 0;'));  
     
   it('1 null propagating member expression and 2 call expressions', 
     generateTest('var x = a?.fn1()?.fn2();', 
-      'var nullPropagating0 = typeof a !== \"undefined\" && a !== null ? a.fn1() : null;\nvar x = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.fn2() : null;'));
+      'var nullPropagating0 = typeof a !== \"undefined\" && a !== null ? a.fn1() : void 0;\nvar x = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.fn2() : void 0;'));
     
   it('1 null propagating member expression and 3 call expressions', 
     generateTest('var x = a?.fn1()?.fn2()?.fn3();', 
-      'var nullPropagating0 = typeof a !== \"undefined\" && a !== null ? a.fn1() : null;\nvar nullPropagating1 = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.fn2() : null;\nvar x = typeof nullPropagating1 !== \"undefined\" && nullPropagating1 !== null ? nullPropagating1.fn3() : null;'));
+      'var nullPropagating0 = typeof a !== \"undefined\" && a !== null ? a.fn1() : void 0;\nvar nullPropagating1 = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.fn2() : void 0;\nvar x = typeof nullPropagating1 !== \"undefined\" && nullPropagating1 !== null ? nullPropagating1.fn3() : void 0;'));
     
   it('1 null propagating member expression, 1 call expression, 1 null propagating member expression, 1 call expression', 
     generateTest('var x = a?.fn1()?.b?.fn2();', 
-      'var nullPropagating0 = typeof a !== \"undefined\" && a !== null ? a.fn1() : null;\nvar x = typeof nullPropagating0 !== \"undefined\" && (nullPropagating0 !== null && nullPropagating0.b !== null) ? nullPropagating0.b.fn2() : null;'));
+      'var nullPropagating0 = typeof a !== \"undefined\" && a !== null ? a.fn1() : void 0;\nvar x = typeof nullPropagating0 !== \"undefined\" && (nullPropagating0 !== null && nullPropagating0.b !== null) ? nullPropagating0.b.fn2() : void 0;'));
     
   it('2 null propagating member expression, 2 call expressions, 2 null propagating member expression, 2 call expressions', 
     generateTest('var x = a?.b?.fn1()?.fn2()?.c?.d?.fn3()?.fn4();', 
-      'var nullPropagating0 = typeof a !== \"undefined\" && (a !== null && a.b !== null) ? a.b.fn1() : null;\nvar nullPropagating1 = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.fn2() : null;\nvar nullPropagating2 = typeof nullPropagating1 !== \"undefined\" && (nullPropagating1 !== null && nullPropagating1.c !== null && nullPropagating1.c.d !== null) ? nullPropagating1.c.d.fn3() : null;\nvar x = typeof nullPropagating2 !== \"undefined\" && nullPropagating2 !== null ? nullPropagating2.fn4() : null;'));
+      'var nullPropagating0 = typeof a !== \"undefined\" && (a !== null && a.b !== null) ? a.b.fn1() : void 0;\nvar nullPropagating1 = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.fn2() : void 0;\nvar nullPropagating2 = typeof nullPropagating1 !== \"undefined\" && (nullPropagating1 !== null && nullPropagating1.c !== null && nullPropagating1.c.d !== null) ? nullPropagating1.c.d.fn3() : void 0;\nvar x = typeof nullPropagating2 !== \"undefined\" && nullPropagating2 !== null ? nullPropagating2.fn4() : void 0;'));
 });
 
 describe('call expressions with member and null propagating member expressions:', function () {
   it('1 member expression, 1 call expression, 1 null propagating member expression, 1 call expression',
     generateTest('var x = a.b()?.c();', 
-      'var nullPropagating0 = a.b();\nvar x = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.c() : null;'));
+      'var nullPropagating0 = a.b();\nvar x = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.c() : void 0;'));
   
   it('2 member expressions, 1 call expression, 1 null propagating member expression, 1 call expression',
     generateTest('var x = a.b.c()?.d();', 
-      'var nullPropagating0 = a.b.c();\nvar x = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.d() : null;'));        
+      'var nullPropagating0 = a.b.c();\nvar x = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.d() : void 0;'));        
 
   it('1 member expression, 2 call expressions, 1 null propagating member expression, 1 call expression',
     generateTest('var x = a.b().c()?.d();', 
-      'var nullPropagating0 = a.b().c();\nvar x = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.d() : null;'));
+      'var nullPropagating0 = a.b().c();\nvar x = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.d() : void 0;'));
   
   it('1 member expression, 1 call expression, 2 null propagating member expressions, 1 call expression',
     generateTest('var x = a.b()?.c?.d();', 
-      'var nullPropagating0 = a.b();\nvar x = typeof nullPropagating0 !== \"undefined\" && (nullPropagating0 !== null && nullPropagating0.c !== null) ? nullPropagating0.c.d() : null;'));
+      'var nullPropagating0 = a.b();\nvar x = typeof nullPropagating0 !== \"undefined\" && (nullPropagating0 !== null && nullPropagating0.c !== null) ? nullPropagating0.c.d() : void 0;'));
   
   it('1 member expression, 1 call expression, 1 null propagating member expression, 2 call expressions',
     generateTest('var x = a.b()?.c().d();', 
-      'var nullPropagating0 = a.b();\nvar x = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.c().d() : null;'));
+      'var nullPropagating0 = a.b();\nvar x = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.c().d() : void 0;'));
   
   it('1 null propagating member expression, 1 call expression, 1 member expression, 1 call expression',
     generateTest('var x = a?.b().c();', 
-      'var x = typeof a !== \"undefined\" && a !== null ? a.b().c() : null;'));
+      'var x = typeof a !== \"undefined\" && a !== null ? a.b().c() : void 0;'));
       
   it('2 null propagating member expression, 1 call expression, 1 member expression, 1 call expression',
     generateTest('var x = a?.b()?.c().d();', 
-      'var nullPropagating0 = typeof a !== \"undefined\" && a !== null ? a.b() : null;\nvar x = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.c().d() : null;'));
+      'var nullPropagating0 = typeof a !== \"undefined\" && a !== null ? a.b() : void 0;\nvar x = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.c().d() : void 0;'));
       
   it('1 null propagating member expression, 2 call expressions, 1 member expression, 1 call expression',
     generateTest('var x = a?.b()?.c.d();', 
-      'var nullPropagating0 = typeof a !== \"undefined\" && a !== null ? a.b() : null;\nvar x = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.c.d() : null;'));        
+      'var nullPropagating0 = typeof a !== \"undefined\" && a !== null ? a.b() : void 0;\nvar x = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.c.d() : void 0;'));        
 
   it('scramble call expressions with member and null propagating member expressions',
     generateTest('var x = a?.b()?.c.d().e.f.g?.h?.i?.j.k();', 
-      'var nullPropagating0 = typeof a !== \"undefined\" && a !== null ? a.b() : null;\nvar nullPropagating1 = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.c.d().e.f.g : null;\nvar x = typeof nullPropagating1 !== \"undefined\" && (nullPropagating1 !== null && nullPropagating1.h !== null && nullPropagating1.h.i !== null) ? nullPropagating1.h.i.j.k() : null;'));          
+      'var nullPropagating0 = typeof a !== \"undefined\" && a !== null ? a.b() : void 0;\nvar nullPropagating1 = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.c.d().e.f.g : void 0;\nvar x = typeof nullPropagating1 !== \"undefined\" && (nullPropagating1 !== null && nullPropagating1.h !== null && nullPropagating1.h.i !== null) ? nullPropagating1.h.i.j.k() : void 0;'));          
 });
 
 describe('null coalescing expressions:', function () {
@@ -428,15 +428,15 @@ describe('null coalescing expressions:', function () {
 
   it('null coalescing expression with 2 null propagating member expressions',
     generateTest('var x = a?.b ?? c?.d;', 
-      'var nullCoalescing0 = typeof a !== \"undefined\" && a !== null ? a.b : null;\nvar x = nullCoalescing0 === null ? typeof c !== \"undefined\" && c !== null ? c.d : null : nullCoalescing0;'));
+      'var nullCoalescing0 = typeof a !== \"undefined\" && a !== null ? a.b : void 0;\nvar x = nullCoalescing0 === null ? typeof c !== \"undefined\" && c !== null ? c.d : void 0 : nullCoalescing0;'));
       
   it('null coalescing expression with 6 null propagating member expressions',
     generateTest('var x = a?.b?.c?.d ?? e?.f?.g?.h;', 
-      'var nullCoalescing0 = typeof a !== \"undefined\" && (a !== null && a.b !== null && a.b.c !== null) ? a.b.c.d : null;\nvar x = nullCoalescing0 === null ? typeof e !== \"undefined\" && (e !== null && e.f !== null && e.f.g !== null) ? e.f.g.h : null : nullCoalescing0;'));
+      'var nullCoalescing0 = typeof a !== \"undefined\" && (a !== null && a.b !== null && a.b.c !== null) ? a.b.c.d : void 0;\nvar x = nullCoalescing0 === null ? typeof e !== \"undefined\" && (e !== null && e.f !== null && e.f.g !== null) ? e.f.g.h : void 0 : nullCoalescing0;'));
       
   it('null coalescing expression with 6 null propagating member expressions combined',
     generateTest('var x = a?.b.c?.d ?? e.f?.g?.h;', 
-      'var nullPropagating0 = typeof a !== \"undefined\" && a !== null ? a.b.c : null;\nvar nullCoalescing0 = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.d : null;\nvar x = nullCoalescing0 === null ? typeof e.f !== \"undefined\" && (e.f !== null && e.f.g !== null) ? e.f.g.h : null : nullCoalescing0;'));       
+      'var nullPropagating0 = typeof a !== \"undefined\" && a !== null ? a.b.c : void 0;\nvar nullCoalescing0 = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.d : void 0;\nvar x = nullCoalescing0 === null ? typeof e.f !== \"undefined\" && (e.f !== null && e.f.g !== null) ? e.f.g.h : void 0 : nullCoalescing0;'));       
 
   it('null coalescing expression with 2 call expressions',
     generateTest('var x = a() ?? b();', 
@@ -444,7 +444,7 @@ describe('null coalescing expressions:', function () {
 
   it('null coalescing expression with 2 call expressions and null propagating member expressions',
     generateTest('var x = a.b()?.c() ?? d?.e().f();', 
-      'var nullPropagating0 = a.b();\nvar nullCoalescing0 = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.c() : null;\nvar x = nullCoalescing0 === null ? typeof d !== \"undefined\" && d !== null ? d.e().f() : null : nullCoalescing0;'));    
+      'var nullPropagating0 = a.b();\nvar nullCoalescing0 = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.c() : void 0;\nvar x = nullCoalescing0 === null ? typeof d !== \"undefined\" && d !== null ? d.e().f() : void 0 : nullCoalescing0;'));    
 
   it('null coalescing statement',
     generateTest('a() ?? b();', 'var nullCoalescing0 = a();\nif (nullCoalescing0 === null) {\n    b();\n}'));
@@ -453,79 +453,79 @@ describe('null coalescing expressions:', function () {
 describe('null check call expressions:', function () {
   it('null check call expression',
     generateTest('var x = a?();', 
-      'var x = typeof a === \"function\" ? a() : null;'));
+      'var x = typeof a === \"function\" ? a() : void 0;'));
       
   it('null check call expression with 1 argument',
     generateTest('var a = fn?(1);', 
-      'var a = typeof fn === \"function\" ? fn(1) : null;'));
+      'var a = typeof fn === \"function\" ? fn(1) : void 0;'));
     
   it('null check call expression with 2 arguments',
     generateTest('var a = fn?(1, true);', 
-      'var a = typeof fn === \"function\" ? fn(1, true) : null;'));
+      'var a = typeof fn === \"function\" ? fn(1, true) : void 0;'));
     
   it('null check call expression with 3 arguments',
     generateTest('var a = fn?(1, true, "test");', 
-      'var a = typeof fn === \"function\" ? fn(1, true, \"test\") : null;'));
+      'var a = typeof fn === \"function\" ? fn(1, true, \"test\") : void 0;'));
     
   it('null check call expression with 4 arguments',
     generateTest('var a = fn?(1, true, "test", { a: 1 });', 
-      'var a = typeof fn === \"function\" ? fn(1, true, \"test\", { a: 1 }) : null;'));
+      'var a = typeof fn === \"function\" ? fn(1, true, \"test\", { a: 1 }) : void 0;'));
       
   it('call expression with null check call expression',
     generateTest('var x = a?()();', 
-      'var x = (typeof a === \"function\" ? a() : null)();'));
+      'var x = (typeof a === \"function\" ? a() : void 0)();'));
       
   it('null check call expression with null check call expression',
     generateTest('var x = a?()?();', 
-      'var nullCheck0 = typeof a === \"function\" ? a() : null;\nvar x = typeof nullCheck0 === \"function\" ? nullCheck0() : null;'));
+      'var nullCheck0 = typeof a === \"function\" ? a() : void 0;\nvar x = typeof nullCheck0 === \"function\" ? nullCheck0() : void 0;'));
       
   it('null check call expression with member expression',
     generateTest('var x = a?().b;', 
-      'var x = typeof a === \"function\" ? a().b : null;'));
+      'var x = typeof a === \"function\" ? a().b : void 0;'));
       
   it('null check call expression with 2 member expressions',
     generateTest('var x = a?().b.c;', 
-      'var x = typeof a === \"function\" ? a().b.c : null;'));
+      'var x = typeof a === \"function\" ? a().b.c : void 0;'));
       
   it('null check call expression with call expression',
     generateTest('var x = a?().b();', 
-      'var x = typeof a === \"function\" ? a().b() : null;')); 
+      'var x = typeof a === \"function\" ? a().b() : void 0;')); 
       
   it('null check call expression with 2 call expressions',
     generateTest('var x = a?().b().c();', 
-      'var x = typeof a === \"function\" ? a().b().c() : null;')); 
+      'var x = typeof a === \"function\" ? a().b().c() : void 0;')); 
       
   it('member expression with null check call expression',
     generateTest('var x = a.b?();', 
-      'var x = typeof a.b === \"function\" ? a.b() : null;'));
+      'var x = typeof a.b === \"function\" ? a.b() : void 0;'));
       
   it('2 member expressions with null check call expression',
     generateTest('var x = a.b.c?();', 
-      'var x = typeof a.b.c === \"function\" ? a.b.c() : null;'));
+      'var x = typeof a.b.c === \"function\" ? a.b.c() : void 0;'));
       
   it('call expression with null check call expression',
     generateTest('var x = a().b?();', 
-      'var nullCheck0 = a().b;\nvar x = typeof nullCheck0 === \"function\" ? nullCheck0() : null;'));
+      'var nullCheck0 = a().b;\nvar x = typeof nullCheck0 === \"function\" ? nullCheck0() : void 0;'));
   
   it('2 call expression with null check call expression',
     generateTest('var x = a().b().c?();', 
-      'var nullCheck0 = a().b().c;\nvar x = typeof nullCheck0 === \"function\" ? nullCheck0() : null;'));
+      'var nullCheck0 = a().b().c;\nvar x = typeof nullCheck0 === \"function\" ? nullCheck0() : void 0;'));
       
   it('2 null check call expressions',
     generateTest('var x = a?().b?();', 
-      'var nullCheck0 = typeof a === \"function\" ? a().b : null;\nvar x = typeof nullCheck0 === \"function\" ? nullCheck0() : null;'));
+      'var nullCheck0 = typeof a === \"function\" ? a().b : void 0;\nvar x = typeof nullCheck0 === \"function\" ? nullCheck0() : void 0;'));
   
   it('3 null check call expressions',
     generateTest('var x = a?().b?().c?();', 
-      'var nullCheck0 = typeof a === \"function\" ? a().b : null;\nvar nullCheck1 = typeof nullCheck0 === \"function\" ? nullCheck0().c : null;\nvar x = typeof nullCheck1 === \"function\" ? nullCheck1() : null;'));
+      'var nullCheck0 = typeof a === \"function\" ? a().b : void 0;\nvar nullCheck1 = typeof nullCheck0 === \"function\" ? nullCheck0().c : void 0;\nvar x = typeof nullCheck1 === \"function\" ? nullCheck1() : void 0;'));
       
   it('2 null check call expressions with null propagating relationship',
     generateTest('var x = a?()?.b?();', 
-      'var nullPropagating0 = typeof a === \"function\" ? a() : null;\nvar x = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null && typeof nullPropagating0.b === \"function\" ? nullPropagating0.b() : null;'));       
+      'var nullPropagating0 = typeof a === \"function\" ? a() : void 0;\nvar x = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null && typeof nullPropagating0.b === \"function\" ? nullPropagating0.b() : void 0;'));       
       
   it('3 null check call expressions with null propagating relationship',
     generateTest('var x = a?()?.b?()?.c();', 
-      'var nullPropagating0 = typeof a === \"function\" ? a() : null;\nvar nullPropagating1 = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null && typeof nullPropagating0.b === \"function\" ? nullPropagating0.b() : null;\nvar x = typeof nullPropagating1 !== \"undefined\" && nullPropagating1 !== null ? nullPropagating1.c() : null;'));             
+      'var nullPropagating0 = typeof a === \"function\" ? a() : void 0;\nvar nullPropagating1 = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null && typeof nullPropagating0.b === \"function\" ? nullPropagating0.b() : void 0;\nvar x = typeof nullPropagating1 !== \"undefined\" && nullPropagating1 !== null ? nullPropagating1.c() : void 0;'));             
 });
 
 describe('null check call statements:', function () {
@@ -551,11 +551,11 @@ describe('null check call statements:', function () {
       
   it('call statement with null check call expression',
     generateTest('a?()();', 
-      '(typeof a === \"function\" ? a() : null)();'));
+      '(typeof a === \"function\" ? a() : void 0)();'));
       
   it('null check call expression with null check call expression',
     generateTest('a?()?();', 
-      'var nullCheck0 = typeof a === \"function\" ? a() : null;\nif (typeof nullCheck0 === \"function\") {\n    nullCheck0();\n}'));
+      'var nullCheck0 = typeof a === \"function\" ? a() : void 0;\nif (typeof nullCheck0 === \"function\") {\n    nullCheck0();\n}'));
       
   it('null check call expression with call statement',
     generateTest('a?().b();', 
@@ -583,19 +583,19 @@ describe('null check call statements:', function () {
       
   it('2 null check call statements',
     generateTest('a?().b?();', 
-      'var nullCheck0 = typeof a === \"function\" ? a().b : null;\nif (typeof nullCheck0 === \"function\") {\n    nullCheck0();\n}'));
+      'var nullCheck0 = typeof a === \"function\" ? a().b : void 0;\nif (typeof nullCheck0 === \"function\") {\n    nullCheck0();\n}'));
   
   it('3 null check call statements',
     generateTest('a?().b?().c?();', 
-      'var nullCheck0 = typeof a === \"function\" ? a().b : null;\nvar nullCheck1 = typeof nullCheck0 === \"function\" ? nullCheck0().c : null;\nif (typeof nullCheck1 === \"function\") {\n    nullCheck1();\n}'));
+      'var nullCheck0 = typeof a === \"function\" ? a().b : void 0;\nvar nullCheck1 = typeof nullCheck0 === \"function\" ? nullCheck0().c : void 0;\nif (typeof nullCheck1 === \"function\") {\n    nullCheck1();\n}'));
       
   it('2 null check call statements with null propagating relationship',
     generateTest('a?()?.b?();', 
-      'var nullPropagating0 = typeof a === \"function\" ? a() : null;\nif (typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null && typeof nullPropagating0.b === \"function\") {\n    nullPropagating0.b();\n}'));
+      'var nullPropagating0 = typeof a === \"function\" ? a() : void 0;\nif (typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null && typeof nullPropagating0.b === \"function\") {\n    nullPropagating0.b();\n}'));
       
   it('3 null check call statements with null propagating relationship',
     generateTest('a?()?.b?()?.c();', 
-      'var nullPropagating0 = typeof a === \"function\" ? a() : null;\nvar nullPropagating1 = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null && typeof nullPropagating0.b === \"function\" ? nullPropagating0.b() : null;\nif (typeof nullPropagating1 !== \"undefined\" && nullPropagating1 !== null) {\n    nullPropagating1.c();\n}'));             
+      'var nullPropagating0 = typeof a === \"function\" ? a() : void 0;\nvar nullPropagating1 = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null && typeof nullPropagating0.b === \"function\" ? nullPropagating0.b() : void 0;\nif (typeof nullPropagating1 !== \"undefined\" && nullPropagating1 !== null) {\n    nullPropagating1.c();\n}'));             
 });
 
 describe('existential expressions:', function () {
@@ -609,7 +609,7 @@ describe('existential expressions:', function () {
       
   it('existential opreator on null check call expression',
     generateTest('var x = a?()?;', 
-      'var existential0 = typeof a === \"function\" ? a() : null;\nvar x = typeof existential0 !== \"undefined\" && existential0 !== null;'));     
+      'var existential0 = typeof a === \"function\" ? a() : void 0;\nvar x = typeof existential0 !== \"undefined\" && existential0 !== null;'));     
       
   it('existential opreator on member expression',
     generateTest('var x = a.b?;', 
@@ -621,19 +621,19 @@ describe('existential expressions:', function () {
       
   it('existential opreator on member expression with null check call expression',
     generateTest('var x = a.b?()?;', 
-      'var existential0 = typeof a.b === \"function\" ? a.b() : null;\nvar x = typeof existential0 !== \"undefined\" && existential0 !== null;'));
+      'var existential0 = typeof a.b === \"function\" ? a.b() : void 0;\nvar x = typeof existential0 !== \"undefined\" && existential0 !== null;'));
       
   it('existential opreator on null propagating member expression',
     generateTest('var x = a?.b?;', 
-      'var existential0 = typeof a !== \"undefined\" && a !== null ? a.b : null;\nvar x = typeof existential0 !== \"undefined\" && existential0 !== null;'));
+      'var existential0 = typeof a !== \"undefined\" && a !== null ? a.b : void 0;\nvar x = typeof existential0 !== \"undefined\" && existential0 !== null;'));
       
   it('existential opreator on propagating member expression with call expression',
     generateTest('var x = a?.b()?;', 
-      'var existential0 = typeof a !== \"undefined\" && a !== null ? a.b() : null;\nvar x = typeof existential0 !== \"undefined\" && existential0 !== null;'));
+      'var existential0 = typeof a !== \"undefined\" && a !== null ? a.b() : void 0;\nvar x = typeof existential0 !== \"undefined\" && existential0 !== null;'));
       
   it('existential opreator on propagating member expression with null check call expression',
     generateTest('var x = a?.b?()?;', 
-      'var existential0 = typeof a !== \"undefined\" && a !== null && typeof a.b === \"function\" ? a.b() : null;\nvar x = typeof existential0 !== \"undefined\" && existential0 !== null;'));      
+      'var existential0 = typeof a !== \"undefined\" && a !== null && typeof a.b === \"function\" ? a.b() : void 0;\nvar x = typeof existential0 !== \"undefined\" && existential0 !== null;'));      
 });
 
 describe('object expressions:', function () {
