@@ -1578,3 +1578,13 @@ describe('try statement:', function () {
     generateTest('try { a(); } catch error { b(); } finally { c(); }', 
       'try {\n    a();\n} catch (error) {\n    b();\n} finally {\n    c();\n}'));      
 });
+
+describe('in expression:', function () {
+  it('in expression with identifier',
+    generateTest('var x = a in b;',
+      'var x = b instanceof Array ? b.indexOf(a) !== -1 : a in b;'));
+      
+  it('in expression with call expression',
+    generateTest('var x = a in b();',
+      'var inExpression0 = b();\nvar x = inExpression0 instanceof Array ? inExpression0.indexOf(a) !== -1 : a in inExpression0;'));
+});
