@@ -1564,3 +1564,17 @@ describe('for of statement:', function () {
     generateTest('for key, value of f() {}', 
       'var forOf0 = f();\nObject.keys(forOf0).forEach(function (key) {\n    var value = forOf0[key];\n}, this);'));    
 });
+
+describe('try statement:', function () {
+  it('try statement without handler with finalizer', 
+    generateTest('try { a(); } finally { b(); }', 
+      'try {\n    a();\n} finally {\n    b();\n}'));
+      
+  it('try statement with handler without finalizer', 
+    generateTest('try { a(); } catch error { b(); }', 
+      'try {\n    a();\n} catch (error) {\n    b();\n}'));
+      
+  it('try statement with handler and finalizer', 
+    generateTest('try { a(); } catch error { b(); } finally { c(); }', 
+      'try {\n    a();\n} catch (error) {\n    b();\n} finally {\n    c();\n}'));      
+});
