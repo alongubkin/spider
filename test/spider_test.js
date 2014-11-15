@@ -1605,5 +1605,54 @@ describe('list comprehensions:', function () {
  it('list comprehension with condition and with index', 
     generateTest('var x = [item + index for item, index in array if index > 1];',
       'var x = function () {\n    var forIn0 = [];\n    array.forEach(function (item, index) {\n        if (index > 1) {\n            forIn0.push(item + index);\n        }\n    }, this);\n    return forIn0;\n}();'));
+});
+
+describe('switch statement:', function () {
+  it('switch statement with single case', 
+    generateTest('switch n { case 1: { } }', 
+      'if (n === 1) {\n}'));
       
+  it('switch statement with 2 cases', 
+    generateTest('switch n { case 1: { }, case 2: { } }', 
+      'if (n === 1) {\n} else if (n === 2) {\n}'));
+      
+  it('switch statement with 2 cases with multiple options', 
+    generateTest('switch n { case 1, 2: { }, case 3, 4: { } }', 
+      'if (n === 1 || n === 2) {\n} else if (n === 3 || n === 4) {\n}'));
+      
+  it('switch statement with 2 cases with multiple options and default case', 
+    generateTest('switch n { case 1, 2: { }, case 3, 4: { }, default: { } }', 
+      'if (n === 1 || n === 2) {\n} else if (n === 3 || n === 4) {\n} else {\n}'));
+        
+  it('switch statement with 2 cases with multiple options, inclusive range case and default case', 
+    generateTest('switch n { case 1, 2: { }, case 3, 4: { }, case 5..6: { }, default: { } }', 
+      'if (n === 1 || n === 2) {\n} else if (n === 3 || n === 4) {\n} else if (n >= 5 && n <= 6) {\n} else {\n}'));
+      
+  it('switch statement with 2 cases with multiple options, inclusive range case without from and default case', 
+    generateTest('switch n { case 1, 2: { }, case 3, 4: { }, case ..6: { }, default: { } }', 
+      'if (n === 1 || n === 2) {\n} else if (n === 3 || n === 4) {\n} else if (n <= 6) {\n} else {\n}'));
+      
+  it('switch statement with 2 cases with multiple options, inclusive range case without to and default case', 
+    generateTest('switch n { case 1, 2: { }, case 3, 4: { }, case 5..: { }, default: { } }', 
+      'if (n === 1 || n === 2) {\n} else if (n === 3 || n === 4) {\n} else if (n >= 5) {\n} else {\n}'));
+      
+  it('switch statement with 2 cases with multiple options, exclusive range case and default case', 
+    generateTest('switch n { case 1, 2: { }, case 3, 4: { }, case 5...6: { }, default: { } }', 
+      'if (n === 1 || n === 2) {\n} else if (n === 3 || n === 4) {\n} else if (n >= 5 && n < 6) {\n} else {\n}')); 
+      
+  it('switch statement with 2 cases with multiple options, exclusive range case without from and default case', 
+    generateTest('switch n { case 1, 2: { }, case 3, 4: { }, case ...6: { }, default: { } }', 
+      'if (n === 1 || n === 2) {\n} else if (n === 3 || n === 4) {\n} else if (n < 6) {\n} else {\n}'));
+      
+  it('switch statement with 2 cases with multiple options, exclusive range case without to and default case', 
+    generateTest('switch n { case 1, 2: { }, case 3, 4: { }, case 5...: { }, default: { } }', 
+      'if (n === 1 || n === 2) {\n} else if (n === 3 || n === 4) {\n} else if (n >= 5) {\n} else {\n}'));
+      
+  it('switch statement with single default case', 
+    generateErrorTest('switch ::n { default: { } }', 
+      [{ "type": "SingleDefaultClause" }]));
+
+  it('switch statement with range case without from and without to', 
+    generateErrorTest('switch ::n { case ..: { } }', 
+      [{ "type": "EmptyRange" }]));      
 });
