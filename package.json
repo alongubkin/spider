@@ -1,6 +1,6 @@
 {
   "name": "spider-script",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "lib/spider.js",
   "description": "The Next-Gen Programming Language for the Web",
   "homepage": "https://github.com/alongubkin/spider",
@@ -13,7 +13,7 @@
     "type": "git",
     "url": "https://github.com/alongubkin/spider"
   },
-  "license": "MIT",
+  "license": "Apache",
   "files": [
     "lib",
     "cli.js"
