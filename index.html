@@ -77,8 +77,16 @@
                   <li><a href="#functions-declaration">Declaration</a></li>
                   <li><a href="#functions-arrow-syntax">Arrow Syntax</a></li>
                   <li><a href="#functions-default-params-value">Default Params Value</a></li>
+                  <li><a href="#functions-splats">Splats</a></li>
                 </ul>
-              </li>                 
+              </li>
+              <li>
+                <a href="#conditions">Conditions</a>
+                <ul class="nav nav-stacked">
+                  <li><a href="#if-statement">If Statement</a></li>
+                  <li><a href="#conditional-expressions">Conditional Expressions</a></li>
+                </ul>
+              </li>                
             </ul>
           </div>
         </div>
@@ -281,7 +289,54 @@ app.controller("MyCtrl", ($scope, MyService) -> {
     }
   }
 }</code></pre>
+              <h3 class="docs-heading">Splats<span class="anchor-target" id="functions-splats"></span>
+                <a href="#functions-splats" name="functions-splats" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+              
+              <p>The JavaScript arguments object is a useful way to work with functions that accept variable numbers of arguments. Spider provides splats <code>...</code>, both for function definition as well as invocation, making variable numbers of arguments a little bit more palatable.</p>
+              
+              <pre><code class="lang-js">var gold, silver, rest;
+              
+func awardMedals(first, second, others...) {
+  // others is an array
+  gold = first;
+  silver = second;
+  rest = others; 
+}
+
+var contenders = [
+  "Michael Phelps"
+  "Liu Xiang"
+  "Yao Ming"
+];
+
+awardMedals(contenders...);</code></pre>
             </div>
+            <div class="docs-section">
+              <div class="page-header">
+                <h1 class="docs-heading">Conditions<span class="anchor-target" id="conditions"></span>
+                  <a href="#conditions" name="conditions" class="anchor glyphicon glyphicon-link"></a>
+                </h1>
+              </div>
+              <h3 class="docs-heading">If Statement<span class="anchor-target" id="if-statement"></span>
+                <a href="#if-statement" name="if-statement" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+
+              <p>In Spider, if statements (as well as most other statements) can be written without the use of parentheses.</p>
+              
+              <pre><code class="lang-js">if happy and knowsIt {
+  clapHands();
+} else {
+  showIt();
+}</code></pre>
+
+              <h3 class="docs-heading">Conditional Expression<span class="anchor-target" id="conditional-expressions"></span>
+                <a href="#conditional-expressions" name="conditional-expressions" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+              
+              <p>There's no ternary operator (?:) in Spider. Instead, Spider provides Python-like <code>if</code> expressions:</p>
+              
+              <pre><code class="lang-js">var date = sue if friday else jill;</code></pre>
           </div>
         </div>
       </div>
