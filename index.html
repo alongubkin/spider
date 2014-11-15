@@ -241,7 +241,7 @@ console.log("Hello world!");</code></pre>
                 <a href="#code-safety-scoping" name="code-safety-scoping" class="anchor glyphicon glyphicon-link"></a>
               </h3>
               
-              <p>The Spider compiler will raise an error if you try to refer to a variable that doesn't exist in the current scope or in one of its ancestors.</p>
+              <p>The Spider compiler will raise an error if you try to refer to a variable that doesn't exist in the current scope or in one of its parents.</p>
               <p><img src="img/undefined-error.png"></p>
               <p>Scoping just works, without any surprises. Spider will protect you against any unintended behaviour.</p>
               
@@ -355,16 +355,13 @@ awardMedals(contenders...);</code></pre>
                   <a href="#loops" name="loops" class="anchor glyphicon glyphicon-link"></a>
                 </h1>
               </div>
-              
               <h3 class="docs-heading">For Statement<span class="anchor-target" id="for-statement"></span>
                 <a href="#for-statement" name="for-statement" class="anchor glyphicon glyphicon-link"></a>
               </h3>
               <p>Spider provides 3 types of <code>for</code> statements. The first type allows a block of code to be executed repeatedly while incrementing a counter, as long as a condition remains true.</p>
-              
-              <pre><code class="lang-js">for var i = 0; i < 5; i++ {
+              <pre><code class="lang-js">for var i = 0; i &lt; 5; i++ {
   ::console.log(i);
-}</code></pre>
-
+}</code></pre>         
               <h3 class="docs-heading">For-In Statement<span class="anchor-target" id="for-in-statement"></span>
                 <a href="#for-in-statement" name="for-in-statement" class="anchor glyphicon glyphicon-link"></a>
               </h3>
@@ -399,43 +396,45 @@ for key of player {
   console.log("Found property \(key).");
 }</code></pre>
 
-          <p>You can also get the value of the key by adding another variable:</p>
-          <pre><code class="lang-js">for key, value of player {
+            <p>You can also get the value of the key by adding another variable:</p>
+            <pre><code class="lang-js">for key, value of player {
   console.log("\(key): \(value)");
 }</code></pre>
 
-          <h3 class="docs-heading">While Statement<span class="anchor-target" id="while-statement"></span>
-            <a href="#while-statement" name="while-statement" class="anchor glyphicon glyphicon-link"></a>
-          </h3>
+            <h3 class="docs-heading">While Statement<span class="anchor-target" id="while-statement"></span>
+              <a href="#while-statement" name="while-statement" class="anchor glyphicon glyphicon-link"></a>
+            </h3>
               
-          <p>Spider provides a <code>while</code> loop that behaves exactly like the JavaScript equivalent except parenthesis aren't required:</p> 
+            <p>Spider provides a <code>while</code> loop that behaves exactly like the JavaScript equivalent except parenthesis aren't required:</p> 
           
-          <pre><code class="lang-js">while supply > demand {
+            <pre><code class="lang-js">while supply > demand {
   buy();
 }</code></pre>
 
-          <h3 class="docs-heading">Until Statement<span class="anchor-target" id="until-statement"></span>
-            <a href="#until-statement" name="until-statement" class="anchor glyphicon glyphicon-link"></a>
-          </h3>
+            <h3 class="docs-heading">Until Statement<span class="anchor-target" id="until-statement"></span>
+              <a href="#until-statement" name="until-statement" class="anchor glyphicon glyphicon-link"></a>
+            </h3>
               
-          <p>For readability, Spider also provides an <code>until</code> loop that is equivalent to <code>while not</code>:</p> 
+            <p>For readability, Spider also provides an <code>until</code> loop that is equivalent to <code>while not</code>:</p> 
           
-          <pre><code class="lang-js">until supply > demand {
+            <pre><code class="lang-js">until supply > demand {
   sell();
 }</code></pre>
 
-          <h3 class="docs-heading">List Comprehensions<span class="anchor-target" id="list-comprehensions"></span>
-            <a href="#list-comprehensions" name="list-comprehensions" class="anchor glyphicon glyphicon-link"></a>
-          </h3>
+            <h3 class="docs-heading">List Comprehensions<span class="anchor-target" id="list-comprehensions"></span>
+              <a href="#list-comprehensions" name="list-comprehensions" class="anchor glyphicon glyphicon-link"></a>
+            </h3>
           
-          <p>Spider provides Python-like list comprehensions. List comprehensions provide a concise way to create list from existing list.</p>
+            <p>Spider provides Python-like list comprehensions. List comprehensions provide a concise way to create list from existing list.</p>
           
-          <pre><code class="lang-js">var list = [1, 2, 3, 5, 6, 7];
+            <pre><code class="lang-js">var list = [1, 2, 3, 5, 6, 7];
 var doubles = [x * 2 for x in list];</code></pre>
 
-          <p>You can also filter elements with a condition:</p>
+            <p>You can also filter elements with a condition:</p>
           
-          <pre><code class="lang-js">var doubles = [x * 2 for x in list if x % 2 == 0];</code></pre>
+            <pre><code class="lang-js">var doubles = [x * 2 for x in list if x % 2 == 0];</code></pre>     
+            </div>
+          </div>
         </div>
       </div>
     </div>
