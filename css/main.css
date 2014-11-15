@@ -1,0 +1,221 @@
+body{
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #333333;
+  background-color: #f7f7f7;
+}
+
+.docs-nav {
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15);
+  background-color: #1d365d;
+  border-color: rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+.docs-nav .navbar-nav > li > a {
+  color: #b9c8e0;
+}
+
+.docs-nav .navbar-brand {
+  color: #fff;
+  font-size: 160%;
+}
+
+@media (min-width: 768px) {
+  .docs-header {
+    font-size: 21px;
+    text-align: left;
+  }
+}
+
+.docs-header {
+  padding: 30px 15px 50px;
+  font-size: 16px;
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+}
+
+.docs-header, .docs-home {
+  color: #b9c8e0;
+  background-color: #1d365d;
+}
+
+.docs-header .container {
+  position: relative;
+  text-align: left;
+  padding-top: 50px;
+}
+
+@media (min-width: 992px) {
+  .docs-header h1, .docs-header p {
+    margin-right: 380px;
+  }
+}
+
+@media (min-width: 768px) {
+  .docs-header h1 {
+    font-size: 60px;
+    line-height: 1;
+  }
+}
+
+.docs-header h1 {
+  color: #fff;
+}
+
+@media (min-width: 992px) {
+  .docs-header h1, .docs-header p {
+    margin-right: 380px;
+  }
+}
+
+.docs-header p {
+  font-weight: 300;
+  line-height: 1.5;
+  font-size: 130%;
+}
+
+.docs-content {
+  -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.docs-content {
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+  background-color: #fff;
+  padding: 1px 60px 80px 60px;
+  margin: 0 -15px;
+  border: none;
+  border-radius: 0 0 4px 4px;
+}
+
+
+.group {
+    background: yellow;
+    width: 200px;
+    height: 500px;
+}
+.group .subgroup {
+    background: orange;
+    width: 150px;
+    height: 200px;
+}
+.fixed {
+    position: fixed;
+}
+
+/* sidebar */
+.sidebar {
+    padding-left: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* all links */
+.sidebar .nav>li>a {
+    color: #999;
+    border-left: 2px solid transparent;
+    padding: 4px 20px;
+    font-size: 13px;
+    font-weight: 400;
+}
+
+/* nested links */
+.sidebar .nav .nav>li>a {
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 30px;
+    font-size: 12px;
+}
+
+/* active & hover links */
+.sidebar .nav>.active>a, 
+.sidebar .nav>li>a:hover, 
+.sidebar .nav>li>a:focus {
+    color: #563d7c;                 
+    text-decoration: none;          
+    background-color: transparent;  
+    border-left-color: #563d7c; 
+}
+/* all active links */
+.sidebar .nav>.active>a, 
+.sidebar .nav>.active:hover>a,
+.sidebar .nav>.active:focus>a {
+    font-weight: 700;
+}
+/* nested active links */
+.sidebar .nav .nav>.active>a, 
+.sidebar .nav .nav>.active:hover>a,
+.sidebar .nav .nav>.active:focus>a {
+    font-weight: 500;
+}
+
+/* hide inactive nested list */
+.sidebar .nav ul.nav {
+    display: none;           
+}
+/* show active nested list */
+.sidebar .nav>.active>ul.nav {
+    display: block;           
+}
+
+
+.sidebar {
+display: none;
+}
+
+@media (min-width: 992px) {
+.sidebar {
+display: block;
+padding-top: 15px;
+}
+}
+
+.affix {
+position: fixed;
+}
+
+.sidebar.affix {
+position: static;
+}
+
+@media (min-width: 992px) {
+.sidebar.affix, .sidebar.affix-bottom {
+width: 213px;
+}
+}
+
+@media (min-width: 992px){
+.sidebar.affix {
+position: fixed;
+top: 45px;
+}
+}
+
+.anchor, .anchor:empty {
+  position: absolute;
+  top: auto;
+  bottom: 0;
+  left: 0;
+  color: transparent;
+  font-size: 18px;
+  padding: 10px 10px 10px 25px;
+  width: 60px;
+}
+
+.docs-content ul.ul-space li:not(:first-child) {
+  margin-top: 5px;
+}
+
+.anchor-target {
+  position: absolute;
+  margin-top: -80px;
+  padding-top: 80px;
+}
+.anchor-target-small {
+  margin-top: -40px;
+  padding-top: 40px;
+}

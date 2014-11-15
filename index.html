@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Getting Started | Spider</title>
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+  </head>
+  <body>
+    <header class="navbar navbar-inverse navbar-fixed-top docs-nav" role="banner">
+      <div class="container">
+        <div class="navbar-header">
+          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          </button>
+          <a href="index.html" class="navbar-brand">
+          Spider
+          </a>
+        </div>
+        <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+          <ul class="nav navbar-nav">
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">GitHub <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li> <a href="https://github.com/alongubkin/spider.git">Repo</a> </li>
+                <li> <a href="https://github.com/alongubkin/spider/issues">Issues</a> </li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class="docs-header" id="content">
+      <div class="container">
+        <h1>Documentation</h1>
+        <p>An overview of Spider, how to download and use, and language features.</p>
+      </div>
+    </div>
+    <div class="container docs-container">
+      <div class="row">
+        <div class="col-xs-3">
+          <div class="sidebar affix-top">
+            <ul id="sidebar" class="nav nav-stacked ">
+              <li>
+                <a href="#getting-started">Getting Started</a>
+                <ul class="nav nav-stacked">
+                  <li><a href="#why-spider">Why Spider?</a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-9" role="main">
+          <div class="panel docs-content">
+            <div class="docs-section">
+              <div class="page-header">
+                <h1 class="docs-heading">Getting Started<span class="anchor-target" id="getting-started"></span>
+                  <a href="#getting-started" name="getting-started" class="anchor glyphicon glyphicon-link"></a>
+                </h1>
+              </div>
+              <p>Spider is a programming language that compiles to JavaScript. It takes the best ideas of Swift, Python, C# and CoffeeScript. It's just JavaScript, but better.</p>
+              <p><strong>Features:</strong></p>
+              
+              <ul>
+                <li>Has a familiar syntax</li>
+                <li>Fixes many of JavaScript's problems</li>
+                <li>Fully interoperable with existing JavaScript libraries</li>
+                <li>Embraces prototypes</li>
+                <li>Adds useful features such as <a href="#">safe object navigation</a>, <a href="#">list comprehensions</a>, and much more.</li>
+              </ul>
+              
+              <p><strong>Upcoming:</strong></p>
+              
+              <ul>
+                <li>Macros</li>
+                <li>Promises</li>
+                <li>Async support</li>
+                <li>Function binding</li>
+                <li>Native require support</li>
+              </ul>
+              
+              <p>Spider also has great debugging support:</p>
+              <img src="img/debugging.png" style="width: 500px"></img>
+              
+              <h2 class="docs-heading">Why Spider?<span class="anchor-target" id="why-spider"></span>
+                <a href="#why-spider" name="why-spider" class="anchor glyphicon glyphicon-link"></a>
+              </h2>
+              
+              <p>There are <em>many</em> languages that compile to JavaScript. The most popular ones are <a href="http://coffeescript.org/">CoffeeScript</a>, <a href="http://www.typescriptlang.org/">TypeScript</a> and <a href="https://www.dartlang.org/">Dart</a>.</li>
+              <p>But all of them have problems:</p>
+              
+              <ul class="ul-space">
+                <li><strong>CoffeeScript</strong> (and its derivatives: LiveScript, Coco, etc) have serious issues of <a href="http://ceronman.com/2012/09/17/coffeescript-less-typing-bad-readability/">ambiguous code</a>, alien syntax and scoping problems.</li>
+                <li><strong>TypeScript</strong> (and AtScript) are supersets of JavaScript, so they inherit all of its problems. Additionally, loose typing can be one of JavaScript's best features if used correctly.</li>
+                <li><strong>Dart</strong> is an extreme departure from JavaScript, which makes it impossible to interact with JavaScript libraries <em>directly</em>. Instead, you must use a <a href="https://www.dartlang.org/articles/js-dart-interop/">special interop library</a> that exposes wrapped versions of any JavaScript objects you access.</li>
+              </ul>
+              
+              <p>Spider tries to <em>learn</em> from its predecessors and build a real programming language that will make developers and teams happy:</p>
+              <ul class="ul-space">
+                <li>Instead of bringing a completely new indentation-based syntax like CoffeeScript, <strong>Spider preserves JavaScript's familiar syntax</strong> that we all use everyday.</li>
+                <li>Instead of just introducing classes, <strong>Spider embraces JavaScript's prototype-based OOP</strong> and makes it much easier to use using keywords like <a href="#">extends</a> and <a href="#">super</a>.</li>
+                <li>Spider is <strong>fully compatible</strong> with libraries like <a href="https://angularjs.org/">Angular.js</a>, <a href="https://www.meteor.com/">Meteor</a>, <a href="http://jquery.com/">jQuery</a>, <a href="http://sailsjs.org/">Sails.js</a> and other existing JS libraries without any extra effort.</li>
+                <li><strong>Spider is an extremely safe language</strong>. It has a great compile-time error reporting system, and all uses of the global scope <a href="">must be explicit</a>. Spider also fixes many JavaScript problems. For example, <code>==</code> is automatically compiled to <code>===</code>, and the <a href="">typeof</a> operator supports <code>array</code>, <code>date</code>, <code>regexp</code> and more.</li>
+                <li>Spider has <strong>useful syntactic sugar</strong> like <a href="">Splats</a>, <a href="">Array Slicing and Splicing</a>, <a href="">Existential Operator</a>, <a href="">Ranges</a>, <a href="">List Comprehensions</a> and much more.</li>
+              </ul> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
