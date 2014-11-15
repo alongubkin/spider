@@ -1588,3 +1588,22 @@ describe('in expression:', function () {
     generateTest('var x = a in b();',
       'var inExpression0 = b();\nvar x = inExpression0 instanceof Array ? inExpression0.indexOf(a) !== -1 : a in inExpression0;'));
 });
+
+describe('list comprehensions:', function () {
+  it('list comprehension without condition and without index', 
+    generateTest('var x = [item + 1 for item in array];',
+      'var x = function () {\n    var forIn0 = [];\n    array.forEach(function (item) {\n        forIn0.push(item + 1);\n    }, this);\n    return forIn0;\n}();'));
+  
+  it('list comprehension with condition and without index', 
+    generateTest('var x = [item + 1 for item in array if condition];',
+      'var x = function () {\n    var forIn0 = [];\n    array.forEach(function (item) {\n        if (condition) {\n            forIn0.push(item + 1);\n        }\n    }, this);\n    return forIn0;\n}();'));
+      
+  it('list comprehension without condition and with index', 
+    generateTest('var x = [item + index for item, index in array];',
+      'var x = function () {\n    var forIn0 = [];\n    array.forEach(function (item, index) {\n        forIn0.push(item + index);\n    }, this);\n    return forIn0;\n}();'));
+ 
+ it('list comprehension with condition and with index', 
+    generateTest('var x = [item + index for item, index in array if index > 1];',
+      'var x = function () {\n    var forIn0 = [];\n    array.forEach(function (item, index) {\n        if (index > 1) {\n            forIn0.push(item + index);\n        }\n    }, this);\n    return forIn0;\n}();'));
+      
+});
