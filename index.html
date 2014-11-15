@@ -86,7 +86,18 @@
                   <li><a href="#if-statement">If Statement</a></li>
                   <li><a href="#conditional-expressions">Conditional Expressions</a></li>
                 </ul>
-              </li>                
+              </li>
+              <li>
+                <a href="#loops">Loops</a>
+                <ul class="nav nav-stacked">
+                  <li><a href="#for-statement">For Statement</a></li>
+                  <li><a href="#for-in-statement">For-In Statement</a></li>
+                  <li><a href="#for-of-statement">For-Of Statement</a></li>
+                  <li><a href="#while-statement">While Statement</a></li>
+                  <li><a href="#until-statement">Until Statement</a></li> 
+                  <li><a href="#list-comprehensions">List Comprehensions</a></li>
+                </ul>
+              </li>  
             </ul>
           </div>
         </div>
@@ -338,6 +349,93 @@ awardMedals(contenders...);</code></pre>
               
               <pre><code class="lang-js">var date = sue if friday else jill;</code></pre>
           </div>
+            <div class="docs-section">
+              <div class="page-header">
+                <h1 class="docs-heading">Loops<span class="anchor-target" id="loops"></span>
+                  <a href="#loops" name="loops" class="anchor glyphicon glyphicon-link"></a>
+                </h1>
+              </div>
+              
+              <h3 class="docs-heading">For Statement<span class="anchor-target" id="for-statement"></span>
+                <a href="#for-statement" name="for-statement" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+              <p>Spider provides 3 types of <code>for</code> statements. The first type allows a block of code to be executed repeatedly while incrementing a counter, as long as a condition remains true.</p>
+              
+              <pre><code class="lang-js">for var i = 0; i < 5; i++ {
+  ::console.log(i);
+}</code></pre>
+
+              <h3 class="docs-heading">For-In Statement<span class="anchor-target" id="for-in-statement"></span>
+                <a href="#for-in-statement" name="for-in-statement" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+              
+              <p>A <code>for-in</code> statement allows a block of code to be executed once for each item in an array.</p>
+              <pre><code class="lang-js">var foods = ['broccoli', 'spinach', 'chocolate'];
+
+for food in foods {
+  eat(food);
+}</code></pre>
+
+              <p>You can also get the index of the item by adding another variable:</p>
+
+              <pre><code class="lang-js">for food, i in foods {
+  console.log("Eating food number \(i).");
+  eat(food);
+}</code></pre>
+
+              <h3 class="docs-heading">For-Of Statement<span class="anchor-target" id="for-of-statement"></span>
+                <a href="#for-of-statement" name="for-of-statement" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+              
+              <p>A <code>for-of</code> statement allows a block of code to be executed once for each property in an object.</p>
+              
+              <pre><code class="lang-js">var player = { 
+  "name": "Daniel", 
+  "address": "Tel Aviv",
+  "age": 18
+};
+
+for key of player {
+  console.log("Found property \(key).");
+}</code></pre>
+
+          <p>You can also get the value of the key by adding another variable:</p>
+          <pre><code class="lang-js">for key, value of player {
+  console.log("\(key): \(value)");
+}</code></pre>
+
+          <h3 class="docs-heading">While Statement<span class="anchor-target" id="while-statement"></span>
+            <a href="#while-statement" name="while-statement" class="anchor glyphicon glyphicon-link"></a>
+          </h3>
+              
+          <p>Spider provides a <code>while</code> loop that behaves exactly like the JavaScript equivalent except parenthesis aren't required:</p> 
+          
+          <pre><code class="lang-js">while supply > demand {
+  buy();
+}</code></pre>
+
+          <h3 class="docs-heading">Until Statement<span class="anchor-target" id="until-statement"></span>
+            <a href="#until-statement" name="until-statement" class="anchor glyphicon glyphicon-link"></a>
+          </h3>
+              
+          <p>For readability, Spider also provides an <code>until</code> loop that is equivalent to <code>while not</code>:</p> 
+          
+          <pre><code class="lang-js">until supply > demand {
+  sell();
+}</code></pre>
+
+          <h3 class="docs-heading">List Comprehensions<span class="anchor-target" id="list-comprehensions"></span>
+            <a href="#list-comprehensions" name="list-comprehensions" class="anchor glyphicon glyphicon-link"></a>
+          </h3>
+          
+          <p>Spider provides Python-like list comprehensions. List comprehensions provide a concise way to create list from existing list.</p>
+          
+          <pre><code class="lang-js">var list = [1, 2, 3, 5, 6, 7];
+var doubles = [x * 2 for x in list];</code></pre>
+
+          <p>You can also filter elements with a condition:</p>
+          
+          <pre><code class="lang-js">var doubles = [x * 2 for x in list if x % 2 == 0];</code></pre>
         </div>
       </div>
     </div>
