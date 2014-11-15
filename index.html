@@ -5,8 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Getting Started | Spider</title>
-    <!-- Bootstrap -->
+    
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/default.css" rel="stylesheet">
     <link href="css/main.css" rel="stylesheet">
   </head>
   <body>
@@ -40,7 +41,7 @@
     </header>
     <div class="docs-header" id="content">
       <div class="container">
-        <h1>Documentation</h1>
+        <h1>Getting Started</h1>
         <p>An overview of Spider, how to download and use, and language features.</p>
       </div>
     </div>
@@ -48,14 +49,36 @@
       <div class="row">
         <div class="col-xs-3">
           <div class="sidebar affix-top">
-            <ul id="sidebar" class="nav nav-stacked ">
+            <ul id="sidebar" class="nav nav-stacked">
               <li>
                 <a href="#getting-started">Getting Started</a>
                 <ul class="nav nav-stacked">
-                  <li><a href="#why-spider">Why Spider?</a>
-                  </li>
+                  <li><a href="#why-spider">Why Spider?</a></li>
                 </ul>
               </li>
+              <li>
+                <a href="#using-spider">Using Spider</a>
+                <ul class="nav nav-stacked">
+                  <li><a href="#using-spider-installation">Installation</a></li>
+                  <li><a href="#using-spider-command-line-usage">Command-line usage</a></li>
+                </ul>
+              </li>
+              <li>
+                <a href="#code-safety">Code Safety</a>
+                <ul class="nav nav-stacked">
+                  <li><a href="#code-safety-global-scope-usage">Global Scope Usage</a></li>
+                  <li><a href="#code-safety-scoping">Scoping</a></li>
+                  <li><a href="#code-safety-logical-operators-consistency">Logical Operators Consistency</a></li>
+                </ul>
+              </li>              
+              <li>
+                <a href="#functions">Functions</a>
+                <ul class="nav nav-stacked">
+                  <li><a href="#functions-declaration">Declaration</a></li>
+                  <li><a href="#functions-arrow-syntax">Arrow Syntax</a></li>
+                  <li><a href="#functions-default-params-value">Default Params Value</a></li>
+                </ul>
+              </li>                 
             </ul>
           </div>
         </div>
@@ -91,9 +114,9 @@
               <p>Spider also has great debugging support:</p>
               <img src="img/debugging.png" style="width: 500px"></img>
               
-              <h2 class="docs-heading">Why Spider?<span class="anchor-target" id="why-spider"></span>
+              <h3 class="docs-heading">Why Spider?<span class="anchor-target" id="why-spider"></span>
                 <a href="#why-spider" name="why-spider" class="anchor glyphicon glyphicon-link"></a>
-              </h2>
+              </h3>
               
               <p>There are <em>many</em> languages that compile to JavaScript. The most popular ones are <a href="http://coffeescript.org/">CoffeeScript</a>, <a href="http://www.typescriptlang.org/">TypeScript</a> and <a href="https://www.dartlang.org/">Dart</a>.</li>
               <p>But all of them have problems:</p>
@@ -113,14 +136,160 @@
                 <li>Spider has <strong>useful syntactic sugar</strong> like <a href="">Splats</a>, <a href="">Array Slicing and Splicing</a>, <a href="">Existential Operator</a>, <a href="">Ranges</a>, <a href="">List Comprehensions</a> and much more.</li>
               </ul> 
             </div>
+            <div class="docs-section">
+              <div class="page-header">
+                <h1 class="docs-heading">Using Spider<span class="anchor-target" id="using-spider"></span>
+                  <a href="#using-spider" name="using-spider" class="anchor glyphicon glyphicon-link"></a>
+                </h1>
+              </div>
+              <h3 class="docs-heading">Installation<span class="anchor-target" id="using-spider-installation"></span>
+                <a href="#using-spider-installation" name="using-spider-installation" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+              <p>Install Spider via npm, the <a href="http://nodejs.org/">node.js</a> package manager:</p>
+              <pre>npm install -g spider-script</pre>
+              
+              <h3 class="docs-heading">Command-line usage<span class="anchor-target" id="using-spider-command-line-usage"></span>
+                <a href="#using-spider-command-line-usage" name="using-spider-command-line-usage" class="anchor glyphicon glyphicon-link"></a>
+              </h3>     
+              
+              <p>To execute a script, run:</p>
+              <pre>spider /path/to/script.spider</pre>
+              
+              <p>To compile a script:</p>
+              <pre>spider -c /path/to/script.spider</pre> 
+              
+              <p>The compiler will generate the output JavaScript file and a source map file for debugging. Note that the original spider file and the source map file aren't necessary for production.</p>
+            </div>
+            <div class="docs-section">
+              <div class="page-header">
+                <h1 class="docs-heading">Code Safety<span class="anchor-target" id="code-safety"></span>
+                  <a href="#code-safety" name="code-safety" class="anchor glyphicon glyphicon-link"></a>
+                </h1>
+              </div>
+              
+              <p>All Spider code is compiled to JavaScript strict mode and wrapped in <a href="http://benalman.com/news/2010/11/immediately-invoked-function-expression/">Immediately-Invoked Function Expression (IIFE)</a>.</p>
+              
+              <h3 class="docs-heading">Global Scope Usage<span class="anchor-target" id="code-safety-global-scope-usage"></span>
+                <a href="#code-safety-global-scope-usage" name="code-safety-global-scope-usage" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+              
+              <p>In Spider, all uses of the global scope must be explicit. Use <code>::</code> to access the global scope.</p>
+              <pre><code class="lang-js">::console.log("Hello world!");</code></pre>
+              
+              <p>You can also pull global variables into the local scope with the <code>use</code> statement:</p>
+              <pre><code class="lang-js">use console;
+
+// 'console' doesn't need '::' before it because of 'use'
+console.log("Hello world!");</code></pre>
+
+              <p>For convenience, you can also <code>use :browser</code> to automatically import DOM global variables, and <code>use :node</code> to automatically import Node.js-related global variables.</p>
+              <table class="table table-bordered table-condensed" style="width: 150px">
+                <tr>
+                  <th>:browser</th>
+                  <th>:node</th>
+                </tr>
+                <tr>
+                  <td>console</td>
+                  <td>console</td>
+                </tr>
+                <tr>
+                  <td>window</td>
+                  <td>global</td>
+                </tr>
+                <tr>
+                  <td>document</td>
+                  <td>require</td>
+                </tr>
+                <tr>
+                  <td>screen</td>
+                  <td>exports</td>
+                </tr>
+                <tr>
+                  <td>location</td>
+                  <td>module</td>
+                </tr>
+                <tr>
+                  <td>navigator</td>
+                  <td>process</td>
+                </tr>
+                <tr>
+                  <td>alert</td>
+                  <td></td>
+                </tr>                
+              </table>
+              
+              <h3 class="docs-heading">Scoping<span class="anchor-target" id="code-safety-scoping"></span>
+                <a href="#code-safety-scoping" name="code-safety-scoping" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+              
+              <p>The Spider compiler will raise an error if you try to refer to a variable that doesn't exist in the current scope or in one of its ancestors.</p>
+              <p><img src="img/undefined-error.png"></p>
+              <p>Scoping just works, without any surprises. Spider will protect you against any unintended behaviour.</p>
+              
+              <h3 class="docs-heading">Logical Operators Consistency<span class="anchor-target" id="code-safety-logical-operators-consistency"></span>
+                <a href="#code-safety-logical-operators-consistency" name="code-safety-logical-operators-consistency" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+              
+              <p>In Spider, logical operators always result in a boolean value regardless of the types passed to it. In addition, <code>==</code> is automatically compiled to <code>===</code>.</p>
+              <pre><code class="lang-js">x = false or 5;  // x == true;
+x = 5 and 4;     // x == true;
+x = 1 == "1";    // false (== compiles to ===)</code></pre>
+
+              <p>Note that Spider adds the <code>and</code> and <code>or</code> operators that behave exactly like <code>&&</code> and <code>||</code> respectively.</p>      
+            </div> 
+            <div class="docs-section">
+              <div class="page-header">
+                <h1 class="docs-heading">Functions<span class="anchor-target" id="functions"></span>
+                  <a href="#functions" name="functions" class="anchor glyphicon glyphicon-link"></a>
+                </h1>
+              </div>
+              <h3 class="docs-heading">Declaration<span class="anchor-target" id="functions-declaration"></span>
+                <a href="#functions-declaration" name="functions-declaration" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+              
+              <p>Functions in Spider are declared using the <code>func</code> keyword:</p>
+              <pre><code class="lang-js">func square(x) { 
+  return x * x;
+}
+
+var cube = func cube(x) { 
+  return square(x) * x;
+};</code></pre>
+
+              <h3 class="docs-heading">Arrow Syntax<span class="anchor-target" id="functions-arrow-syntax"></span>
+                <a href="#functions-arrow-syntax" name="functions-arrow-syntax" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+              <p>Functions can also be expressed using the arrow syntax:</p>
+              <pre><code class="lang-js">var isEven = (x) -> x % 2 == 0;
+              
+app.controller("MyCtrl", ($scope, MyService) -> {
+  $scope.items = [];
+});</code></pre>
+
+              <h3 class="docs-heading">Default Params Value<span class="anchor-target" id="functions-default-params-value"></span>
+                <a href="#functions-default-params-value" name="functions-default-params-value" class="anchor glyphicon glyphicon-link"></a>
+              </h3>    
+              <p>Functions may also have default values for arguments, which will be used if the incoming argument is missing (<code>null</code> or <code>undefined</code>).</p>
+              <pre><code class="lang-js">func legCount(animal = "spider") {
+  switch animal {
+    case "spider": {
+      return 8;
+    },  
+    
+    default: {
+      return 2;
+    }
+  }
+}</code></pre>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/highlight.pack.js"></script>
     <script src="js/main.js"></script>
   </body>
 </html>

@@ -219,3 +219,24 @@ top: 45px;
   margin-top: -40px;
   padding-top: 40px;
 }
+
+.docs-section + .docs-section {
+padding-top: 40px;
+}
+
+pre code {
+  padding: 0 !important;
+}
+.hljs  {
+  background: none;
+}
+
+h1, h2, h3 {
+margin-top: 30px;
+margin-bottom: 15px;
+}
+h1, h2, h3 {
+position: relative;
+padding-left: 60px;
+margin-left: -60px;
+}

@@ -93,4 +93,8 @@
      $('.top').affix()
    }, 100);
 
+  $('pre code').each(function(i, block) {
+    hljs.highlightBlock(block);
+  });
+
  });
