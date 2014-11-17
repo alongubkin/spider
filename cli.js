@@ -33,12 +33,6 @@ var opts = require("nomnom")
   })
   .parse();
 
-var context;
-
-if (!opts.compile) {
-  context = vm.createContext(global);
-}
-
 function generateSpace(len) {
   var chars = [];
   for (var i = 0; i < len; i++) {
@@ -160,7 +154,7 @@ opts.files.forEach(function (fileName, fileIndex) {
             }
           });        
       } else {
-        vm.runInContext(compilerOutput, context);
+        vm.runInThisContext(compilerOutput);
       }
     }
   });
