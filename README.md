@@ -5,9 +5,9 @@ Spider
 
 The Next-Gen Programming Language for the Web. 
 
-[Documentation](http://spiderlang.org/)
-
 > **Note:** Spider is still work in progress. Make sure to star the project if you are interested!
+
+[Documentation](http://spiderlang.org/)
 
 ### Installation
 
