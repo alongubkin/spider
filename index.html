@@ -70,8 +70,10 @@
                   <li><a href="#code-safety-global-scope-usage">Global Scope Usage</a></li>
                   <li><a href="#code-safety-scoping">Scoping</a></li>
                   <li><a href="#code-safety-logical-operators-consistency">Logical Operators Consistency</a></li>
+                  <li><a href="#code-safety-typeof">Typeof</a></li>
                 </ul>
-              </li>              
+              </li> 
+              <li><a href="#string-interpolation">String Interpolation</a></li>
               <li>
                 <a href="#functions">Functions</a>
                 <ul class="nav nav-stacked">
@@ -104,6 +106,7 @@
                 <a href="#operators">Operators</a>
                 <ul class="nav nav-stacked">
                   <li><a href="#operators-existential-operator">Existential Operator</a></li>
+                  <li><a href="#operators-null-coalescing-operator">Null-Coalescing Operator</a></li>
                   <li><a href="#operators-in-operator">In Operator</a></li>
                   <li><a href="#operators-chained-comparisons">Chained Comparisons</a></li>
                   <li><a href="#operators-exponentiation">Exponentiation (**)</a></li>
@@ -112,13 +115,14 @@
                 </ul>
               </li>
               <li>
-                <a href="#operators">Ranges</a>
+                <a href="#ranges">Ranges</a>
                 <ul class="nav nav-stacked">
                   <li><a href="#ranges-range-literal">Range Literal</a></li>
                   <li><a href="#ranges-array-slicing">Array Slicing</a></li>
                   <li><a href="#ranges-array-splicing">Array Splicing</a></li>
                 </ul>
-              </li>               
+              </li>  
+              <li><a href="#switch">Switch</a></li>
             </ul>
           </div>
         </div>
@@ -130,8 +134,8 @@
                   <a href="#getting-started" name="getting-started" class="anchor glyphicon glyphicon-link"></a>
                 </h1>
               </div>
-              <p>Spider is a programming language that compiles to JavaScript. It takes the best ideas of Swift, Python, C# and CoffeeScript. <strong>It's just JavaScript, but better.</strong></p>
-              
+              <p>Spider is a programming language that compiles to JavaScript. It takes the best ideas of Swift, Python, C# and CoffeeScript.</p>
+              <p><strong>It's just JavaScript, but better.</strong></p>
               <pre><code class="lang-js">func TimeMachine(pilot) {
   this.pilot = pilot;
   
@@ -158,7 +162,7 @@ for timeMachine in ::getTimeMachines() {
   timeMachine?.go();
 }</code></pre>
 
-              <blockquote><strong>Note:</strong> Spider is still work in progress. Make sure to <a href="https://github.com/alongubkin/spider">star the project</a> in Github if you are interested!</blockquote>
+              <blockquote><strong>Note:</strong> Spider is still work in progress. Make sure to <a href="https://github.com/alongubkin/spider">star the project</a> in GitHub if you are interested!</blockquote>
               
               <h3 class="docs-heading">Why Spider?<span class="anchor-target" id="why-spider"></span>
                 <a href="#why-spider" name="why-spider" class="anchor glyphicon glyphicon-link"></a>
@@ -176,10 +180,10 @@ for timeMachine in ::getTimeMachines() {
               <p>Spider tries to <em>learn</em> from its predecessors and build a real programming language that will make developers and teams happy:</p>
               <ul class="ul-space">
                 <li>Instead of bringing a completely new indentation-based syntax like CoffeeScript, <strong>Spider preserves JavaScript's familiar syntax</strong> that we all use everyday.</li>
-                <li>Instead of just introducing classes, <strong>Spider embraces JavaScript's prototype-based OOP</strong> and makes it much easier to use using keywords like <a href="#">extends</a> and <a href="#">super</a>.</li>
+                <li>Instead of just introducing classes, <strong>Spider embraces JavaScript's prototype-based OOP</strong> and makes it much easier to use using keywords like <a href="#functions-inheritance">extends</a> and <a href="#functions-inheritance">super</a>.</li>
                 <li>Spider is <strong>fully compatible</strong> with libraries like <a href="https://angularjs.org/">Angular.js</a>, <a href="https://www.meteor.com/">Meteor</a>, <a href="http://jquery.com/">jQuery</a>, <a href="http://sailsjs.org/">Sails.js</a> and other existing JS libraries without any extra effort.</li>
-                <li><strong>Spider is an extremely safe language</strong>. It has a great compile-time error reporting system, and all uses of the global scope <a href="">must be explicit</a>. Spider also fixes many JavaScript problems. For example, <code>==</code> is automatically compiled to <code>===</code>, and the <a href="">typeof</a> operator supports <code>array</code>, <code>date</code>, <code>regexp</code> and more.</li>
-                <li>Spider has <strong>useful syntactic sugar</strong> like <a href="">Splats</a>, <a href="">Array Slicing and Splicing</a>, <a href="">Existential Operator</a>, <a href="">Ranges</a>, <a href="">List Comprehensions</a> and much more.</li>
+                <li><strong>Spider is an extremely safe language</strong>. It has a great compile-time error reporting system, and all uses of the global scope <a href="#code-safety-global-scope-usage">must be explicit</a>. Spider also fixes many JavaScript problems. For example, <code>==</code> is automatically compiled to <code>===</code>, and the <a href="#code-safety-typeof">typeof</a> operator supports <code>array</code>, <code>date</code>, <code>regexp</code> and more.</li>
+                <li>Spider has <strong>useful syntactic sugar</strong> like <a href="#functions-splats">Splats</a>, <a href="#ranges-array-slicing">Array Slicing</a> and <a href="#ranges-array-splicing">Splicing</a>, <a href="#operators-existential-operator">Existential Operator</a>, <a href="#ranges">Ranges</a>, <a href="#list-comprehensions">List Comprehensions</a> and much more.</li>
               </ul>
               
               <p>Spider also has great debugging support:</p>
@@ -286,7 +290,37 @@ x = 5 and 4;     // x == true;
 x = 1 == "1";    // false (== compiles to ===)</code></pre>
 
               <p>Note that Spider adds the <code>and</code> and <code>or</code> operators that behave exactly like <code>&&</code> and <code>||</code> respectively.</p>      
+              
+              <p>Spider provides the <a href="#operators-null-coalescing-operator">null-coalescing operator</a> to replace the useful <code>options.property || defaultValue</code> idiom.</p>
+            
+              <h3 class="docs-heading">Typeof<span class="anchor-target" id="code-safety-typeof"></span>
+                <a href="#code-safety-typeof" name="code-safety-typeof" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+              
+              <p>Spider's <code>typeof</code> operator returns the lowered-cased constructor name of the argument.</p>
+              
+              <pre><code class="lang-js">
+typeof { a: 4 };          // "object"
+typeof [1, 2, 3];         // "array"
+typeof new Date;          // "date"
+typeof new Number(4);     // "number"
+typeof new String("abc"); // "string"
+typeof new Boolean(true); // "boolean"</code></pre>             
             </div> 
+            <div class="docs-section">
+              <div class="page-header">
+                <h1 class="docs-heading">String Interpolation<span class="anchor-target" id="string-interpolation"></span>
+                  <a href="#string-interpolation" name="string-interpolation" class="anchor glyphicon glyphicon-link"></a>
+                </h1>
+              </div>
+              
+              <p>String interpolation is a way to construct a new string from a mix of constants, variables, literals, and expressions by including their values inside a string literal.</p>
+              
+              <pre><code class="lang-js">var multiplier = 3;
+var message = "\(multiplier) times 2.5 is \(multiplier * 2.5)";
+
+// message is "3 times 2.5 is 7.5"</code></pre>
+            </div>
             <div class="docs-section">
               <div class="page-header">
                 <h1 class="docs-heading">Functions<span class="anchor-target" id="functions"></span>
@@ -519,8 +553,16 @@ var doubles = [x * 2 for x in list];</code></pre>
 }</code></pre>    
               
               <p>The accessor variant of the existential operator <code>?.</code> can be used to soak up null references in a chain of properties. Use it instead of the dot accessor <code>.</code> in cases where the base value may be <strong>null</strong> or <strong>undefined</strong>. If all of the properties exist then you'll get the expected result, if the chain is broken, <strong>undefined</strong> is returned instead of the <strong>TypeError</strong> that would be raised otherwise.</p>
-              
+
               <pre><code class="lang-js">var zip = lottery.drawWinner?().address?.zipcode;</code></pre>
+              
+              <h3 class="docs-heading">Null-Coalescing Operator<span class="anchor-target" id="operators-null-coalescing-operator"></span>
+                <a href="#operators-null-coalescing-operator" name="operators-null-coalescing-operator" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+              
+              <p>The null-coalescing operator <code>??</code> returns the right expression if the left expression is null or undefined.</p>
+              
+              <pre><code class="lang-js">var name = options.name ?? "default name";</code></pre>
               
               <h3 class="docs-heading">In Operator<span class="anchor-target" id="operators-in-operator"></span>
                 <a href="#operators-in-operator" name="operators-in-operator" class="anchor glyphicon glyphicon-link"></a>
@@ -532,7 +574,7 @@ var doubles = [x * 2 for x in list];</code></pre>
               
 var details = {
   "price": 45,
-  "address": "New York, USA"
+  "address": "New York, USA",
   "age": 27
 };
 
@@ -582,11 +624,11 @@ console.log("address" in details) // => true</code></pre>
               <p>The range literal provides a simple way to generate a numbers array. With two dots <code>(3..6)</code>, the range is inclusive (<code>3, 4, 5, 6</code>); with three dots (<code>3...6</code>), the range excludes the end (<code>3, 4, 5</code>)</p>
               
               <pre><code class="lang-js">var a = [1..5];    // => [1, 2, 3, 4, 5]
-var b = [1...5];   // => [1, 2, 3, 4]</code></pre>
+var b = [1<span class="dot">...</span>5];   // => [1, 2, 3, 4]</code></pre>
             
               <p>It can also work in the opposite direction:</p>
 <pre><code class="lang-js">var c = [5..1];    // => [5, 4, 3, 2, 1]
-var d = [5...1];   // => [5, 4, 3, 2]</code></pre>
+var d = [5<span class="dot">...</span>1];   // => [5, 4, 3, 2]</code></pre>
 
               <h3 class="docs-heading">Array Slicing<span class="anchor-target" id="ranges-array-slicing"></span>
                 <a href="#ranges-array-slicing" name="ranges-array-slicing" class="anchor glyphicon glyphicon-link"></a>
@@ -594,12 +636,12 @@ var d = [5...1];   // => [5, 4, 3, 2]</code></pre>
               
               <p>Ranges can also be used to extract slices of arrays.</p>
               
-              <pre><code class="lang-js">var numbers = [1...10];
+              <pre><code class="lang-js">var numbers = [1<span class="dot">...</span>10];
 
 var start  = numbers[0..2];
-var middle = numbers[3...-2];
-var end    = numbers[-2..];
-var copy   = numbers[..];</code></pre>
+var middle = numbers[3<span class="dot">...</span>-2];
+var end    = numbers[-2<span class="dot">..</span>];
+var copy   = numbers[<span class="dot">..</span>];</code></pre>
 
               <h3 class="docs-heading">Array Splicing<span class="anchor-target" id="ranges-array-splicing"></span>
                 <a href="#ranges-array-splicing" name="ranges-array-splicing" class="anchor glyphicon glyphicon-link"></a>
@@ -608,6 +650,60 @@ var copy   = numbers[..];</code></pre>
               <p>The same syntax can be used with assignment to replace a segment of an array with new values, splicing it.</p>
               
               <pre><code class="lang-js">numbers[3..6] = [-3, -4, -5, -6];</code></pre>
+            </div>
+            <div class="docs-section">
+              <div class="page-header">
+                <h1 class="docs-heading">Switch<span class="anchor-target" id="switch"></span>
+                  <a href="#switch" name="switch" class="anchor glyphicon glyphicon-link"></a>
+                </h1>
+              </div> 
+              
+              <p>The <code>switch</code> statement in Spider is much more powerful than the JavaScript equivalent:</p>
+              
+              <pre><code class="lang-js">switch day {
+  case "Monday": {
+    go(work);
+  },
+
+  case "Tuesday": {
+    go(relax);
+  },
+  
+  case "Friday", "Saturday": {
+    go(bingo);
+  },
+  
+  default: {
+    go(work);
+  }
+}</code></pre>
+
+              <p>Note that <code>break</code> is not required.</p>
+              
+              <p>Switch statements can also be used with ranges:</p>
+            
+              <pre><code class="lang-js">switch score {
+  case <span class="dot">.</span>.60: {
+    return "F";
+  },
+
+  case 60..70: {
+    return "D";
+  },
+  
+  case 70..80: {
+    return "C";
+  },
+  
+  case 80..90: {
+    return "B";
+  }
+  
+  default: {
+    return "A";
+  }
+}</code></pre>
+
             </div>
           </div>
         </div>

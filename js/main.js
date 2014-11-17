@@ -99,6 +99,7 @@
   
   setTimeout(function () {
     $('.extends span span').css('color', '#c26230');
+    $('.dot').css('color', '#a5c261');
   }, 0);
   
  });
