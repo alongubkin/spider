@@ -96,5 +96,9 @@
   $('pre code').each(function(i, block) {
     hljs.highlightBlock(block);
   });
-
+  
+  setTimeout(function () {
+    $('.extends span span').css('color', '#c26230');
+  }, 0);
+  
  });

@@ -224,11 +224,14 @@ top: 45px;
 padding-top: 40px;
 }
 
-pre code {
-  padding: 0 !important;
+pre {
+  
+  background: #232323 !important;
 }
-.hljs  {
-  background: none;
+
+pre code {
+  font-family: 'Droid Sans Mono';
+  padding: 0 !important;
 }
 
 h1, h2, h3 {

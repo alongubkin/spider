@@ -8,6 +8,7 @@
     
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/default.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css'>
     <link href="css/main.css" rel="stylesheet">
   </head>
   <body>
@@ -78,6 +79,7 @@
                   <li><a href="#functions-arrow-syntax">Arrow Syntax</a></li>
                   <li><a href="#functions-default-params-value">Default Params Value</a></li>
                   <li><a href="#functions-splats">Splats</a></li>
+                  <li><a href="#functions-inheritance">Inheritance</a></li>
                 </ul>
               </li>
               <li>
@@ -109,29 +111,35 @@
                   <a href="#getting-started" name="getting-started" class="anchor glyphicon glyphicon-link"></a>
                 </h1>
               </div>
-              <p>Spider is a programming language that compiles to JavaScript. It takes the best ideas of Swift, Python, C# and CoffeeScript. It's just JavaScript, but better.</p>
-              <p><strong>Features:</strong></p>
+              <p>Spider is a programming language that compiles to JavaScript. It takes the best ideas of Swift, Python, C# and CoffeeScript. <strong>It's just JavaScript, but better.</strong></p>
               
-              <ul>
-                <li>Has a familiar syntax</li>
-                <li>Fixes many of JavaScript's problems</li>
-                <li>Fully interoperable with existing JavaScript libraries</li>
-                <li>Embraces prototypes</li>
-                <li>Adds useful features such as <a href="#">safe object navigation</a>, <a href="#">list comprehensions</a>, and much more.</li>
-              </ul>
-              
-              <p><strong>Upcoming:</strong></p>
-              
-              <ul>
-                <li>Macros</li>
-                <li>Promises</li>
-                <li>Async support</li>
-                <li>Function binding</li>
-                <li>Native require support</li>
-              </ul>
-              
-              <p>Spider also has great debugging support:</p>
-              <img src="img/debugging.png" style="width: 500px"></img>
+              <pre><code class="lang-js">func TimeMachine(pilot) {
+  this.pilot = pilot;
+  
+  this.go = func (noise) {
+    ::console.log(noise);
+  };
+}
+
+func Tardis() 
+  <span class="extends">extends</span> TimeMachine("The Doctor") {
+  
+  this.go = () -> 
+    super.go("vorp vorp");
+}
+
+func DeLorean() 
+  <span class="extends">extends</span> TimeMachine("Marty") {
+
+  this.go = () -> 
+    super.go("One point twenty-one gigawatts!");
+}
+
+for timeMachine in ::getTimeMachines() {
+  timeMachine?.go();
+}</code></pre>
+
+              <blockquote><strong>Note:</strong> Spider is still work in progress. Make sure to <a href="https://github.com/alongubkin/spider">star the project</a> in Github if you are interested!</blockquote>
               
               <h3 class="docs-heading">Why Spider?<span class="anchor-target" id="why-spider"></span>
                 <a href="#why-spider" name="why-spider" class="anchor glyphicon glyphicon-link"></a>
@@ -153,7 +161,11 @@
                 <li>Spider is <strong>fully compatible</strong> with libraries like <a href="https://angularjs.org/">Angular.js</a>, <a href="https://www.meteor.com/">Meteor</a>, <a href="http://jquery.com/">jQuery</a>, <a href="http://sailsjs.org/">Sails.js</a> and other existing JS libraries without any extra effort.</li>
                 <li><strong>Spider is an extremely safe language</strong>. It has a great compile-time error reporting system, and all uses of the global scope <a href="">must be explicit</a>. Spider also fixes many JavaScript problems. For example, <code>==</code> is automatically compiled to <code>===</code>, and the <a href="">typeof</a> operator supports <code>array</code>, <code>date</code>, <code>regexp</code> and more.</li>
                 <li>Spider has <strong>useful syntactic sugar</strong> like <a href="">Splats</a>, <a href="">Array Slicing and Splicing</a>, <a href="">Existential Operator</a>, <a href="">Ranges</a>, <a href="">List Comprehensions</a> and much more.</li>
-              </ul> 
+              </ul>
+              
+              <p>Spider also has great debugging support:</p>
+              <img src="img/debugging.png" style="width: 500px"></img>
+                            
             </div>
             <div class="docs-section">
               <div class="page-header">
@@ -165,17 +177,17 @@
                 <a href="#using-spider-installation" name="using-spider-installation" class="anchor glyphicon glyphicon-link"></a>
               </h3>
               <p>Install Spider via npm, the <a href="http://nodejs.org/">node.js</a> package manager:</p>
-              <pre>npm install -g spider-script</pre>
+              <pre><code class="lang-js">npm install -g spider-script</code></pre>
               
               <h3 class="docs-heading">Command-line usage<span class="anchor-target" id="using-spider-command-line-usage"></span>
                 <a href="#using-spider-command-line-usage" name="using-spider-command-line-usage" class="anchor glyphicon glyphicon-link"></a>
               </h3>     
               
               <p>To execute a script, run:</p>
-              <pre>spider /path/to/script.spider</pre>
+              <pre><code class="lang-js">spider /path/to/script.spider</code></pre>
               
               <p>To compile a script:</p>
-              <pre>spider -c /path/to/script.spider</pre> 
+              <pre><code class="lang-js">spider -c /path/to/script.spider</code></pre> 
               
               <p>The compiler will generate the output JavaScript file and a source map file for debugging. Note that the original spider file and the source map file aren't necessary for production.</p>
             </div>
@@ -271,7 +283,7 @@ x = 1 == "1";    // false (== compiles to ===)</code></pre>
   return x * x;
 }
 
-var cube = func cube(x) { 
+var cube = func (x) { 
   return square(x) * x;
 };</code></pre>
 
@@ -322,6 +334,43 @@ var contenders = [
 ];
 
 awardMedals(contenders...);</code></pre>
+
+              <h3 class="docs-heading">Inheritance<span class="anchor-target" id="functions-inheritance"></span>
+                <a href="#functions-inheritance" name="functions-inheritance" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+              
+              <p>Instead of just adding classes, Spider embraces JavaScript prototypes and makes them much easier to use. <strong>Spider's inheritance is compatible with almost any JavaScript class implementation out there.</strong></p>
+              
+              <pre><code class="lang-js">func Animal(name) {
+  this.move = func (distance) {
+    alert("\(name) moved \(distance)m.");
+  };
+}
+
+func Snake(name) 
+  <span class="extends">extends</span> Animal(name) {
+  
+  this.move = func() {
+    alert("Slithering...");
+    super.move(5);
+  };
+}
+
+func Horse(name) 
+  <span class="extends">extends</span> Animal(name) {
+  
+  this.move = func() {
+    alert("Galloping...");
+    super.move(45);
+  };
+}
+
+var sam = new Snake("Sammy the Python");
+var tom = new Horse("Tommy the Palomino");
+
+sam.move();
+tom.move();</code></pre>
+
             </div>
             <div class="docs-section">
               <div class="page-header">
