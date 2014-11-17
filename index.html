@@ -99,7 +99,18 @@
                   <li><a href="#until-statement">Until Statement</a></li> 
                   <li><a href="#list-comprehensions">List Comprehensions</a></li>
                 </ul>
-              </li>  
+              </li>
+              <li>
+                <a href="#operators">Operators</a>
+                <ul class="nav nav-stacked">
+                  <li><a href="#operators-existential-operator">Existential Operator</a></li>
+                  <li><a href="#operators-in-operator">In Operator</a></li>
+                  <li><a href="#operators-chained-comparisons">Chained Comparisons</a></li>
+                  <li><a href="#operators-exponentiation">Exponentiation (**)</a></li>
+                  <li><a href="#operators-integer-division">Integer division (#)</a></li> 
+                  <li><a href="#operators-math-modulo">Math modulo (%%)</a></li>
+                </ul>
+              </li>               
             </ul>
           </div>
         </div>
@@ -482,6 +493,72 @@ var doubles = [x * 2 for x in list];</code></pre>
             <p>You can also filter elements with a condition:</p>
           
             <pre><code class="lang-js">var doubles = [x * 2 for x in list if x % 2 == 0];</code></pre>     
+            </div>
+            <div class="docs-section">
+              <div class="page-header">
+                <h1 class="docs-heading">Operators<span class="anchor-target" id="operators"></span>
+                  <a href="#operators" name="operators" class="anchor glyphicon glyphicon-link"></a>
+                </h1>
+              </div>
+              
+              <h3 class="docs-heading">Existential Operator<span class="anchor-target" id="operators-existential-operator"></span>
+                <a href="#operators-existential-operator" name="operators-existential-operator" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+              
+              <p>It's a little difficult to check for the existence of a variable in JavaScript. <code>if (variable) ...</code> comes close, but fails for zero, the empty string, and false. The existential operator <code>?</code> returns true unless a variable is <strong>null</strong> or <strong>undefined</strong></p>
+              <pre><code class="lang-js">if game? {
+  play();
+}</code></pre>    
+              
+              <p>The accessor variant of the existential operator <code>?.</code> can be used to soak up null references in a chain of properties. Use it instead of the dot accessor <code>.</code> in cases where the base value may be <strong>null</strong> or <strong>undefined</strong>. If all of the properties exist then you'll get the expected result, if the chain is broken, <strong>undefined</strong> is returned instead of the <strong>TypeError</strong> that would be raised otherwise.</p>
+              
+              <pre><code class="lang-js">var zip = lottery.drawWinner?().address?.zipcode;</code></pre>
+              
+              <h3 class="docs-heading">In Operator<span class="anchor-target" id="operators-in-operator"></span>
+                <a href="#operators-in-operator" name="operators-in-operator" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+              
+              <p>The <code>in</code> operator checks if an array contains an specific item, or if an object contains a specific property.</p>
+              
+              <pre><code class="lang-js">var people = [billy, robin, daniel];
+              
+var details = {
+  "price": 45,
+  "address": "New York, USA"
+  "age": 27
+};
+
+console.log(billy in people);     // => true
+console.log("address" in details) // => true</code></pre>
+              
+              <h3 class="docs-heading">Chained Comparisons<span class="anchor-target" id="operators-chained-comparisons"></span>
+                <a href="#operators-chained-comparisons" name="operators-chained-comparisons" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+                            
+              <p>Chained comparisons make it easy to test if a value falls within a certain range.</p>
+              
+              <pre><code class="lang-js">var isHealthy = 200 > cholesterol > 60;</code></pre>
+              
+              <h3 class="docs-heading">Exponentiation (**)<span class="anchor-target" id="operators-exponentiation"></span>
+                <a href="#operators-exponentiation" name="operators-exponentiation" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+              
+              <p>To simplify math expressions, <code>**</code> can be used for exponentiation.</p>
+              <pre><code class="lang-js">var volume = a ** 3; // => Math.pow(a, 3)</code></pre>
+              
+              <h3 class="docs-heading">Integer division (#)<span class="anchor-target" id="operators-integer-division"></span>
+                <a href="#operators-integer-division" name="operators-integer-division" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+
+              <p>The <code>#</code> operator performs integer division.</p>
+              <pre><code class="lang-js">var floor = a # b; // => Math.floor(a / b)</code></pre>
+
+              <h3 class="docs-heading">Math modulo (%%)<span class="anchor-target" id="operators-math-modulo"></span>
+                <a href="#operators-math-modulo" name="operators-math-modulo" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+
+              <p>The <code>#</code> operator provides true mathematical modulo.</p>
+              <pre><code class="lang-js">var modulo = a %% b; // => (a % b + b) % b</code></pre>  
             </div>
           </div>
         </div>
