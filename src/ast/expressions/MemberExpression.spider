@@ -1,7 +1,9 @@
+use :node;
+
 var Node = require('../Node').Node;
 
-exports.MemberExpression = function (left, right, computed) {
-  Node.call(this);
+func MemberExpression(left, right, computed)
+  extends Node {
 
   this.type = 'MemberExpression';
   this.computed = computed;
@@ -11,29 +13,26 @@ exports.MemberExpression = function (left, right, computed) {
   
   this.property = right;
   this.property.parent = this;
-};
+}
 
-exports.MemberExpression.prototype = Object.create(Node);
-
-exports.MemberExpression.prototype.codegen = function () {
-  if (!Node.prototype.codegen.call(this)) {
+MemberExpression.prototype.codegen = () -> {
+  if !super.codegen() {
     return;
   }
   
   var objectType = this.object.type;
-
   this.object = this.object.codegen(); 
     
-  if (!this.property.codeGenerated) {
+  if !this.property.codeGenerated {
     this.property = this.property.codegen(false);
   }
   
   // compile an expression such as: b?.c?.d.e
   // to: typeof b !== "undefined" && (b !== null && b.c !== null) ? b.c.d.e : null
   // instead of: (typeof b !== "undefined" && (b !== null && b.c !== null) ? b.c.d : null).e;
-  if (this.object.type === 'ConditionalExpression' &&
-      (objectType === 'NullPropagatingExpression' || objectType === 'MemberExpression' || 
-       objectType === 'CallExpression' || objectType === 'NullCheckCallExpression')) {
+  if (this.object.type == 'ConditionalExpression' &&
+      (objectType == 'NullPropagatingExpression' || objectType == 'MemberExpression' || 
+       objectType == 'CallExpression' || objectType == 'NullCheckCallExpression')) {
     this.type = this.object.type;
     this.test = this.object.test;
     this.alternate = this.object.alternate;
@@ -49,8 +48,10 @@ exports.MemberExpression.prototype.codegen = function () {
   return this;
 };
 
-exports.MemberExpression.prototype.hasCallExpression = function () {
+MemberExpression.prototype.hasCallExpression = () -> {
   return this.object.__null_propagating ||
-         (this.object !== null && this.object.hasCallExpression && this.object.hasCallExpression()) ||
-         (this.property !== null && this.property.hasCallExpression());
+         this.object?.hasCallExpression?() ||
+         this.property?.hasCallExpression();
 };
+
+exports.MemberExpression = MemberExpression;
