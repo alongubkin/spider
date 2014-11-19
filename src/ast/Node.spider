@@ -1,35 +1,37 @@
-exports.Node = function () {
+use :node;
+
+func Node() {
   var self = this;
   self.codeGenerated = false;
   self.definedIdentifiers = [];
   
-  Object.defineProperty(self, 'parent', {
+  ::Object.defineProperty(self, 'parent', {
     value: null,
     writable: true,
     configurable: true,
     enumerable: false
   });
-
-  self.getContext = function () {
-    if (self.type === 'Program' ||
-        self.type === 'BlockStatement') {
+  
+  self.getContext = () -> {
+    if self.type == 'Program' ||
+       self.type == 'BlockStatement' {
       return { 
         node: self,
         position: -1
       };
     }
     
-    if (self.parent === null) {
+    if !self.parent? {
       return null;
     }
     
     var context = self.parent.getContext();
     
-    if (!context) { 
+    if !context? { 
       return null;
     }
     
-    if (context.position === -1) {
+    if context.position == -1 {
       return {
         node: context.node,
         position: context.node.body.indexOf(self)
@@ -39,34 +41,36 @@ exports.Node = function () {
     }
   };
   
-  self.defineIdentifier = function (identifier) {
+  self.defineIdentifier = (identifier) -> {
     self.definedIdentifiers.push(identifier);
   };
   
-  self.isIdentifierDefined = function (name) {
+  self.isIdentifierDefined = (name) -> {
     var defined = false;
-    self.definedIdentifiers.forEach(function (identifier) {
-      if (identifier.name === name) {
+    
+    for identifier in self.definedIdentifiers {
+      if identifier.name == name {
         defined = true;
       }
-    });
+    }
     
     return defined || (self.parent && self.parent.isIdentifierDefined(name));
   };
   
-  self.getDefinedIdentifier = function (name) {
+  self.getDefinedIdentifier = (name) -> {
     var id;
-    self.definedIdentifiers.forEach(function (identifier) {
-      if (identifier.name === name) {
+    
+    for identifier in self.definedIdentifiers {
+      if identifier.name == name {
         id = identifier;
       }
-    });
+    }
     
-    return id || (self.parent && self.parent.getDefinedIdentifier(name));
+    return id ?? (self.parent.getDefinedIdentifier(name) if self.parent else null);
   };
   
-  self.blockWrap = function () {
-    if (self.type === 'BlockStatement') {
+  self.blockWrap = () -> {
+    if self.type == 'BlockStatement' {
       return self;
     }
     
@@ -77,11 +81,11 @@ exports.Node = function () {
     block.parent = myParent;
     
     return block;
-  };
-};
+  };  
+}
 
-exports.Node.prototype.codegen = function () {   
-  if (this.codeGenerated) {
+Node.prototype.codegen = () -> {
+  if this.codeGenerated {
     return false;
   }
   
@@ -89,10 +93,12 @@ exports.Node.prototype.codegen = function () {
   return true;
 };
 
-exports.Node.setErrorManager = function (errorManager) {
+Node.setErrorManager = (errorManager) -> {
   this.errorManager = errorManager;
 };
 
-exports.Node.getErrorManager = function () {
+Node.getErrorManager = () -> {
   return this.errorManager;
 };
+
+exports.Node = Node;
