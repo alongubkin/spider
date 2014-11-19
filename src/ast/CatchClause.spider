@@ -1,7 +1,9 @@
+use :node;
+
 var Node = require('./Node').Node;
 
-exports.CatchClause = function (param, body) {
-  Node.call(this);
+func CatchClause(param, body) 
+  extends Node {
   
   this.type = 'CatchClause';
   
@@ -10,12 +12,10 @@ exports.CatchClause = function (param, body) {
   
   this.body = body;
   this.body.parent = this;
-};
+}
 
-exports.CatchClause.prototype = Object.create(Node);
-
-exports.CatchClause.prototype.codegen = function () {
-  if (!Node.prototype.codegen.call(this)) {
+CatchClause.prototype.codegen = () -> {
+  if !super.codegen() {
     return;
   }
   
@@ -26,3 +26,5 @@ exports.CatchClause.prototype.codegen = function () {
   
   return this;
 };
+
+exports.CatchClause = CatchClause;
