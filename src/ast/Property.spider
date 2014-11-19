@@ -1,8 +1,9 @@
+use :node;
+
 var Node = require('./Node').Node;
 
-exports.Property = function (key, value) {
-  Node.call(this);
-  
+func Property(key, value)
+  extends Node {
   this.type = 'Property';
   this.kind = 'init';
   
@@ -11,12 +12,10 @@ exports.Property = function (key, value) {
   
   this.value = value;
   this.value.parent = this;
-};
+}
 
-exports.Property.prototype = Object.create(Node);
-
-exports.Property.prototype.codegen = function () {
-  if (!Node.prototype.codegen.call(this)) {
+Property.prototype.codegen = () -> {
+  if !super.codegen() {
     return;
   }
   
@@ -26,6 +25,8 @@ exports.Property.prototype.codegen = function () {
   return this;
 };
 
-exports.Property.prototype.hasCallExpression = function () {
+Property.prototype.hasCallExpression = () -> {
   return this.value.hasCallExpression();
 };
+
+exports.Property = Property;
