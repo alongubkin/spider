@@ -1,0 +1,30 @@
+use :node;
+
+var Node = require('../Node').Node;
+
+func ArrayExpression(elements) 
+  extends Node {
+
+  this.type = 'ArrayExpression';
+  this.elements = elements;
+  
+  for element in this.elements {
+    element.parent = this;
+  }
+}
+
+ArrayExpression.prototype.codegen = () -> {
+  if !super.codegen() {
+    return;
+  }
+  
+  for element, i in this.elements {
+    this.elements[i] = element.codegen();
+  }
+  
+  return this;
+};
+
+ArrayExpression.prototype.hasCallExpression = () -> true;
+
+exports.ArrayExpression = ArrayExpression;
