@@ -64,7 +64,7 @@ exports.compile = function (text, verbose, errors, sourceMap, sourceMapUrl, iifi
           "type": "ExpressionStatement",
           "expression": {
             "type": "Literal",
-            "value": "use strict;"
+            "value": "use strict"
           }
         });
       }
