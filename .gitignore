@@ -3,5 +3,6 @@ coverage/
 npm-debug.log
 
 test.js
-test.js.map
 test.spider
+
+*.map
