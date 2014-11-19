@@ -1,34 +1,29 @@
+use :node;
+
 var Node = require('../Node').Node;
 
-exports.Identifier = function (name) {
-  Node.call(this);
+func Identifier(name)
+  extends Node {
   
   this.type = 'Identifier';
   this.global = false;
   
-  Object.defineProperty(this, 'name', { 
+  ::Object.defineProperty(this, 'name', { 
     value: name, 
     enumerable: true 
   });  
-};
+}
 
-exports.Identifier.prototype = Object.create(Node);
-
-exports.Identifier.prototype.codegen = function (undefinedCheck) {
-  if (!Node.prototype.codegen.call(this)) {
+Identifier.prototype.codegen = (undefinedCheck = true) -> {
+  if !super.codegen() {
     return;
   }
-  
-  if (typeof undefinedCheck === 'undefined') {
-    undefinedCheck = true;
-  }
-  
+    
   // Compile-time undefined check
   if (undefinedCheck && !this.global) {
     // If this is not a new identifier, ...
-    if (!(this.parent && (this.parent.type === "FunctionDeclaration" ||
-                          this.parent.type === "VariableDeclarator") &&
-          this.parent.id === this)) {
+    if !(this.parent?.type in ["FunctionDeclaration", "VariableDeclarator"] &&
+         this.parent.id == this) {
       // ... and this identifier is undefined, raise an error
       if (!this.parent.isIdentifierDefined(this.name)) {
         Node.getErrorManager().error({
@@ -58,16 +53,16 @@ exports.Identifier.prototype.codegen = function (undefinedCheck) {
   return this;
 };
 
-exports.Identifier.prototype.hasCallExpression = function () {
-  return false;
-};
+Identifier.prototype.hasCallExpression = () -> false;
 
-exports.Identifier.prototype.asGlobal = function () {
+Identifier.prototype.asGlobal = () -> {
   this.global = true;
   return this;
 };
 
-exports.Identifier.prototype.asPredefinedCollection = function () {
+Identifier.prototype.asPredefinedCollection = () -> {
   this.predefinedCollection = true;
   return this;
 };
+
+exports.Identifier = Identifier;
