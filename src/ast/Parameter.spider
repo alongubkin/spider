@@ -1,7 +1,9 @@
+use :node;
+
 var Node = require('./Node').Node;
 
-exports.Parameter = function (id, defaultValue, splat) {
-  Node.call(this);
+func Parameter(id, defaultValue, splat)
+  extends Node {
   
   this.type = 'Parameter';
   this.splat = splat;
@@ -11,21 +13,19 @@ exports.Parameter = function (id, defaultValue, splat) {
   
   this.defaultValue = defaultValue;
   
-  if (this.defaultValue) {
+  if this.defaultValue? {
     this.defaultValue.parent = this;
   }
-};
+}
 
-exports.Parameter.prototype = Object.create(Node);
-
-exports.Parameter.prototype.codegen = function () {
-  if (!Node.prototype.codegen.call(this)) {
+Parameter.prototype.codegen = () -> {
+  if !super.codegen() {
     return;
   }
   
   this.id = this.id.codegen(false);
   
-  if (this.defaultValue) {
+  if this.defaultValue? {
     this.defaultValue = this.defaultValue.codegen();
     
     return {
@@ -59,19 +59,20 @@ exports.Parameter.prototype.codegen = function () {
   return null;
 };
 
-exports.Parameter.prototype.hasCallExpression = function () {
+
+Parameter.prototype.hasCallExpression = () -> {
   return false;
 };
 
-exports.Parameter.generateFunctionBody = function (fn, params, body) {
+Parameter.generateFunctionBody = (fn, params, body) -> {
   var addToBody = [];
   var splatPosition = -1;
   
-  params.forEach(function (param, i) {
+  for param, i in params {
     var paramBodyCode = param.codegen();
     
-    if (param.splat) {
-      if (splatPosition !== -1) {
+    if param.splat {
+      if splatPosition != -1 {
         Node.getErrorManager().error({
           type: "MultipleSplatsDisallowed",
           message: "multiple splats are disallowed in a function declaration",
@@ -85,15 +86,15 @@ exports.Parameter.generateFunctionBody = function (fn, params, body) {
     params[i] = param.id;
     fn.defineIdentifier(param.id);
     
-    if (paramBodyCode != null) {
+    if paramBodyCode != null {
       paramBodyCode.codeGenerated = true;
       addToBody.push(paramBodyCode);
     }
-  });
+  }
     
   body.body = addToBody.concat(body.body);
   
-  if (splatPosition !== -1) {
+  if splatPosition != -1 {
     var declarations = [{
       "type": "VariableDeclarator",
       "id": {
@@ -103,9 +104,9 @@ exports.Parameter.generateFunctionBody = function (fn, params, body) {
       "init": null
     }];
     
-    params.forEach(function (param, i) {
+    for param, i in params {
       var init;
-      if (i < splatPosition) {
+      if i < splatPosition {
         init = {
           "type": "MemberExpression",
           "computed": true,
@@ -118,7 +119,7 @@ exports.Parameter.generateFunctionBody = function (fn, params, body) {
             "value": i
           }
         };
-      } else if (i === splatPosition) {
+      } else if i == splatPosition {
         init = {
           "type": "ConditionalExpression",
           "test": {
@@ -177,7 +178,7 @@ exports.Parameter.generateFunctionBody = function (fn, params, body) {
           }
         };
             
-        if (splatPosition < params.length - 1) {
+        if splatPosition < params.length - 1 {
           init.consequent.arguments.push({
             "type": "AssignmentExpression",
             "operator": "=",
@@ -251,7 +252,7 @@ exports.Parameter.generateFunctionBody = function (fn, params, body) {
         "id": param,
         "init": init
       });
-    });
+    }
     
     body.body = [{
       "type": "VariableDeclaration",
@@ -263,3 +264,5 @@ exports.Parameter.generateFunctionBody = function (fn, params, body) {
     params.length = 0;
   }
 };
+
+exports.Parameter = Parameter;
