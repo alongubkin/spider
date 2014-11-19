@@ -490,16 +490,6 @@ InheritsFrom
   = "extends" __ call:CallExpression __ {
       return call;
     }
-  / "extends" __ id:Identifier __ {
-      return insertLocationData(
-        new ast.CallExpression(id, []),
-        text(), line(), column());
-    }
-  / "extends" __ "::" __ id:Identifier __ {
-      return insertLocationData(
-        new ast.CallExpression(id.asGlobal(), []),
-        text(), line(), column());
-    }
     
 FormalParameterList
   = first:FormalParameter rest:(__ "," __ FormalParameter)* {
@@ -689,11 +679,19 @@ ExpressionStatement
     }
 
 AssignmentExpression
-  = left:LeftHandSideExpression __
-    operator:AssignmentOperator __
-    right:AssignmentExpression
-    { return insertLocationData(new ast.AssignmentExpression(left, operator, right), text(), line(), column()); }
-  / ConditionalExpression
+  = left:ConditionalExpression 
+    assignment:(__ operator:AssignmentOperator __
+    right:AssignmentExpression)? { 
+      if (!assignment) {
+        return left;
+      }
+      
+      return insertLocationData(new ast.AssignmentExpression(
+        left, 
+        extractOptional(assignment, 1), 
+        extractOptional(assignment, 3)), text(), line(), column()); 
+    }
+  
   
 AssignmentOperator
   = "=" !"=" { return "=" }
@@ -881,15 +879,18 @@ ExistentialExpression
   
 LeftHandSideExpression
   = CallExpression
-  / NewExpression
 
 CallExpression
   = first:(
-      callee:MemberExpression __ nullPropagatingOperator:"?"? __ args:Arguments {
-        if (nullPropagatingOperator === "?") {
-          return insertLocationData(new ast.NullCheckCallExpression(callee, args), text(), line(), column());
+      callee:MemberExpression call:(__ nullPropagatingOperator:"?"? __ args:Arguments)? {
+        if (!call) {
+          return callee;
+        }
+        
+        if (extractOptional(call, 1) === "?") {
+          return insertLocationData(new ast.NullCheckCallExpression(callee, extractOptional(call, 3)), text(), line(), column());
         } else {
-          return insertLocationData(new ast.CallExpression(callee, args), text(), line(), column());
+          return insertLocationData(new ast.CallExpression(callee, extractOptional(call, 3)), text(), line(), column());
         }
       }
     )
@@ -937,12 +938,6 @@ CallExpression
       });
     }
     
-NewExpression
-  = MemberExpression
-  / NewToken __ callee:NewExpression {
-      return insertLocationData(new ast.NewExpression(callee, []), text(), line(), column());
-    }
-
 MemberExpression
   = first:( 
         FunctionExpression
@@ -1000,7 +995,6 @@ Argument
   }
   / AssignmentExpression
 
-  
 FunctionExpression
   = FuncToken __ id:(Identifier __)?
     "(" __ params:(FormalParameterList __)? ")" __

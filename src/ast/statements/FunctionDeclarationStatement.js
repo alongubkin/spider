@@ -1,5 +1,6 @@
 var Node = require('../Node').Node,
-    Parameter = require('../Parameter').Parameter;
+    Parameter = require('../Parameter').Parameter,
+    CallExpression = require('../expressions/CallExpression').CallExpression;
 
 exports.FunctionDeclarationStatement = function (id, params, body, inheritsFrom) {
   var self = this;
@@ -45,6 +46,10 @@ exports.FunctionDeclarationStatement.prototype.codegen = function () {
   self.body = self.body.codegen();
   
   if (self.inheritsFrom) {
+    if (self.inheritsFrom.type !== 'CallExpression') {
+      self.inheritsFrom = new CallExpression(self.inheritsFrom, []);
+    }
+        
     self.inheritsFrom = self.inheritsFrom.codegen();
     
     self.body.body.splice(0, 0, {
