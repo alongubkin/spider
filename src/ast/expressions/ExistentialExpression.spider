@@ -1,37 +1,37 @@
+use :node;
+
 var Node = require('../Node').Node;
 
-exports.ExistentialExpression = function (argument) {
-  Node.call(this);
+func ExistentialExpression(argument) 
+  extends Node {
   
   this.type = 'ExistentialExpression';
   this.argument = argument;
   this.argument.parent = this;
-};
+}
 
-exports.ExistentialExpression.prototype = Object.create(Node);
-
-exports.ExistentialExpression.prototype.codegen = function () {
-  if (!Node.prototype.codegen.call(this)) {
+ExistentialExpression.prototype.codegen = () -> {
+  if !super.codegen() {
     return;
   }
   
-  var isArgumentCallExpression = this.argument.hasCallExpression && this.argument.hasCallExpression();
+  var isArgumentCallExpression = this.argument.hasCallExpression?() ?? false;
   
   this.argument = this.argument.codegen();
   
   // If the argument has a function call (e.g: a().b)
   // then store its value in a separate variable to avoid
   // calling the function twice.
-  if (isArgumentCallExpression) {
+  if isArgumentCallExpression {
     var context = this.getContext();
     
     var id = {
       "type": "Identifier",
-      "name": exports.ExistentialExpression.getNextVariableName()    
+      "name": ExistentialExpression.getNextVariableName()    
     };
     
     context.node.body.splice(context.position + 
-      (exports.ExistentialExpression.existentialIndex - 2), 0, {
+      (ExistentialExpression.existentialIndex - 2), 0, {
       "type": "VariableDeclaration",
       "declarations": [
         {
@@ -83,20 +83,20 @@ exports.ExistentialExpression.prototype.codegen = function () {
   return this;
 };
 
-exports.ExistentialExpression.prototype.hasCallExpression = function () {
-  return (this.argument !== null && 
-          this.argument.hasCallExpression && 
-          this.argument.hasCallExpression());
+ExistentialExpression.prototype.hasCallExpression = () -> {
+  return this.argument?.hasCallExpression?() ?? false;
 };
 
-exports.ExistentialExpression.getNextVariableName = function () {
-  if (!this.existentialIndex) { 
+ExistentialExpression.getNextVariableName = () -> {
+  if !this.existentialIndex? { 
     this.existentialIndex = 0;
   }
   
   return "existential" + this.existentialIndex++;
 };
 
-exports.ExistentialExpression.resetVariableNames = function () {
+ExistentialExpression.resetVariableNames = () -> {
   this.existentialIndex = 0;
 };
+
+exports.ExistentialExpression = ExistentialExpression;
