@@ -1,35 +1,32 @@
+use :node;
+
 var Node = require('./Node').Node;
 
-exports.Range = function (from, operator, to) {
-  Node.call(this);
+func Range(from, operator, to) 
+  extends Node {
   
   this.type = 'Range';
   this.operator = operator;
   
   this.from = from;
   
-  if (this.from) {
+  if this.from? {
     this.from.parent = this;
   }
   
   this.to = to;
   
-  if (this.to) {
+  if this.to? {
     this.to.parent = this;
   }
-};
+}
 
-exports.Range.prototype = Object.create(Node);
-
-exports.Range.prototype.codegen = function () {
-  if (!Node.prototype.codegen.call(this)) {
+Range.prototype.codegen = () -> {
+  if !super.codegen() {
     return;
   }
   
-  var isNumber = function (n) {
-    return !isNaN(parseFloat(n)) && isFinite(n);
-  };
-
+  var isNumber = (n) -> !::isNaN(::parseFloat(n)) && ::isFinite(n);
   var isNumeric = isNumber(this.from.value) && isNumber(this.to.value);
                   
   this.from = this.from.codegen();
@@ -37,39 +34,43 @@ exports.Range.prototype.codegen = function () {
   
   var updateOperator, testOperator;
   
-  if (isNumeric) {
-    updateOperator = this.from.value < this.to.value ? '++' : '--';
-    testOperator = this.from.value < this.to.value ? '<' : '>';
+  if isNumeric {
+    updateOperator = '++' if this.from.value < this.to.value else '--';
+    testOperator = '<' if this.from.value < this.to.value else '>';
     
-    if (this.operator === '..') {
+    if this.operator ==  '..' {
       testOperator += '=';
     }
   }
   
-  if (isNumeric && Math.abs(this.to.value - this.from.value) <= 20) {
+  if isNumeric && ::Math.abs(this.to.value - this.from.value) <= 20 {
     this.type = 'ArrayExpression';
     this.elements = [];
     
-    var test = function (i) {
-      switch (testOperator) {
-      case '>':
-        return i > this.to.value;
-      
-      case '<':
-        return i < this.to.value;
-      
-      case '>=':
-        return i >= this.to.value;
-      
-      case '<=':
-        return i <= this.to.value;
+    var test = (i) -> {
+      switch testOperator {
+        case '>': {
+          return i > this.to.value;
+        },
+        
+        case '<': {
+          return i < this.to.value;
+        },
+        
+        case '>=': {
+          return i >= this.to.value;
+        },
+        
+        case '<=': {
+          return i <= this.to.value;
+        }
       }
     };
     
-    for (var i = this.from.value; 
+    for var i = this.from.value; 
         test.call(this, i);
-        (updateOperator === '++') ? i++ : i--) {
-      this.elements.push({ 
+        i++ if updateOperator == '++' else i-- {
+      this.elements.push({
         "type": "Literal",
         "value": i
       });
@@ -89,7 +90,7 @@ exports.Range.prototype.codegen = function () {
       }
     }];
     
-    if (isNumeric) {
+    if isNumeric {
       testExpression = {
         "type": "BinaryExpression",
         "operator": testOperator,
@@ -110,7 +111,7 @@ exports.Range.prototype.codegen = function () {
         "prefix": false
       };
     } else {
-      if (this.from.hasCallExpression()) {
+      if this.from.hasCallExpression() {
         var startId = {
           "type": "Identifier",
           "name": "_start"
@@ -125,7 +126,7 @@ exports.Range.prototype.codegen = function () {
         this.from = startId;
       }
       
-      if (this.to.hasCallExpression()) {
+      if this.to.hasCallExpression() {
         var endId = {
           "type": "Identifier",
           "name": "_end"
@@ -150,7 +151,7 @@ exports.Range.prototype.codegen = function () {
         },
         "consequent": {
           "type": "BinaryExpression",
-          "operator": "<" + (this.operator === '..' ? '=' : ''),
+          "operator": "<" + ('=' if this.operator == '..' else ''),
           "left": {
             "type": "Identifier",
             "name": "_i"
@@ -159,7 +160,7 @@ exports.Range.prototype.codegen = function () {
         },
         "alternate": {
           "type": "BinaryExpression",
-          "operator": ">" + (this.operator === '..' ? '=' : ''),
+          "operator": ">" + ('=' if this.operator == '..' else ''),
           "left": {
             "type": "Identifier",
             "name": "_i"
@@ -276,15 +277,15 @@ exports.Range.prototype.codegen = function () {
       }
     };
   
-    Object.defineProperty(this, 'arguments', { 
+    ::Object.defineProperty(this, 'arguments', { 
       value: [{ "type": "ThisExpression" }], 
       enumerable: true 
-    });    
+    });
   }
   
   return this;
 };
 
-exports.Range.prototype.hasCallExpression = function () {
-  return true;
-};
+Range.prototype.hasCallExpression = () -> true;
+
+exports.Range = Range;
