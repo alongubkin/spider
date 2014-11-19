@@ -1,0 +1,22 @@
+use :node;
+
+var Node = require('../Node').Node;
+
+func ExpressionStatement(expression)
+  extends Node {
+  
+  this.type = 'ExpressionStatement';
+  this.expression = expression;
+  this.expression.parent = this;
+}
+
+ExpressionStatement.prototype.codegen = () -> {
+  if !super.codegen() {
+    return;
+  }
+    
+  this.expression = this.expression.codegen();
+  return this;
+};
+
+exports.ExpressionStatement = ExpressionStatement;
