@@ -78,6 +78,7 @@ exports.FunctionExpression.prototype.codegen = function () {
   if (self.inheritsFrom) {
     if (self.inheritsFrom.type !== 'CallExpression') {
       self.inheritsFrom = new CallExpression(self.inheritsFrom, []);
+      self.inheritsFrom.parent = self;
     }
     
     var context = self.getContext();
