@@ -1,26 +1,25 @@
+use :node;
+
 var Node = require('../Node').Node,
     CallExpression = require('./CallExpression').CallExpression;
     
-exports.NullCheckCallExpression = function (callee, args) {
-  var self = this;
-  Node.call(self);
+func NullCheckCallExpression(callee, args)
+  extends Node {
   
-  self.type = 'NullCheckCallExpression';
+  this.type = 'NullCheckCallExpression';
   
-  self.callee = callee;
-  self.callee.parent = this;
+  this.callee = callee;
+  this.callee.parent = this;
   
-  self.args = args;
+  this.args = args;
   
-  args.forEach(function (arg) {
-    arg.parent = self;
-  });  
-};
+  for arg in args {
+    arg.parent = this;
+  }
+}
 
-exports.NullCheckCallExpression.prototype = Object.create(Node);
-
-exports.NullCheckCallExpression.prototype.codegen = function () {
-  if (!Node.prototype.codegen.call(this)) {
+NullCheckCallExpression.prototype.codegen = () -> {
+  if !super.codegen() {
     return;
   }
   
@@ -29,30 +28,30 @@ exports.NullCheckCallExpression.prototype.codegen = function () {
   this.callee = this.callee.codegen();
   
   var args = this.args;
-  args.forEach(function (arg, i) {
-    var isSplat = args[i].type === "SplatExpression";    
+  for arg, i in args {
+    var isSplat = args[i].type == "SplatExpression";    
     args[i] = arg.codegen();
     args[i].codeGenerated = true;
     
-    if (isSplat) {
+    if isSplat {
       args[i].__splat = true;
     }
-  });
+  }
   
   // If the callee has a function call (e.g: a().b)
   // then store its value in a separate variable to avoid
   // calling the function twice.
-  if (this.callee.hasCallExpression && this.callee.hasCallExpression()) {
+  if this.callee.hasCallExpression?() {
     var context = this.getContext();
     
     var id = {
       "type": "Identifier",
-      "name": exports.NullCheckCallExpression.getNextVariableName(),
+      "name": NullCheckCallExpression.getNextVariableName(),
       "codeGenerated": true
     };
     
     context.node.body.splice(context.position + 
-      (exports.NullCheckCallExpression.nullCheckIndex - 2), 0, {
+      (NullCheckCallExpression.nullCheckIndex - 2), 0, {
       "type": "VariableDeclaration",
       "declarations": [
         {
@@ -89,7 +88,7 @@ exports.NullCheckCallExpression.prototype.codegen = function () {
   
   // If we are null propagating (?.), then make sure to
   // add the null propagating condition 
-  if (calleeType === 'NullPropagatingExpression') {
+  if calleeType == 'NullPropagatingExpression' {
     argument = argument.consequent;
     test.left.argument = argument;
     
@@ -104,7 +103,7 @@ exports.NullCheckCallExpression.prototype.codegen = function () {
   argument.codeGenerated = true;
   var consequent = new CallExpression(argument, args).codegen();
     
-  if (this.parent.type === 'ExpressionStatement') {
+  if this.parent.type == 'ExpressionStatement' {
     this.parent.type = 'IfStatement';
     this.parent.test = test;
     this.parent.consequent = {
@@ -135,18 +134,18 @@ exports.NullCheckCallExpression.prototype.codegen = function () {
   return this;
 };
 
-exports.NullCheckCallExpression.prototype.hasCallExpression = function () {  
-  return true;
-};
+NullCheckCallExpression.prototype.hasCallExpression = () -> true;
 
-exports.NullCheckCallExpression.getNextVariableName = function () {
-  if (!this.nullCheckIndex) { 
+NullCheckCallExpression.getNextVariableName = () -> {
+  if !this.nullCheckIndex? { 
     this.nullCheckIndex = 0;
   }
   
   return "nullCheck" + this.nullCheckIndex++;
 };
 
-exports.NullCheckCallExpression.resetVariableNames = function () {
+NullCheckCallExpression.resetVariableNames = () -> {
   this.nullCheckIndex = 0;
 };
+
+exports.NullCheckCallExpression = NullCheckCallExpression;
