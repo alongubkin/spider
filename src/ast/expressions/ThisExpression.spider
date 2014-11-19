@@ -1,0 +1,21 @@
+use :node;
+
+var Node = require('../Node').Node;
+
+func ThisExpression()
+  extends Node {
+
+  this.type = 'ThisExpression';
+}
+
+ThisExpression.prototype.codegen = () -> {
+  if !super.codegen() {
+    return;
+  }
+  
+  return this;
+};
+
+ThisExpression.prototype.hasCallExpression = () -> false;
+
+exports.ThisExpression = ThisExpression;
