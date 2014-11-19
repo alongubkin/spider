@@ -1,7 +1,9 @@
+use :node;
+
 var Node = require('../Node').Node;
 
-exports.RangeMemberExpression = function (object, range) {
-  Node.call(this);
+func RangeMemberExpression(object, range)
+  extends Node {
   
   this.type = 'RangeMemberExpression';
   this.object = object;
@@ -9,24 +11,20 @@ exports.RangeMemberExpression = function (object, range) {
   
   this.range = range;
   this.range.parent = this;
-};
+}
 
-exports.RangeMemberExpression.prototype = Object.create(Node);
-
-exports.RangeMemberExpression.prototype.codegen = function () {
-  if (!Node.prototype.codegen.call(this)) {
+RangeMemberExpression.prototype.codegen = () -> {
+  if !super.codegen() {
     return;
   }
   
-  var isNumber = function (n) {
-    return !isNaN(parseFloat(n)) && isFinite(n);
-  };
+  var isNumber = (n) -> !::isNaN(::parseFloat(n)) && ::isFinite(n);
    
   // If this node is the left side of an assignment expression,  
   // it means we're dealing with splice. For example: 
   // items[1..2] = [1, 2];
-  if (this.parent.type === 'AssignmentExpression' &&
-      this.parent.left === this) {
+  if this.parent.type == 'AssignmentExpression' &&
+     this.parent.left == this {
     this.parent.type = 'CallExpression';
 
     this.parent.callee = {
@@ -51,22 +49,22 @@ exports.RangeMemberExpression.prototype.codegen = function () {
     };
     
     var to;
-    var from = this.range.from ? 
-               this.range.from.codegen() : {
+    var from = this.range.from.codegen() if this.range.from else {
                  "type": "Literal",
                  "value": 0
                };   
     
-    if (this.range.to) {
-      if (isNumber(from.value) &&
-          isNumber(this.range.to.value)) {        
+    if this.range.to? {
+      if isNumber(from.value) &&
+         isNumber(this.range.to.value) {
         to = {
           "type": "Literal",
-          "value": this.range.to.value - from.value + (this.range.operator === '..' ? 1 : 0)
+          "value": this.range.to.value - from.value + (1 if this.range.operator == '..' else 0)
         };
       } else {
         to = this.range.to.codegen();
-        if (from.value !== 0) {
+        
+        if from.value != 0 {
           to = {
             "type": "BinaryExpression",
             "operator": "-",
@@ -75,7 +73,7 @@ exports.RangeMemberExpression.prototype.codegen = function () {
           };
         }
         
-        if (this.range.operator === '..') {
+        if this.range.operator == '..' {
           to = {
             "type": "BinaryExpression",
             "operator": "+",
@@ -95,7 +93,7 @@ exports.RangeMemberExpression.prototype.codegen = function () {
       };
     }  
   
-    Object.defineProperty(this.parent, 'arguments', { 
+    ::Object.defineProperty(this.parent, 'arguments', { 
       value: [
         this.object.codegen(),
         {
@@ -135,7 +133,7 @@ exports.RangeMemberExpression.prototype.codegen = function () {
     
     var args = [];
     
-    if (!this.range.from) {
+    if !this.range.from? {
       args.push({
         "type": "Literal",
         "value": 0
@@ -144,11 +142,11 @@ exports.RangeMemberExpression.prototype.codegen = function () {
       args.push(this.range.from.codegen());
     }
     
-    if (this.range.to) {
-      if (this.range.operator === '...') {
+    if this.range.to? {
+      if this.range.operator == '...' {
         args.push(this.range.to.codegen());
       } else {
-        if (this.range.to.value && isNumber(this.range.to.value)) {
+        if this.range.to.value && isNumber(this.range.to.value) {
           args.push({
             "type": "Literal",
             "value": this.range.to.value + 1
@@ -167,7 +165,7 @@ exports.RangeMemberExpression.prototype.codegen = function () {
       }
     }
     
-    Object.defineProperty(this, 'arguments', { 
+    ::Object.defineProperty(this, 'arguments', { 
       value: args, 
       enumerable: true 
     });
@@ -176,6 +174,6 @@ exports.RangeMemberExpression.prototype.codegen = function () {
   return this;
 };
 
-exports.RangeMemberExpression.prototype.hasCallExpression = function () {
-  return true;
-};
+RangeMemberExpression.prototype.hasCallExpression = () -> true;
+
+exports.RangeMemberExpression = RangeMemberExpression;
