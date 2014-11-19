@@ -1,0 +1,23 @@
+use :node;
+
+var Node = require('../Node').Node;
+
+func NullLiteral()
+  extends Node {
+  
+  this.type = 'Literal';
+  this.value = null;
+  this.raw = "null";
+}
+
+NullLiteral.prototype.codegen = () -> {
+  if !super.codegen() {
+    return;
+  }
+  
+  return this;
+};
+
+NullLiteral.prototype.hasCallExpression = () -> false;
+
+exports.NullLiteral = NullLiteral;
