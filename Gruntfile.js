@@ -11,23 +11,17 @@ module.exports = function(grunt) {
     nodeunit: {
       files: ['test/**/*_test.js']
     },
-    jshint: {
-      options: {
-        jshintrc: '.jshintrc',
-        reporter: require('jshint-stylish')
-      },
-      gruntfile: {
-        src: 'Gruntfile.js'
-      },
-      lib: {
-        src: [
-          'lib/**/*.js',
-          '!lib/parser.js'
-        ]
-      },
-      test: {
-        src: ['test/**/*.js']
-      }
+    eslint: {
+      gruntfile: [
+        'Gruntfile.js'
+      ],
+      lib: [
+        'lib/**/*.js',
+        '!lib/parser.js'
+      ],
+      test: [
+        'test/**/*.js'
+      ]
     },
     mochacli: {
       options: {
@@ -94,7 +88,7 @@ module.exports = function(grunt) {
   });
     
   // Default task.
-  grunt.registerTask('default', ['build', 'jshint', 'mochacli']);
+  grunt.registerTask('default', ['build', 'eslint', 'mochacli']);
   grunt.registerTask('build', ['clean:build', 'peg', 'spider_script:build', 'copy:build']);
   grunt.registerTask('coverage', ['mocha_istanbul:coverage']);  
 };
