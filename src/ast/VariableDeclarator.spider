@@ -1,7 +1,9 @@
+use :node;
+
 var Node = require('./Node').Node;
 
-exports.VariableDeclarator = function (id, init) {
-  Node.call(this);
+func VariableDeclarator(id, init) 
+  extends Node {
   
   this.type = 'VariableDeclarator';
   
@@ -10,23 +12,22 @@ exports.VariableDeclarator = function (id, init) {
   
   this.init = init;
   
-  if (this.init) {
+  if this.init? {
     this.init.parent = this;
   }
-};
+}
 
-exports.VariableDeclarator.prototype = Object.create(Node);
-
-exports.VariableDeclarator.prototype.codegen = function () {
-  if (!Node.prototype.codegen.call(this)) {
+VariableDeclarator.prototype.codegen = () -> {
+  if !super.codegen() {
     return;
   }
   
-  if (this.init) {
+  if this.init? {
     this.init = this.init.codegen();
   }
   
   this.id = this.id.codegen();
-  
   return this;
 };
+
+exports.VariableDeclarator = VariableDeclarator;
