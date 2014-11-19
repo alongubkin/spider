@@ -1,19 +1,19 @@
+use :node;
+
 var Node = require('../Node').Node;
 
-exports.UnaryExpression = function (operator, argument) {
-  Node.call(this);
+func UnaryExpression(operator, argument)
+  extends Node {
   
   this.type = 'UnaryExpression';
   this.operator = operator;
   this.argument = argument;
   this.argument.parent = this;
   this.prefix = true;
-};
+}
 
-exports.UnaryExpression.prototype = Object.create(Node);
-
-exports.UnaryExpression.prototype.codegen = function () {
-  if (!Node.prototype.codegen.call(this)) {
+UnaryExpression.prototype.codegen = () -> {
+  if !super.codegen() {
     return;
   }
   
@@ -21,7 +21,7 @@ exports.UnaryExpression.prototype.codegen = function () {
     
   // typeof operator should compile to:
   // ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
-  if (this.operator === 'typeof') {    
+  if (this.operator == 'typeof') {    
     var typeofExpression = {
       "type": "CallExpression",
       "callee": {
@@ -66,7 +66,7 @@ exports.UnaryExpression.prototype.codegen = function () {
             },
             "arguments": [{
               "type": "Literal",
-              "value": new RegExp("\\s([a-zA-Z]+)")
+              "value": new ::RegExp("\\s([a-zA-Z]+)")
             }]
           },
           "property": {
@@ -83,7 +83,7 @@ exports.UnaryExpression.prototype.codegen = function () {
       "arguments": []
     };
     
-    if (!this.argument.hasCallExpression()) {
+    if !this.argument.hasCallExpression() {
       this.type = "ConditionalExpression";
       this.test = {
         "type": "BinaryExpression",
@@ -110,7 +110,7 @@ exports.UnaryExpression.prototype.codegen = function () {
     } else {
       this.type = typeofExpression.type;
       this.callee = typeofExpression.callee;
-      Object.defineProperty(this, 'arguments', { 
+      ::Object.defineProperty(this, 'arguments', { 
         value: typeofExpression.arguments, 
         enumerable: true 
       });
@@ -120,6 +120,8 @@ exports.UnaryExpression.prototype.codegen = function () {
   return this;
 };
 
-exports.UnaryExpression.prototype.hasCallExpression = function () {
-  return (this.argument !== null && this.argument.hasCallExpression());
+UnaryExpression.prototype.hasCallExpression = () -> {
+  return this.argument?.hasCallExpression();
 };
+
+exports.UnaryExpression = UnaryExpression;
