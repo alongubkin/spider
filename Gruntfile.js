@@ -53,7 +53,7 @@ module.exports = function(grunt) {
     },
     peg: {
       spider: {
-        src: "lib/spider.pegjs",
+        src: "src/spider.pegjs",
         dest: "lib/parser.js"
       }
     },
@@ -65,10 +65,36 @@ module.exports = function(grunt) {
           excludes: ['lib/parser.js']
         },
       }
+    },
+    clean: {
+      build: ["lib/"],
+    },    
+    spider_script: {
+      options: {},
+      build: {
+        files: [{
+          expand: true,
+          cwd: 'src',
+          src: ['**/*.spider'],
+          dest: 'lib/',
+          ext: '.js'
+        }]
+      }
+    },
+    copy: {
+      build: {
+        files: [{
+          expand: true,
+          cwd: 'src',
+          src: ['**/*.js'],
+          dest: 'lib/',
+        }]
+      }
     }
   });
     
   // Default task.
-  grunt.registerTask('default', ['peg', 'jshint', 'mochacli']);
+  grunt.registerTask('default', ['build', 'jshint', 'mochacli']);
+  grunt.registerTask('build', ['clean:build', 'peg', 'spider_script:build', 'copy:build']);
   grunt.registerTask('coverage', ['mocha_istanbul:coverage']);  
 };
