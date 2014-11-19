@@ -1,96 +1,94 @@
+use :node;
+
 var Node = require('../Node').Node,
     Parameter = require('../Parameter').Parameter,
     CallExpression = require('../expressions/CallExpression').CallExpression;
     
-exports.FunctionExpression = function (id, params, body, inheritsFrom) {
-  var self = this;
-  Node.call(self);
+func FunctionExpression (id, params, body, inheritsFrom) 
+  extends Node {
+ 
+  this.type = 'FunctionExpression'; 
+  this.defaults = [];
+  this.rest = null;
+  this.generator = false;
+  this.expression = false;  
   
-  self.type = 'FunctionExpression'; 
-  self.defaults = [];
-  self.rest = null;
-  self.generator = false;
-  self.expression = false;  
+  this.id = id;
   
-  self.id = id;
-  
-  if (self.id) {
-    self.id.parent = self;
+  if this.id? {
+    this.id.parent = this;
   }
   
-  self.body = body;
-  self.params = params;
+  this.body = body;
+  this.params = params;
   
-  body.parent = self;
+  body.parent = this;
   
-  params.forEach(function (param) {
-    param.parent = self;
-  });
-  
-  self.inheritsFrom = inheritsFrom;
-  
-  if (self.inheritsFrom) {
-    self.inheritsFrom.parent = self;
+  for param in params {
+    param.parent = this;
   }
   
-  if (self.body.type !== 'BlockStatement') {
-    self.autoBlock = true;
-    self.body = {
+  this.inheritsFrom = inheritsFrom;
+  
+  if this.inheritsFrom? {
+    this.inheritsFrom.parent = this;
+  }
+  
+  if this.body.type != 'BlockStatement' {
+    this.autoBlock = true;
+    this.body = {
       "type": "BlockStatement",
       "body": [
         {
           "type": "ReturnStatement",
-          "argument": self.body
+          "argument": this.body
         }
       ]
     };
     
-    self.getContext = function () {
+    var self = this;
+    this.getContext = () -> {
       return { 
         node: self.body,
         position: -1
       };
     };
   }
-};
+}
 
-exports.FunctionExpression.prototype = Object.create(Node);
-
-exports.FunctionExpression.prototype.codegen = function () {
-  var self = this;
-  
-  if (!Node.prototype.codegen.call(self)) {
+FunctionExpression.prototype.codegen = () -> {
+  if !super.codegen() {
     return;
   }
   
-  if (self.id) {
-    self.id = self.id.codegen(false);
+  if this.id? {
+    this.id = this.id.codegen(false);
   }
   
-  Parameter.generateFunctionBody(self, self.params, self.body);
+  Parameter.generateFunctionBody(this, this.params, this.body);
   
-  if (self.autoBlock) {
-    self.body.body[0].argument = self.body.body[self.body.body.length - 1].argument.codegen();
+  if this.autoBlock {
+    this.body.body[0].argument = this.body.body[this.body.body.length - 1].argument.codegen();
   } else {
-    self.body = self.body.codegen();
+    this.body = this.body.codegen();
   }
   
-  if (self.inheritsFrom) {
-    if (self.inheritsFrom.type !== 'CallExpression') {
-      self.inheritsFrom = new CallExpression(self.inheritsFrom, []);
-      self.inheritsFrom.parent = self;
+  if this.inheritsFrom? {
+    if this.inheritsFrom.type != 'CallExpression' {
+      this.inheritsFrom = new CallExpression(this.inheritsFrom, []);
+      this.inheritsFrom.parent = this;
     }
     
-    var context = self.getContext();
+    var context = this.getContext();
     
-    self.body.body.splice(0, 0, {
+    this.body.body.splice(0, 0, {
       "type": "ExpressionStatement",
       "expression": {
         "type": "CallExpression",
         "callee": {
           "type": "MemberExpression",
           "computed": false,
-          "object": self.inheritsFrom.callee,
+          "object": this.inheritsFrom.callee,
           "property": {
             "type": "Identifier",
             "name": "call"
@@ -98,13 +96,13 @@ exports.FunctionExpression.prototype.codegen = function () {
         },
         "arguments": [
           { "type": "ThisExpression" }
-        ].concat(self.inheritsFrom.arguments)
+        ].concat(this.inheritsFrom.arguments)
       }
     });
     
     var id = {
       "type": "Identifier",
-      "name": exports.FunctionExpression.getNextVariableName()
+      "name": FunctionExpression.getNextVariableName()
     };
     
     context.node.body.splice(context.position, 0, {
@@ -150,7 +148,7 @@ exports.FunctionExpression.prototype.codegen = function () {
             }
           },
           "arguments": [
-            self.inheritsFrom.callee
+            this.inheritsFrom.callee
           ]
         }
       }
@@ -162,18 +160,18 @@ exports.FunctionExpression.prototype.codegen = function () {
   return this;
 };
 
-exports.FunctionExpression.prototype.hasCallExpression = function () {
-  return true;
-};
+FunctionExpression.prototype.hasCallExpression = () -> true;
 
-exports.FunctionExpression.getNextVariableName = function () {
-  if (!this.functionExpressionIndex) { 
+FunctionExpression.getNextVariableName = () -> {
+  if !this.functionExpressionIndex? { 
     this.functionExpressionIndex = 0; 
   }
 
   return "functionExpression" + this.functionExpressionIndex++;
 };
 
-exports.FunctionExpression.resetVariableNames = function () {
+FunctionExpression.resetVariableNames = () -> {
   this.functionExpressionIndex = 0;
 };
+
+exports.FunctionExpression = FunctionExpression;
