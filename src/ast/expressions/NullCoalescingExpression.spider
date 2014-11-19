@@ -1,7 +1,9 @@
+use :node;
+
 var Node = require('../Node').Node;
 
-exports.NullCoalescingExpression = function (left, right) {
-  Node.call(this);
+func NullCoalescingExpression(left, right)
+  extends Node {
   
   this.type = 'NullCoalescingExpression';
   
@@ -10,12 +12,10 @@ exports.NullCoalescingExpression = function (left, right) {
   
   this.right = right;
   this.right.parent = this;
-};
+}
 
-exports.NullCoalescingExpression.prototype = Object.create(Node);
-
-exports.NullCoalescingExpression.prototype.codegen = function () {
-  if (!Node.prototype.codegen.call(this)) {
+NullCoalescingExpression.prototype.codegen = () -> {
+  if !super.codegen() {
     return;
   }
   
@@ -30,13 +30,13 @@ exports.NullCoalescingExpression.prototype.codegen = function () {
   // If the left expression is a function call (e.g: f() ?? 5)
   // then store its value in a separate variable to avoid
   // calling the function twice.
-  if (leftType === 'NullPropagatingExpression' ||
-      leftType === 'NullCoalescingExpression' ||
-      (this.left.hasCallExpression && this.left.hasCallExpression())) {
+  if leftType == 'NullPropagatingExpression' ||
+     leftType == 'NullCoalescingExpression' ||
+     this.left.hasCallExpression?() {
          
     var id = {
       "type": "Identifier",
-      "name": exports.NullCoalescingExpression.getNextLeftName()
+      "name": NullCoalescingExpression.getNextLeftName()
     };
     
     context.node.body.splice(context.position, 0, {
@@ -67,11 +67,11 @@ exports.NullCoalescingExpression.prototype.codegen = function () {
     }
   };
 
-  if (this.left.type !== 'Identifier') {
+  if this.left.type != 'Identifier' {
     addUndefinedCheck = false;
   }
 
-  if (addUndefinedCheck) {
+  if addUndefinedCheck {
     test = {
       "type": "LogicalExpression",
       "operator": "||",
@@ -96,10 +96,9 @@ exports.NullCoalescingExpression.prototype.codegen = function () {
 
   // If the null coalescing operator is an expression
   // statement child, the generated JS should be an if statement.
-  if (this.parent !== null && 
-      this.parent.type === 'ExpressionStatement') {
+  if this.parent?.type == 'ExpressionStatement' {
     
-    if (!this.right.hasCallExpression()) {
+    if !this.right.hasCallExpression() {
       this.parent.type = 'EmptyStatement';
       return this;
     }
@@ -132,19 +131,21 @@ exports.NullCoalescingExpression.prototype.codegen = function () {
   }
 };
 
-exports.NullCoalescingExpression.prototype.hasCallExpression = function () {
-  return (this.left !== null && this.left.hasCallExpression()) ||
-         (this.right !== null && this.right.hasCallExpression());
+NullCoalescingExpression.prototype.hasCallExpression = () -> {
+  return this.left?.hasCallExpression() ||
+         this.right?.hasCallExpression();
 };
 
-exports.NullCoalescingExpression.getNextLeftName = function () {
-  if (!this.nullCoalescingIndex) { 
+NullCoalescingExpression.getNextLeftName = () -> {
+  if (!this.nullCoalescingIndex?) { 
     this.nullCoalescingIndex = 0; 
   }
 
   return "nullCoalescing" + this.nullCoalescingIndex++;
 };
 
-exports.NullCoalescingExpression.resetVariableNames = function () {
+NullCoalescingExpression.resetVariableNames = () -> {
   this.nullCoalescingIndex = 0;
 };
+
+exports.NullCoalescingExpression = NullCoalescingExpression;
