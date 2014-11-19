@@ -1,21 +1,22 @@
+use :node;
+
 var Node = require('../Node').Node;
 
-exports.NullPropagatingExpression = function (left, right) {
-  Node.call(this);
+func NullPropagatingExpression(left, right)
+  extends Node {
   
   this.type = 'NullPropagatingExpression';
   this.computed = false;
-  this.object = left;
-  this.property = right;
   
-  left.parent = this;
-  right.parent = this;
-};
+  this.object = left;
+  this.object.parent = this;
+  
+  this.property = right;
+  this.property.parent = this;
+}
 
-exports.NullPropagatingExpression.prototype = Object.create(Node);
-
-exports.NullPropagatingExpression.prototype.codegen = function () {
-  if (!Node.prototype.codegen.call(this)) {
+NullPropagatingExpression.prototype.codegen = () -> {
+  if !super.codegen() {
     return;
   }
   
@@ -28,10 +29,10 @@ exports.NullPropagatingExpression.prototype.codegen = function () {
   // If the left expression is a function call (e.g: a()?.b)
   // then store its value in a separate variable to avoid
   // calling the function twice.
-  if (this.object.hasCallExpression && this.object.hasCallExpression()) {
+  if this.object.hasCallExpression?() {
     var id = {
       "type": "Identifier",
-      "name": exports.NullPropagatingExpression.getNextObjectName(),
+      "name": NullPropagatingExpression.getNextObjectName(),
       "__member_expression": {
         "type": "MemberExpression",
         "object": this.object,
@@ -41,7 +42,7 @@ exports.NullPropagatingExpression.prototype.codegen = function () {
     };
     
     context.node.body.splice(context.position + 
-      (exports.NullPropagatingExpression.nullPropagatingIndex - 1), 0, {
+      (NullPropagatingExpression.nullPropagatingIndex - 1), 0, {
       "type": "VariableDeclaration",
       "declarations": [
         {
@@ -61,7 +62,7 @@ exports.NullPropagatingExpression.prototype.codegen = function () {
   
   // If this node is the last NullPropagatingExpression in
   // the tree, then just create a simple object !== null condition
-  if (childType !== 'NullPropagatingExpression') {
+  if childType != 'NullPropagatingExpression' {
     condition = {
       "type": "BinaryExpression",
       "operator": "!==",
@@ -112,7 +113,7 @@ exports.NullPropagatingExpression.prototype.codegen = function () {
   }
   
   // Return the condition if this isn't the first NullPropagatingExpression
-  if (this.parent && this.parent.type === 'NullPropagatingExpression') {
+  if this.parent?.type == 'NullPropagatingExpression' {
     return condition;
   }
     
@@ -126,9 +127,7 @@ exports.NullPropagatingExpression.prototype.codegen = function () {
       "left": {
         "type": "UnaryExpression",
         "operator": "typeof",
-        "argument": this.object.__first_object ? 
-          this.object.__first_object : 
-          this.object
+        "argument": this.object.__first_object ?? this.object
       },
       "right": {
         "type": "Literal",
@@ -144,7 +143,8 @@ exports.NullPropagatingExpression.prototype.codegen = function () {
     "test": condition,
     "consequent": {
       "type": "MemberExpression",
-      "object": this.object.type === 'Identifier' || !this.object.__member_expression ? this.object : this.object.__member_expression ,
+      "object": this.object if this.object.type == 'Identifier' || !this.object.__member_expression 
+        else this.object.__member_expression,
       "property": this.property,
       "computed": false
     },
@@ -164,12 +164,10 @@ exports.NullPropagatingExpression.prototype.codegen = function () {
   return condition;
 };
 
-exports.NullPropagatingExpression.prototype.hasCallExpression = function () {
-  return true;
-};
+NullPropagatingExpression.prototype.hasCallExpression = () -> true;
 
-exports.NullPropagatingExpression.getNextObjectName = function () {
-  if (!this.nullPropagatingIndex) { 
+NullPropagatingExpression.getNextObjectName = () -> {
+  if !this.nullPropagatingIndex? { 
     this.nullPropagatingIndex = 0;
     this.definedObjectNames = [];
   }
@@ -180,11 +178,13 @@ exports.NullPropagatingExpression.getNextObjectName = function () {
   return name;
 };
 
-exports.NullPropagatingExpression.isObjectNameDefined = function (name) {
-  return this.definedObjectNames.indexOf(name) !== -1;
+NullPropagatingExpression.isObjectNameDefined = (name) -> {
+  return this.definedObjectNames.indexOf(name) != -1;
 };
 
-exports.NullPropagatingExpression.resetVariableNames = function () {
+NullPropagatingExpression.resetVariableNames = () -> {
   this.nullPropagatingIndex = 0;
   this.definedObjectNames = [];
 };
+
+exports.NullPropagatingExpression = NullPropagatingExpression;
