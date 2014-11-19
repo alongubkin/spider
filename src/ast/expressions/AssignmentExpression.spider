@@ -27,8 +27,8 @@ AssignmentExpression.prototype.codegen = () -> {
 };
 
 AssignmentExpression.prototype.hasCallExpression = () -> {
-  return this.left != null && this.left.hasCallExpression() ||
-         this.right != null && this.right.hasCallExpression();
+  return this.left?.hasCallExpression() ||
+         this.right?.hasCallExpression();
 };
 
 exports.AssignmentExpression = AssignmentExpression;

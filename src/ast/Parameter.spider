@@ -86,7 +86,7 @@ Parameter.generateFunctionBody = (fn, params, body) -> {
     params[i] = param.id;
     fn.defineIdentifier(param.id);
     
-    if paramBodyCode != null {
+    if paramBodyCode? {
       paramBodyCode.codeGenerated = true;
       addToBody.push(paramBodyCode);
     }
