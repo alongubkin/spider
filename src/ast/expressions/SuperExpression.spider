@@ -1,21 +1,22 @@
+use :node;
+
 var Node = require('../Node').Node;
 var extend = require('util')._extend;
 
-exports.SuperExpression = function () {
-  Node.call(this);
+func SuperExpression()
+  extends Node {
+
   this.type = 'SuperExpression';
-};
+}
 
-exports.SuperExpression.prototype = Object.create(Node);
-
-exports.SuperExpression.prototype.codegen = function () {
-  if (!Node.prototype.codegen.call(this)) {
+SuperExpression.prototype.codegen = () -> {
+  if !super.codegen() {
     return;
   }
   
   // Raise an error if we are getting a syntax  
   // such as: super?.test
-  if (this.parent.type === 'NullPropagatingExpression') {
+  if this.parent.type == 'NullPropagatingExpression' {
     Node.getErrorManager().error({
       type: "InvalidSuperReference",
       message: "cannot refer to super before the ?. operator",
@@ -27,7 +28,7 @@ exports.SuperExpression.prototype.codegen = function () {
   
   // The only supported use case for super is 
   // member expression (e.g: super.x)
-  if (this.parent.type !== 'MemberExpression') {
+  if this.parent.type != 'MemberExpression' {
     Node.getErrorManager().error({
       type: "InvalidUsageForSuper",
       message: "invalid usage of super keyword",
@@ -42,14 +43,14 @@ exports.SuperExpression.prototype.codegen = function () {
   var parentNode = this;
   var node = this;
   while (node && !node.inheritsFrom &&
-    (node.type !== 'AssignmentExpression' || ((!node.left.property || node.left.property.name !== 'prototype') && 
-      (!node.left.object.property || node.left.object.property.name !== 'prototype')))) {
+    (node.type != 'AssignmentExpression' || ((!node.left.property || node.left.property.name != 'prototype') && 
+      (!node.left.object.property || node.left.object.property.name != 'prototype')))) {
     parentNode = node;
     node = node.parent;
   }
   
   // Raise an error if there's no parent function
-  if (!node) {   
+  if !node {   
     Node.getErrorManager().error({
       type: "InvalidContextForSuper",
       message: "invalid context for super keyword",
@@ -60,7 +61,7 @@ exports.SuperExpression.prototype.codegen = function () {
   }
   
   // Add _self variable to a context.
-  var addSelf = function (context) {
+  var addSelf = (context) -> {
     var selfId = {
       "type": "Identifier",
       "name": "_self",
@@ -88,31 +89,32 @@ exports.SuperExpression.prototype.codegen = function () {
   
   // Modify the call expression to look like:
   // _fn.call(_self)
-  var mutateCallExpression = function (id, parent, selfNode) {
+  var mutateCallExpression = (id, parent, selfNode) -> {
     selfNode.codeGenerated = true;
     
     parent.object = id;
-    parent.property = Object.create({
+    parent.property = ::Object.create({
       "codeGenerated": "true",
       "type": "Identifier",
       "name": "call"
     });
+    
     parent.parent.arguments.splice(0, 0, selfNode);
   };
   
   // If we are inside a prototype function, change 
   // something like: super.x() to Base.prototype.x.call(_self);
-  if (node.type === 'AssignmentExpression') {
+  if node.type == 'AssignmentExpression' {
     var identifier = node.left.object;
     var context;
     
-    if (node.left.property.name !== 'prototype') {
+    if node.left.property.name != 'prototype' {
       identifier = identifier.object;
       context = { node: node.right.body };
     } else {
       // Make sure that the syntax is something like:
       // Fn.prototype = { ... }
-      if (node.right.type !== 'ObjectExpression') {
+      if node.right.type != 'ObjectExpression' {
         Node.getErrorManager().error({
           type: "InvalidUsageForSuper",
           message: "invalid usage of super keyword",
@@ -123,14 +125,14 @@ exports.SuperExpression.prototype.codegen = function () {
       }
       
       var contextNode = this;
-      while (contextNode.parent && contextNode.parent !== node.right) {
+      while (contextNode.parent? && contextNode.parent != node.right) {
         contextNode = contextNode.parent;
       }
 
       // Make sure that the syntax is something like:
       // Fn.prototype = { test: func () { ... } }
-      if (!contextNode || contextNode.type !== 'Property' || 
-          !contextNode.value || contextNode.value.type !== 'FunctionExpression') {
+      if contextNode?.type != 'Property' ||
+         contextNode?.value?.type != 'FunctionExpression' {
         Node.getErrorManager().error({
           type: "InvalidUsageForSuper",
           message: "invalid usage of super keyword",
@@ -144,7 +146,7 @@ exports.SuperExpression.prototype.codegen = function () {
     }
     
     var selfNode;
-    if (context.node === this.getContext().node) {
+    if context.node == this.getContext().node {
       selfNode = { type: 'ThisExpression' };
     } else {
       selfNode = addSelf(context);
@@ -152,7 +154,7 @@ exports.SuperExpression.prototype.codegen = function () {
     
     // If this is a call expression, e.g: super.test(), 
     // Turn this into Base.prototype.test.call(_self)
-    if (this.parent.parent.type === 'CallExpression') {
+    if this.parent.parent.type == 'CallExpression' {
       var memberExpression = {
         type: 'MemberExpression',
         computed: false,
@@ -181,7 +183,7 @@ exports.SuperExpression.prototype.codegen = function () {
   // Find the most left side in the member expression
   // For super.a.b.c.d, the most left side would be super
   var lastObject = this.parent;
-  while (lastObject.object.type === 'MemberExpression') {
+  while (lastObject.object.type == 'MemberExpression') {
     lastObject = lastObject.object;
   }
   
@@ -197,7 +199,7 @@ exports.SuperExpression.prototype.codegen = function () {
   
   // Declare a new variable in the function that extends
   // with a reference to our property
-  if (!this.parent.isIdentifierDefined(id.name)) {
+  if !this.parent.isIdentifierDefined(id.name) {
     superContext.node.body.splice(superContext.position, 0, {
       "codeGenerated": "true",
       "type": "VariableDeclaration",
@@ -214,12 +216,12 @@ exports.SuperExpression.prototype.codegen = function () {
   
   // If we are in a call expression, change it to:
   // _fn.call(_self)
-  if (this.parent.parent.type === 'CallExpression') {
+  if this.parent.parent.type == 'CallExpression' {
     mutateCallExpression(id, this.parent, addSelf(superContext));
   } else {
     // Otherwise, just refer to the variable
     this.parent.type = 'Identifier';
-    Object.defineProperty(this.parent, 'name', { 
+    ::Object.defineProperty(this.parent, 'name', { 
       value: id.name, 
       enumerable: true 
     });  
@@ -228,6 +230,6 @@ exports.SuperExpression.prototype.codegen = function () {
   return id;
 };
 
-exports.SuperExpression.prototype.hasCallExpression = function () {
-  return false;
-};
+SuperExpression.prototype.hasCallExpression = () -> false;
+
+exports.SuperExpression = SuperExpression;
