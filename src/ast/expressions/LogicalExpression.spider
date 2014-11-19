@@ -1,0 +1,58 @@
+use :node;
+
+var Node = require('../Node').Node;
+
+func LogicalExpression(left, operator, right)
+  extends Node {
+  
+  this.type = 'LogicalExpression';
+  this.operator = operator;
+  
+  switch this.operator {
+    case 'and': {
+      this.operator = '&&';
+    },
+    
+    case 'or': {
+      this.operator = '||';
+    }
+  }
+   
+  this.left = left;
+  this.left.parent = this;
+  
+  this.right = right;
+  this.right.parent = this;
+}
+
+LogicalExpression.prototype.codegen = () -> {
+  if !super.codegen() {
+    return;
+  }
+  
+  var enforceBooleanExpression = (o) -> {
+    return {
+      "type": "UnaryExpression",
+      "operator": "!",
+      "argument": {
+        "type": "UnaryExpression",
+        "operator": "!",
+        "argument": o,
+        "prefix": true
+      },
+      "prefix": true
+    };
+  };
+  
+  this.left = enforceBooleanExpression(this.left.codegen());
+  this.right = enforceBooleanExpression(this.right.codegen());
+  
+  return this;
+};
+
+LogicalExpression.prototype.hasCallExpression = () -> {
+  return this.left?.hasCallExpression() ||
+         this.right?.hasCallExpression();
+};
+
+exports.LogicalExpression = LogicalExpression;
