@@ -1,7 +1,9 @@
+use :node;
+
 var Node = require('../Node').Node;
 
-exports.ConditionalExpression = function (test, consequent, alternate) {
-  Node.call(this);
+func ConditionalExpression(test, consequent, alternate) 
+  extends Node {
   
   this.type = 'ConditionalExpression';
   
@@ -13,15 +15,13 @@ exports.ConditionalExpression = function (test, consequent, alternate) {
   
   this.alternate = alternate;
   this.alternate.parent = this;
-};
+}
 
-exports.ConditionalExpression.prototype = Object.create(Node);
-
-exports.ConditionalExpression.prototype.codegen = function () {
-  if (!Node.prototype.codegen.call(this)) {
+ConditionalExpression.prototype.codegen = () -> {
+  if !super.codegen() {
     return;
   }
-  
+    
   this.test = this.test.codegen();
   this.consequent = this.consequent.codegen();
   this.alternate = this.alternate.codegen();
@@ -29,6 +29,6 @@ exports.ConditionalExpression.prototype.codegen = function () {
   return this;
 };
 
-exports.ConditionalExpression.prototype.hasCallExpression = function () {
-  return true;
-};
+ConditionalExpression.prototype.hasCallExpression = () -> true;
+
+exports.ConditionalExpression = ConditionalExpression;
