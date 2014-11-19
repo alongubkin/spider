@@ -1,18 +1,18 @@
+use :node;
+
 var Node = require('../Node').Node;
 
-exports.SplatExpression = function (expression) {
-  Node.call(this);
+func SplatExpression(expression)
+  extends Node {
   
   this.type = 'SplatExpression';
   
   this.expression = expression;
   this.expression.parent = this;
-};
+}
 
-exports.SplatExpression.prototype = Object.create(Node);
-
-exports.SplatExpression.prototype.codegen = function () {
-  if (!Node.prototype.codegen.call(this)) {
+SplatExpression.prototype.codegen = () -> {
+  if !super.codegen() {
     return;
   }
   
@@ -44,6 +44,6 @@ exports.SplatExpression.prototype.codegen = function () {
   };
 };
 
-exports.SplatExpression.prototype.hasCallExpression = function () {
-  return true;
-};
+SplatExpression.prototype.hasCallExpression = () -> true;
+
+exports.SplatExpression = SplatExpression;
