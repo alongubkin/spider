@@ -1,0 +1,23 @@
+use :node;
+
+var Node = require('../Node').Node;
+
+func BooleanLiteral(text)
+  extends Node {
+  
+  this.type = 'Literal';
+  this.value = text == "true";
+  this.raw = text;
+}
+
+BooleanLiteral.prototype.codegen = () -> { 
+  if !super.codegen() {
+    return;
+  }
+  
+  return this; 
+};
+
+BooleanLiteral.prototype.hasCallExpression = () -> false;
+
+exports.BooleanLiteral = BooleanLiteral;
