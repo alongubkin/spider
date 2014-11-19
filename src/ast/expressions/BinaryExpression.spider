@@ -1,0 +1,125 @@
+use :node;
+
+var Node = require('../Node').Node;
+
+func BinaryExpression(left, operator, right) 
+  extends Node {
+  
+  this.type = 'BinaryExpression';
+  this.operator = operator;
+  
+  this.left = left;
+  this.left.parent = this;
+  
+  this.right = right;
+  this.right.parent = this;
+}
+
+BinaryExpression.prototype.codegen = () -> {
+  if !super.codegen() {
+    return;
+  }
+  
+  var isRelational = (operator) 
+    -> operator in ['>', '>=', '<', '>='];
+  
+  // If we are dealing with something like a < x < b, 
+  // turn it into: a < x && x < b
+  if isRelational(this.operator) && 
+     isRelational(this.left.operator) {
+    this.type = 'LogicalExpression';
+    this.right = {
+      "type": "BinaryExpression",
+      "operator": this.operator,
+      "left": this.left.right,
+      "right": this.right.codegen()
+    };
+    
+    this.left = this.left.codegen();
+    this.operator = '&&';
+  } else {
+    this.left = this.left.codegen();
+    this.right = this.right.codegen();
+  
+    switch (this.operator) {
+      case '==': {
+        this.operator = '===';
+      },
+        
+      case '!=': {
+        this.operator = '!==';
+      },
+        
+      case '**': {
+        this.type = 'CallExpression';
+        this.callee = {
+          "type": "MemberExpression",
+          "computed": false,
+          "object": {
+            "type": "Identifier",
+            "name": "Math"
+          },
+          "property": {
+            "type": "Identifier",
+            "name": "pow"
+          }
+        };
+        
+        ::Object.defineProperty(this, 'arguments', { 
+          value: [this.left, this.right], 
+          enumerable: true 
+        }); 
+      },
+        
+      case '#': {
+        this.type = 'CallExpression';
+        this.callee = {
+          "type": "MemberExpression",
+          "computed": false,
+          "object": {
+            "type": "Identifier",
+            "name": "Math"
+          },
+          "property": {
+            "type": "Identifier",
+            "name": "floor"
+          }
+        };
+        
+        ::Object.defineProperty(this, 'arguments', { 
+          value: [{
+            "type": "BinaryExpression",
+            "operator": "/",
+            "left": this.left,
+            "right": this.right
+          }], 
+          enumerable: true 
+        }); 
+      },
+      
+      case '%%': {
+        this.operator = '%';
+        this.left = {
+          "type": "BinaryExpression",
+          "operator": "+",
+          "left": {
+            "type": "BinaryExpression",
+            "operator": "%",
+            "left": this.left,
+            "right": this.right
+          },
+          "right": this.right
+        };    
+      }
+    }
+  }
+  
+  return this;
+};
+
+BinaryExpression.prototype.hasCallExpression = () -> {
+  return this.left?.hasCallExpression() || 
+         this.right?.hasCallExpression();
+};
+
+exports.BinaryExpression = BinaryExpression;
