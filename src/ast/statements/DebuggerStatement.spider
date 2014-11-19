@@ -1,0 +1,19 @@
+use :node;
+
+var Node = require('../Node').Node;
+
+func DebuggerStatement()
+  extends Node {
+  
+  this.type = 'DebuggerStatement';
+}
+
+DebuggerStatement.prototype.codegen = () -> {
+  if !super.codegen() {
+    return;
+  }
+  
+  return this;
+};
+
+exports.DebuggerStatement = DebuggerStatement;
