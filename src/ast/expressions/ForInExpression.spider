@@ -1,9 +1,11 @@
+use :node;
+
 var Node = require('../Node').Node,
     ForInStatement = require('../statements/ForInStatement').ForInStatement,
     BlockStatement = require('../statements/BlockStatement').BlockStatement;
 
-exports.ForInExpression = function (expression, item, index, array, condition) {
-  Node.call(this);
+func ForInExpression(expression, item, index, array, condition) 
+  extends Node {
   
   this.type = 'ForInExpression';
 
@@ -14,7 +16,7 @@ exports.ForInExpression = function (expression, item, index, array, condition) {
   this.item.parent = this;
   
   this.index = index;
-  if (this.index) {
+  if this.index? {
     this.index.parent = this;
   }
   
@@ -22,27 +24,25 @@ exports.ForInExpression = function (expression, item, index, array, condition) {
   this.array.parent = this;
   
   this.condition = condition;
-  if (this.condition) {
+  if this.condition? {
     this.condition.parent = this;
   }  
-};
+}
 
-exports.ForInExpression.prototype = Object.create(Node);
-
-exports.ForInExpression.prototype.codegen = function () {
-  if (!Node.prototype.codegen.call(this)) {
+ForInExpression.prototype.codegen = () -> {
+  if !super.codegen() {
     return;
   }
   
   this.defineIdentifier(this.item);
   
-  if (this.index) {
+  if this.index? {
     this.defineIdentifier(this.index);
   }
   
   var id = {
     "type": "Identifier",
-    "name": exports.ForInExpression.getNextVariableName(),
+    "name": ForInExpression.getNextVariableName(),
     "codeGenerated": true
   };
   
@@ -64,7 +64,7 @@ exports.ForInExpression.prototype.codegen = function () {
     }
   };
   
-  if (this.condition) {
+  if this.condition? {
     pushStatement = {
       "type": "IfStatement",
       "codeGenerated": true,
@@ -115,7 +115,7 @@ exports.ForInExpression.prototype.codegen = function () {
     }
   };
   
-  Object.defineProperty(this, 'arguments', { 
+  ::Object.defineProperty(this, 'arguments', { 
     value: [], 
     enumerable: true 
   });
@@ -123,18 +123,18 @@ exports.ForInExpression.prototype.codegen = function () {
   return this;
 };
 
-exports.ForInExpression.prototype.hasCallExpression = function () {
-  return true;
-};
+ForInExpression.prototype.hasCallExpression = () -> true;
 
-exports.ForInExpression.getNextVariableName = function () {
-  if (!this.forInIndex) { 
+ForInExpression.getNextVariableName = () -> {
+  if !this.forInIndex? { 
     this.forInIndex = 0;
   }
   
   return "forIn" + this.forInIndex++;
 };
 
-exports.ForInExpression.resetVariableNames = function () {
+ForInExpression.resetVariableNames = () -> {
   this.forInIndex = 0;
 };
+
+exports.ForInExpression = ForInExpression;
