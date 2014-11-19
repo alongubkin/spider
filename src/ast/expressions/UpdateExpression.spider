@@ -1,0 +1,28 @@
+use :node;
+
+var Node = require('../Node').Node;
+
+func UpdateExpression(argument, operator, prefix)
+  extends Node {
+  
+  this.type = 'UpdateExpression';
+  this.operator = operator;
+  this.prefix = prefix;
+  
+  this.argument = argument;
+  this.argument.parent = this;
+}
+
+UpdateExpression.prototype.codegen = () -> {
+  if !super.codegen() {
+    return;
+  }
+  
+  return this;
+};
+
+UpdateExpression.prototype.hasCallExpression = () -> {
+  return this.argument != null && this.left.hasCallExpression();
+};
+
+exports.UpdateExpression = UpdateExpression;
