@@ -1,7 +1,9 @@
+use :node;
+
 var Node = require('../Node').Node;
 
-exports.InExpression = function (left, right) {
-  Node.call(this);
+func InExpression(left, right)
+  extends Node {
   
   this.type = 'InExpression';
   
@@ -10,29 +12,27 @@ exports.InExpression = function (left, right) {
   
   this.right = right;
   this.right.parent = this;
-};
+}
 
-exports.InExpression.prototype = Object.create(Node);
-
-exports.InExpression.prototype.codegen = function () {
-  if (!Node.prototype.codegen.call(this)) {
+InExpression.prototype.codegen = () -> {
+  if !super.codegen() {
     return;
   }
   
   this.left = this.left.codegen();
   this.right = this.right.codegen();
   
-  if (this.right.hasCallExpression && this.right.hasCallExpression()) {
+  if this.right.hasCallExpression?() {
     var context = this.getContext();
     
     var id = {
       "type": "Identifier",
-      "name": exports.InExpression.getNextVariableName(),
+      "name": InExpression.getNextVariableName(),
       "codeGenerated": true
     };
     
     context.node.body.splice(context.position + 
-      (exports.InExpression.inExpressionIndex - 2), 0, {
+      (InExpression.inExpressionIndex - 2), 0, {
       "type": "VariableDeclaration",
       "declarations": [
         {
@@ -97,18 +97,18 @@ exports.InExpression.prototype.codegen = function () {
   return this;
 };
 
-exports.InExpression.prototype.hasCallExpression = function () {
-  return true;
-};
+InExpression.prototype.hasCallExpression = () -> true;
 
-exports.InExpression.getNextVariableName = function () {
-  if (!this.inExpressionIndex) { 
+InExpression.getNextVariableName = () -> {
+  if !this.inExpressionIndex? { 
     this.inExpressionIndex = 0;
   }
   
   return "inExpression" + this.inExpressionIndex++;
 };
 
-exports.InExpression.resetVariableNames = function () {
+InExpression.resetVariableNames = () -> {
   this.inExpressionIndex = 0;
 };
+
+exports.InExpression = InExpression;
