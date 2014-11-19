@@ -1,26 +1,25 @@
+use :node;
+
 var Node = require('../Node').Node;
 
-exports.StringLiteral = function (chars) {
-  Node.call(this);
+func StringLiteral(chars)
+  extends Node {
   
   this.type = 'StringLiteral';
   this.chars = chars;
-};
+}
 
-exports.StringLiteral.prototype = Object.create(Node);
-
-exports.StringLiteral.prototype.codegen = function () {
-  var self = this;
-  if (!Node.prototype.codegen.call(this)) {
+StringLiteral.prototype.codegen = () -> {
+  if !super.codegen() {
     return;
   }
   
   var elements = [];
   
-  this.chars.forEach(function (value) { 
-    if (typeof value === 'string') {
+  for value in this.chars {
+    if typeof value == 'string' {
       var lastElement = elements[elements.length - 1];
-      if (lastElement && lastElement.type === 'Literal') {
+      if lastElement?.type == 'Literal' {
         lastElement.value += value;
       } else {
         elements.push({
@@ -28,22 +27,22 @@ exports.StringLiteral.prototype.codegen = function () {
           value: value
         });
       }
-    } else{
-      value.parent = self;
+    } else {
+      value.parent = this;
       elements.push(value.codegen());
     }
-  });
+  }
   
-  if (elements.length === 0) {
+  if elements.length == 0 {
     return {
       "type": "Literal",
       "value": ""
     };
-  } else if (elements.length === 1) {
+  } else if elements.length == 1 {
     return elements[0];
   }
   
-  var reduced = elements.reduce(function (left, right) {
+  var reduced = elements.reduce((left, right) -> {
     return {
       type: 'BinaryExpression',
       operator: '+',
@@ -60,6 +59,6 @@ exports.StringLiteral.prototype.codegen = function () {
   return this;
 };
 
-exports.StringLiteral.prototype.hasCallExpression = function () {
-  return false;
-};
+StringLiteral.prototype.hasCallExpression = () -> false;
+
+exports.StringLiteral = StringLiteral;
