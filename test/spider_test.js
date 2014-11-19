@@ -416,38 +416,38 @@ describe('call expressions with member and null propagating member expressions:'
 describe('null coalescing expressions:', function () {
   it('null coalescing expression with 2 identifiers',
     generateTest('var x = a ?? b;', 
-      'var x = typeof a === \"undefined\" || a === null ? b : a;'));
+      'var x = typeof a === \"undefined\" || a == null ? b : a;'));
       
   it('null coalescing expression with 2 member expressions',
     generateTest('var x = a.b ?? c.d;', 
-      'var x = a.b === null ? c.d : a.b;'));
+      'var x = a.b == null ? c.d : a.b;'));
 
   it('null coalescing expression with 6 member expressions',
     generateTest('var x = a.b.c.d ?? e.f.g.h;', 
-      'var x = a.b.c.d === null ? e.f.g.h : a.b.c.d;'));
+      'var x = a.b.c.d == null ? e.f.g.h : a.b.c.d;'));
 
   it('null coalescing expression with 2 null propagating member expressions',
     generateTest('var x = a?.b ?? c?.d;', 
-      'var nullCoalescing0 = typeof a !== \"undefined\" && a !== null ? a.b : void 0;\nvar x = nullCoalescing0 === null ? typeof c !== \"undefined\" && c !== null ? c.d : void 0 : nullCoalescing0;'));
+      'var nullCoalescing0 = typeof a !== \"undefined\" && a !== null ? a.b : void 0;\nvar x = nullCoalescing0 == null ? typeof c !== \"undefined\" && c !== null ? c.d : void 0 : nullCoalescing0;'));
       
   it('null coalescing expression with 6 null propagating member expressions',
     generateTest('var x = a?.b?.c?.d ?? e?.f?.g?.h;', 
-      'var nullCoalescing0 = typeof a !== \"undefined\" && (a !== null && a.b !== null && a.b.c !== null) ? a.b.c.d : void 0;\nvar x = nullCoalescing0 === null ? typeof e !== \"undefined\" && (e !== null && e.f !== null && e.f.g !== null) ? e.f.g.h : void 0 : nullCoalescing0;'));
+      'var nullCoalescing0 = typeof a !== \"undefined\" && (a !== null && a.b !== null && a.b.c !== null) ? a.b.c.d : void 0;\nvar x = nullCoalescing0 == null ? typeof e !== \"undefined\" && (e !== null && e.f !== null && e.f.g !== null) ? e.f.g.h : void 0 : nullCoalescing0;'));
       
   it('null coalescing expression with 6 null propagating member expressions combined',
     generateTest('var x = a?.b.c?.d ?? e.f?.g?.h;', 
-      'var nullPropagating0 = typeof a !== \"undefined\" && a !== null ? a.b.c : void 0;\nvar nullCoalescing0 = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.d : void 0;\nvar x = nullCoalescing0 === null ? typeof e.f !== \"undefined\" && (e.f !== null && e.f.g !== null) ? e.f.g.h : void 0 : nullCoalescing0;'));       
+      'var nullPropagating0 = typeof a !== \"undefined\" && a !== null ? a.b.c : void 0;\nvar nullCoalescing0 = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.d : void 0;\nvar x = nullCoalescing0 == null ? typeof e.f !== \"undefined\" && (e.f !== null && e.f.g !== null) ? e.f.g.h : void 0 : nullCoalescing0;'));       
 
   it('null coalescing expression with 2 call expressions',
     generateTest('var x = a() ?? b();', 
-      'var nullCoalescing0 = a();\nvar x = nullCoalescing0 === null ? b() : nullCoalescing0;'));
+      'var nullCoalescing0 = a();\nvar x = nullCoalescing0 == null ? b() : nullCoalescing0;'));
 
   it('null coalescing expression with 2 call expressions and null propagating member expressions',
     generateTest('var x = a.b()?.c() ?? d?.e().f();', 
-      'var nullPropagating0 = a.b();\nvar nullCoalescing0 = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.c() : void 0;\nvar x = nullCoalescing0 === null ? typeof d !== \"undefined\" && d !== null ? d.e().f() : void 0 : nullCoalescing0;'));    
+      'var nullPropagating0 = a.b();\nvar nullCoalescing0 = typeof nullPropagating0 !== \"undefined\" && nullPropagating0 !== null ? nullPropagating0.c() : void 0;\nvar x = nullCoalescing0 == null ? typeof d !== \"undefined\" && d !== null ? d.e().f() : void 0 : nullCoalescing0;'));    
 
   it('null coalescing statement',
-    generateTest('a() ?? b();', 'var nullCoalescing0 = a();\nif (nullCoalescing0 === null) {\n    b();\n}'));
+    generateTest('a() ?? b();', 'var nullCoalescing0 = a();\nif (nullCoalescing0 == null) {\n    b();\n}'));
 });
 
 describe('null check call expressions:', function () {

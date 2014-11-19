@@ -58,7 +58,7 @@ NullCoalescingExpression.prototype.codegen = () -> {
    
   var test = {
     "type": "BinaryExpression",
-    "operator": "===",
+    "operator": "==",
     "left": this.left,
     "right": {
       "type": "Literal",
