@@ -711,16 +711,16 @@ var copy   = numbers[<span class="dot">..</span>];</code></pre>
                 <a href="#switch-no-implicit-fallthrough" name="switch-no-implicit-fallthrough" class="anchor glyphicon glyphicon-link"></a>
               </h3>
               
-              <p>Note that <code>break</code> is not required. The cases of a <code>switch</code> statement do not "fall through" to the next case in Spider, avoiding common JavaScript errors caused by a missing <code>break</code> statements. If you really need JavaScript-style fallthrough behaviour, you can opt in to this behavior on a case-by-case basis with the <code>fallthrough</code> keyword.</p>
+              <p>Note that <code>break</code> is not required. The cases of a <code>switch</code> statement do not "fall through" to the next case in Spider, avoiding common JavaScript errors caused by a missing <code>break</code> statements. If you really need JavaScript-style fallthrough behaviour, you can opt in to this behavior on a case-by-case basis with the <code>fallthrough</code> statement.</p>
 
               <pre><code class="lang-js">switch integerToDescribe {
   case 2, 3, 5, 7, 11, 13, 17, 19: {
-    description += " a prime number, and also"
-    fallthrough
+    description += " a prime number, and also";
+    fallthrough;
   },
     
   default: {
-    description += " an integer."
+    description += " an integer.";
   }
 }</code></pre>
 
