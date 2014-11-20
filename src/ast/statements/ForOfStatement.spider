@@ -1,7 +1,9 @@
+use :node;
+
 var Node = require('../Node').Node;
 
-exports.ForOfStatement = function (key, value, object, body) {
-  Node.call(this);
+func ForOfStatement(key, value, object, body)
+  extends Node {
   
   this.type = 'ForOfStatement';
   
@@ -9,7 +11,7 @@ exports.ForOfStatement = function (key, value, object, body) {
   this.key.parent = this;
   
   this.value = value;
-  if (this.value) {
+  if this.value? {
     this.value.parent = this;
   }
   
@@ -18,12 +20,10 @@ exports.ForOfStatement = function (key, value, object, body) {
   
   this.body = body;
   this.body.parent = this;
-};
+}
 
-exports.ForOfStatement.prototype = Object.create(Node);
-
-exports.ForOfStatement.prototype.codegen = function () {
-  if (!Node.prototype.codegen.call(this)) {
+ForOfStatement.prototype.codegen = () -> {
+  if !super.codegen() {
     return;
   }
   
@@ -32,13 +32,13 @@ exports.ForOfStatement.prototype.codegen = function () {
   
   this.object = this.object.codegen();
   
-  if (this.value) {
+  if this.value? {
     this.value = this.value.codegen(false);
     this.defineIdentifier(this.value);
     
     this.body = this.body.blockWrap().codegen();
     
-    if (this.object.hasCallExpression()) {
+    if this.object.hasCallExpression() {
       var id = {
         "type": "Identifier",
         "name": exports.ForOfStatement.getNextVariableName()
@@ -119,7 +119,7 @@ exports.ForOfStatement.prototype.codegen = function () {
   return this;
 };
 
-exports.ForOfStatement.getNextVariableName = function () {
+ForOfStatement.getNextVariableName = () -> {
   if (!this.forOfIndex) { 
     this.forOfIndex = 0; 
   }
@@ -127,6 +127,8 @@ exports.ForOfStatement.getNextVariableName = function () {
   return "forOf" + this.forOfIndex++;
 };
 
-exports.ForOfStatement.resetVariableNames = function () {
+ForOfStatement.resetVariableNames = () -> {
   this.forOfIndex = 0;
 };
+
+exports.ForOfStatement = ForOfStatement;
