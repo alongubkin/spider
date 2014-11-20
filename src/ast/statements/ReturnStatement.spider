@@ -1,0 +1,28 @@
+use :node;
+
+var Node = require('../Node').Node;
+
+func ReturnStatement(argument)
+  extends Node {
+  
+  this.type = 'ReturnStatement';
+  this.argument = argument;
+  
+  if this.argument? {
+    this.argument.parent = this;
+  }
+}
+
+ReturnStatement.prototype.codegen = () -> {
+  if !super.codegen() {
+    return;
+  }
+  
+  if this.argument? {
+    this.argument = this.argument.codegen();
+  }
+  
+  return this;
+};
+
+exports.ReturnStatement = ReturnStatement;
