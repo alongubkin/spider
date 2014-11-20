@@ -568,13 +568,13 @@ DebuggerStatement
     }    
 
 WhileStatement
-  = WhileToken __ "(" __ test:Expression __ ")" __
+  = WhileToken __ test:Expression __
     body:Statement {
       return insertLocationData(new ast.WhileStatement(test, body), text(), line(), column());
     }
     
 UntilStatement
-  = UntilToken __ "(" __ test:Expression __ ")" __
+  = UntilToken __ test:Expression __
     body:Statement {
       return insertLocationData(new ast.UntilStatement(test, body), text(), line(), column());
     }

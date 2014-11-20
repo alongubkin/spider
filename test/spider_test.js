@@ -1317,11 +1317,11 @@ describe('debugger statement:', function () {
 });
 
 describe('while and until statements:', function () {
-  it('while statement', generateTest('while (true) {}', 'while (true) {\n}'));
-  it('while statement without block', generateTest('while (true) a();', 'while (true) {\n    a();\n}'));
+  it('while statement', generateTest('while true {}', 'while (true) {\n}'));
+  it('while statement without block', generateTest('while true a();', 'while (true) {\n    a();\n}'));
   
-  it('until statement', generateTest('until (true) {}', 'while (!true) {\n}'));
-  it('until statement without block', generateTest('until (true) a();', 'while (!true) {\n    a();\n}'));  
+  it('until statement', generateTest('until true {}', 'while (!true) {\n}'));
+  it('until statement without block', generateTest('until true a();', 'while (!true) {\n    a();\n}'));  
 });
 
 describe('array slicing:', function () {
