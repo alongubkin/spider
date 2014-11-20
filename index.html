@@ -302,7 +302,7 @@ x = 1 == "1";    // false (== compiles to ===)</code></pre>
                 <a href="#code-safety-typeof" name="code-safety-typeof" class="anchor glyphicon glyphicon-link"></a>
               </h3>
               
-              <p>Spider's <code>typeof</code> operator returns the lowered-cased constructor name of the argument.</p>
+              <p>Spider's <code>typeof</code> operator returns the lowered-cased `[[Class]]` internal property of the argument.</p>
               
               <pre><code class="lang-js">typeof { a: 4 };          // "object"
 typeof [1, 2, 3];         // "array"
