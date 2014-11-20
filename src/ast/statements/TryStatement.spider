@@ -1,7 +1,9 @@
+use :node;
+
 var Node = require('../Node').Node;
 
-exports.TryStatement = function (block, handler, finalizer) {
-  Node.call(this);
+func TryStatement(block, handler, finalizer)
+  extends Node {
   
   this.type = 'TryStatement';
   
@@ -9,32 +11,32 @@ exports.TryStatement = function (block, handler, finalizer) {
   this.block.parent = this;
   
   this.handler = handler;
-  if (this.handler) {
+  if this.handler? {
     this.handler.parent = this;
   }
   
   this.finalizer = finalizer;
-  if (this.finalizer) {
+  if this.finalizer? {
     this.finalizer.parent = this;
   }
-};
+}
 
-exports.TryStatement.prototype = Object.create(Node);
-
-exports.TryStatement.prototype.codegen = function () {
-  if (!Node.prototype.codegen.call(this)) {
+TryStatement.prototype.codegen = () -> {
+  if !super.codegen() {
     return;
   }
   
   this.block = this.block.codegen();
   
-  if (this.handler) {
+  if this.handler? {
     this.handler = this.handler.codegen();
   }
   
-  if (this.finalizer) {
+  if this.finalizer? {
     this.finalizer = this.finalizer.codegen();
   }
   
   return this;
 };
+
+exports.TryStatement = TryStatement;
