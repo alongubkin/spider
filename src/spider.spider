@@ -22,6 +22,7 @@ exports.compile = (text, verbose, errors, sourceMap, sourceMapUrl, iifi, useStri
   ast.FunctionExpression.resetVariableNames();  
   ast.ForOfStatement.resetVariableNames();  
   ast.ForInExpression.resetVariableNames();  
+  ast.FallthroughStatement.resetVariableNames();  
   
   var parsed;
   

@@ -1656,3 +1656,46 @@ describe('switch statement:', function () {
     generateErrorTest('switch ::n { case ..: { } }', 
       [{ "type": "EmptyRange" }]));      
 });
+
+describe('fallthrough statement:', function () {
+  it('switch with 2 fallthrough cases', 
+    generateTest('switch n { case 1..2: { a(); fallthrough; }, case 1..4: { b(); fallthrough; } }', 
+      'var fallthrough0 = 0;\nif (n >= 1 && n <= 2) {\n    fallthrough0 = 2;\n    a();\n    fallthrough0 = 1;\n}\nif (fallthrough0 < 2 && (n >= 1 && n <= 4)) {\n    fallthrough0 = 2;\n    b();\n    fallthrough0 = 1;\n}'));
+      
+  it('switch with 3 fallthrough cases', 
+    generateTest('switch n { case 1..2: { a(); fallthrough; }, case 1..4: { b(); fallthrough; }, case 1..6: { c(); fallthrough; } }',
+      'var fallthrough0 = 0;\nif (n >= 1 && n <= 2) {\n    fallthrough0 = 2;\n    a();\n    fallthrough0 = 1;\n}\nif (fallthrough0 < 2 && (n >= 1 && n <= 4)) {\n    fallthrough0 = 2;\n    b();\n    fallthrough0 = 1;\n}\nif (fallthrough0 < 2 && (n >= 1 && n <= 6)) {\n    fallthrough0 = 2;\n    c();\n    fallthrough0 = 1;\n}'));
+
+  it('switch with fallthrough-normal-fallthrough cases', 
+    generateTest('switch n { case 1..2: { a(); fallthrough; }, case 1..4: { b(); }, case 1..6: { c(); fallthrough; } }',
+      'var fallthrough0 = 0;\nif (n >= 1 && n <= 2) {\n    fallthrough0 = 2;\n    a();\n    fallthrough0 = 1;\n}\nif (fallthrough0 < 2 && (n >= 1 && n <= 4)) {\n    fallthrough0 = 2;\n    b();\n} else if (fallthrough0 < 2 && (n >= 1 && n <= 6)) {\n    fallthrough0 = 2;\n    c();\n    fallthrough0 = 1;\n}'));
+      
+  it('switch with fallthrough-normal-normal-fallthrough cases', 
+    generateTest('switch n { case 1..2: { a(); fallthrough; }, case 1..4: { b(); }, case 1..6: { c(); }, case 1..8: { d(); fallthrough; } }',
+      'var fallthrough0 = 0;\nif (n >= 1 && n <= 2) {\n    fallthrough0 = 2;\n    a();\n    fallthrough0 = 1;\n}\nif (fallthrough0 < 2 && (n >= 1 && n <= 4)) {\n    fallthrough0 = 2;\n    b();\n} else if (fallthrough0 < 2 && (n >= 1 && n <= 6)) {\n    fallthrough0 = 2;\n    c();\n} else if (fallthrough0 < 2 && (n >= 1 && n <= 8)) {\n    fallthrough0 = 2;\n    d();\n    fallthrough0 = 1;\n}'));
+      
+  it('switch with normal-fallthrough-normal-fallthrough cases', 
+    generateTest('switch n { case 1..2: { a(); }, case 1..4: { b(); fallthrough; }, case 1..6: { c(); }, case 1..8: { d(); fallthrough; } }',
+      'var fallthrough0 = 0;\nif (n >= 1 && n <= 2) {\n    fallthrough0 = 2;\n    a();\n} else if (n >= 1 && n <= 4) {\n    fallthrough0 = 2;\n    b();\n    fallthrough0 = 1;\n}\nif (fallthrough0 < 2 && (n >= 1 && n <= 6)) {\n    fallthrough0 = 2;\n    c();\n} else if (fallthrough0 < 2 && (n >= 1 && n <= 8)) {\n    fallthrough0 = 2;\n    d();\n    fallthrough0 = 1;\n}'));
+      
+  it('switch with 2 fallthrough cases with default', 
+    generateTest('switch n { case 1..2: { a(); fallthrough; }, case 1..4: { b(); fallthrough; }, default: { def(); } }', 
+      'var fallthrough0 = 0;\nif (n >= 1 && n <= 2) {\n    fallthrough0 = 2;\n    a();\n    fallthrough0 = 1;\n}\nif (fallthrough0 < 2 && (n >= 1 && n <= 4)) {\n    fallthrough0 = 2;\n    b();\n    fallthrough0 = 1;\n}\nif (fallthrough0 < 2) {\n    def();\n}'));
+      
+  it('switch with 3 fallthrough cases with default', 
+    generateTest('switch n { case 1..2: { a(); fallthrough; }, case 1..4: { b(); fallthrough; }, case 1..6: { c(); fallthrough; }, default: { def(); } }',
+      'var fallthrough0 = 0;\nif (n >= 1 && n <= 2) {\n    fallthrough0 = 2;\n    a();\n    fallthrough0 = 1;\n}\nif (fallthrough0 < 2 && (n >= 1 && n <= 4)) {\n    fallthrough0 = 2;\n    b();\n    fallthrough0 = 1;\n}\nif (fallthrough0 < 2 && (n >= 1 && n <= 6)) {\n    fallthrough0 = 2;\n    c();\n    fallthrough0 = 1;\n}\nif (fallthrough0 < 2) {\n    def();\n}'));
+
+  it('switch with fallthrough-normal-fallthrough cases with default', 
+    generateTest('switch n { case 1..2: { a(); fallthrough; }, case 1..4: { b(); }, case 1..6: { c(); fallthrough; }, default: { def(); } }',
+      'var fallthrough0 = 0;\nif (n >= 1 && n <= 2) {\n    fallthrough0 = 2;\n    a();\n    fallthrough0 = 1;\n}\nif (fallthrough0 < 2 && (n >= 1 && n <= 4)) {\n    fallthrough0 = 2;\n    b();\n} else if (fallthrough0 < 2 && (n >= 1 && n <= 6)) {\n    fallthrough0 = 2;\n    c();\n    fallthrough0 = 1;\n}\nif (fallthrough0 < 2) {\n    def();\n}'));
+      
+  it('switch with fallthrough-normal-normal-fallthrough cases with default', 
+    generateTest('switch n { case 1..2: { a(); fallthrough; }, case 1..4: { b(); }, case 1..6: { c(); }, case 1..8: { d(); fallthrough; }, default: { def(); } }',
+      'var fallthrough0 = 0;\nif (n >= 1 && n <= 2) {\n    fallthrough0 = 2;\n    a();\n    fallthrough0 = 1;\n}\nif (fallthrough0 < 2 && (n >= 1 && n <= 4)) {\n    fallthrough0 = 2;\n    b();\n} else if (fallthrough0 < 2 && (n >= 1 && n <= 6)) {\n    fallthrough0 = 2;\n    c();\n} else if (fallthrough0 < 2 && (n >= 1 && n <= 8)) {\n    fallthrough0 = 2;\n    d();\n    fallthrough0 = 1;\n}\nif (fallthrough0 < 2) {\n    def();\n}'));
+      
+  it('switch with normal-fallthrough-normal-fallthrough cases with default', 
+    generateTest('switch n { case 1..2: { a(); }, case 1..4: { b(); fallthrough; }, case 1..6: { c(); }, case 1..8: { d(); fallthrough; }, default: { def(); } }',
+      'var fallthrough0 = 0;\nif (n >= 1 && n <= 2) {\n    fallthrough0 = 2;\n    a();\n} else if (n >= 1 && n <= 4) {\n    fallthrough0 = 2;\n    b();\n    fallthrough0 = 1;\n}\nif (fallthrough0 < 2 && (n >= 1 && n <= 6)) {\n    fallthrough0 = 2;\n    c();\n} else if (fallthrough0 < 2 && (n >= 1 && n <= 8)) {\n    fallthrough0 = 2;\n    d();\n    fallthrough0 = 1;\n}\nif (fallthrough0 < 2) {\n    def();\n}'));
+      
+});

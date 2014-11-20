@@ -22,9 +22,13 @@ SwitchStatement.prototype.codegen = () -> {
     return;
   }
   
-  this.discriminant = this.discriminant.codegen();
-  
+  var context = this.getContext();
   var firstCase, currentCase, defaultCase;
+  var fallthroughPosition = 1;
+  
+  this.discriminant = this.discriminant.codegen();
+ 
+  var hasFallthrough = false;
   
   for caseClause in this.cases {
     if (!caseClause.tests) {
@@ -36,8 +40,34 @@ SwitchStatement.prototype.codegen = () -> {
       firstCase = caseClause.codegen();
       currentCase = firstCase;
     } else {
-      currentCase.alternate = caseClause.codegen();
-      currentCase = currentCase.alternate;
+      if currentCase.fallthrough {
+        hasFallthrough = true;
+        currentCase = caseClause.codegen(this.branchFallthrough);
+        context.node.body.splice(context.position + fallthroughPosition++, 0, currentCase);
+      } else {        
+        currentCase.alternate = caseClause.codegen(this.fallthroughId?);
+        currentCase = currentCase.alternate;
+      }      
+    }
+  }
+  
+  if hasFallthrough {
+    for caseClause in this.cases {
+      if !caseClause.fallthrough and caseClause != defaultCase {
+        caseClause.body.body = [{
+          "type": "ExpressionStatement",
+          "codeGenerated": true,
+          "expression": {
+            "type": "AssignmentExpression",
+            "operator": "=",
+            "left": this.fallthroughId,
+            "right": {
+              "type": "Literal",
+              "value": 2
+            }
+          }
+        }].concat(caseClause.body.body);
+      }
     }
   }
   
@@ -49,8 +79,38 @@ SwitchStatement.prototype.codegen = () -> {
         loc: defaultCase.loc
       });
     } else {
-      currentCase.alternate = defaultCase.codegen();
+      if currentCase.fallthrough {
+        defaultCase = defaultCase.codegen(this.fallthroughId?);
+        defaultCase.codeGenerated = true;
+        if this.fallthroughId? {
+          context.node.body.splice(context.position + fallthroughPosition++, 0, defaultCase);
+        } else {
+          for statement in defaultCase.body {
+            context.node.body.splice(context.position + fallthroughPosition++, 0, statement);
+          }
+        }        
+      } else {
+        currentCase.alternate = defaultCase.codegen(this.fallthroughId?);
+      }
     }
+  }
+  
+  if this.fallthroughId? {
+    context.node.body.splice(context.position, 0, {
+      "type": "VariableDeclaration",
+      "codeGenerated": true,
+      "declarations": [
+        {
+          "type": "VariableDeclarator",
+          "id": this.fallthroughId,
+          "init": {
+            "type": "Literal",
+            "value": 0
+          }
+        }
+      ],
+      "kind": "var"
+    });
   }
   
   if !firstCase? {

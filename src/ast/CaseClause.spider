@@ -18,74 +18,77 @@ func CaseClause(tests, body)
   }
 }
 
-CaseClause.prototype.codegen = () -> {
+CaseClause.prototype.codegen = (branchFallthrough) -> {
   if !super.codegen() {
     return;
   }
   
-  if !this.tests? {
+  if !this.tests? and !branchFallthrough {
     return this.body.codegen();
   }
   
   this.type = "IfStatement";
+  this.switchCase = true;
   
   var rangeError = false;
   
-  for test in this.tests {
-    var equalsToDiscriminant;
-  
-    if test.type == "Range" {
-      var fromCheck;
-      if test.from {
-        fromCheck = {
-          "type": "BinaryExpression",
-          "operator": ">=",
-          "left": this.parent.discriminant,
-          "right": test.from
-        };
-      }
-      
-      var toCheck;
-      if test.to {
-        toCheck = {
-          "type": "BinaryExpression",
-          "operator": "<" + ("=" if test.operator == ".." else ""),
-          "left": this.parent.discriminant,
-          "right": test.to
-        };
-      }
-      
-      if fromCheck && toCheck {
-        equalsToDiscriminant = {
-          "type": "LogicalExpression",
-          "operator": "&&",
-          "left": fromCheck,
-          "right": toCheck
-        };
-      } else if fromCheck || toCheck {
-        equalsToDiscriminant = fromCheck ?? toCheck;
-      } else {
-        rangeError = test;
-        return false;
-      }
-    } else {
-      equalsToDiscriminant = {
-        "type": "BinaryExpression",
-        "operator": "===",
-        "left": this.parent.discriminant,
-        "right": test.codegen()
-      };
-    }
+  if this.tests? {
+    for test in this.tests {
+      var equalsToDiscriminant;
     
-    if !this.test {
-      this.test = equalsToDiscriminant;
-    } else {
-      this.test = {
-        "type": "LogicalExpression",
-        "operator": "||",
-        "left": this.test,
-        "right": equalsToDiscriminant
-      };
+      if test.type == "Range" {
+        var fromCheck;
+        if test.from {
+          fromCheck = {
+            "type": "BinaryExpression",
+            "operator": ">=",
+            "left": this.parent.discriminant,
+            "right": test.from
+          };
+        }
+        
+        var toCheck;
+        if test.to {
+          toCheck = {
+            "type": "BinaryExpression",
+            "operator": "<" + ("=" if test.operator == ".." else ""),
+            "left": this.parent.discriminant,
+            "right": test.to
+          };
+        }
+        
+        if fromCheck && toCheck {
+          equalsToDiscriminant = {
+            "type": "LogicalExpression",
+            "operator": "&&",
+            "left": fromCheck,
+            "right": toCheck
+          };
+        } else if fromCheck || toCheck {
+          equalsToDiscriminant = fromCheck ?? toCheck;
+        } else {
+          rangeError = test;
+          return false;
+        }
+      } else {
+        equalsToDiscriminant = {
+          "type": "BinaryExpression",
+          "operator": "===",
+          "left": this.parent.discriminant,
+          "right": test.codegen()
+        };
+      }
+      
+      if !this.test {
+        this.test = equalsToDiscriminant;
+      } else {
+        this.test = {
+          "type": "LogicalExpression",
+          "operator": "||",
+          "left": this.test,
+          "right": equalsToDiscriminant
+        };
+      }
     }
   }
   
@@ -98,8 +101,32 @@ CaseClause.prototype.codegen = () -> {
     
     return null;
   }
-        
+  
   this.consequent = this.body.codegen();
+  
+  if branchFallthrough {
+    var fallthroughTest = {
+      "type": "BinaryExpression",
+      "left": this.parent.fallthroughId,
+      "operator": "<",
+      "right": {
+        "type": "Literal",
+        "value": 2
+      }
+    };
+    
+    if !this.tests? {
+      this.test = fallthroughTest;
+    } else {
+      this.test = {
+        "type": "LogicalExpression",
+        "operator": "&&",
+        "left": fallthroughTest,
+        "right": this.test
+      };
+    }
+  } 
+
   this.alternate = null;
   
   return this;

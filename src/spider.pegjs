@@ -193,6 +193,7 @@ Keyword
   / SwitchToken
   / CaseToken
   / DefaultToken
+  / FallthroughToken
 
 Literal
   = NullLiteral
@@ -380,37 +381,38 @@ Zs = [\u0020\u00A0\u1680\u2000-\u200A\u202F\u205F\u3000]
 
 /* Tokens */
 
-AndToken        = "and"        !IdentifierPart
-OrToken         = "or"         !IdentifierPart
-ReturnToken     = "return"     !IdentifierPart
-FuncToken       = "func"       !IdentifierPart
-VarToken        = "var"        !IdentifierPart
-IfToken         = "if"         !IdentifierPart
-ElseToken       = "else"       !IdentifierPart
-ForToken        = "for"        !IdentifierPart
-TrueToken       = "true"       !IdentifierPart
-FalseToken      = "false"      !IdentifierPart
-NullToken       = "null"       !IdentifierPart
-NewToken        = "new"        !IdentifierPart
-UseToken        = "use"        !IdentifierPart
-ThisToken       = "this"       !IdentifierPart
-SuperToken      = "super"      !IdentifierPart
-ThrowToken      = "throw"      !IdentifierPart
-BreakToken      = "break"      !IdentifierPart
-ContinueToken   = "continue"   !IdentifierPart
-DebuggerToken   = "debugger"   !IdentifierPart
-WhileToken      = "while"      !IdentifierPart
-UntilToken      = "until"      !IdentifierPart
-TypeofToken     = "typeof"     !IdentifierPart
-InToken         = "in"         !IdentifierPart
-OfToken         = "of"         !IdentifierPart
-TryToken        = "try"        !IdentifierPart
-FinallyToken    = "finally"    !IdentifierPart
-CatchToken      = "catch"      !IdentifierPart
-InstanceofToken = "instanceof" !IdentifierPart
-SwitchToken     = "switch"     !IdentifierPart
-CaseToken       = "case"       !IdentifierPart
-DefaultToken    = "default"    !IdentifierPart
+AndToken          = "and"         !IdentifierPart
+OrToken           = "or"          !IdentifierPart
+ReturnToken       = "return"      !IdentifierPart
+FuncToken         = "func"        !IdentifierPart
+VarToken          = "var"         !IdentifierPart
+IfToken           = "if"          !IdentifierPart
+ElseToken         = "else"        !IdentifierPart
+ForToken          = "for"         !IdentifierPart
+TrueToken         = "true"        !IdentifierPart
+FalseToken        = "false"       !IdentifierPart
+NullToken         = "null"        !IdentifierPart
+NewToken          = "new"         !IdentifierPart
+UseToken          = "use"         !IdentifierPart
+ThisToken         = "this"        !IdentifierPart
+SuperToken        = "super"       !IdentifierPart
+ThrowToken        = "throw"       !IdentifierPart
+BreakToken        = "break"       !IdentifierPart
+ContinueToken     = "continue"    !IdentifierPart
+DebuggerToken     = "debugger"    !IdentifierPart
+WhileToken        = "while"       !IdentifierPart
+UntilToken        = "until"       !IdentifierPart
+TypeofToken       = "typeof"      !IdentifierPart
+InToken           = "in"          !IdentifierPart
+OfToken           = "of"          !IdentifierPart
+TryToken          = "try"         !IdentifierPart
+FinallyToken      = "finally"     !IdentifierPart
+CatchToken        = "catch"       !IdentifierPart
+InstanceofToken   = "instanceof"  !IdentifierPart
+SwitchToken       = "switch"      !IdentifierPart
+CaseToken         = "case"        !IdentifierPart
+DefaultToken      = "default"     !IdentifierPart
+FallthroughToken  = "fallthrough" !IdentifierPart
 
 __
   = (WhiteSpace / LineTerminatorSequence / Comment)*
@@ -451,6 +453,7 @@ Statement
   / WhileStatement
   / UntilStatement
   / SwitchStatement
+  / FallthroughStatement
   
 Block
   = "{" __ body:(StatementList __)? "}" {
@@ -561,6 +564,11 @@ ContinueStatement
   = ContinueToken EOS {
       return insertLocationData(new ast.ContinueStatement(), text(), line(), column());
     }
+    
+FallthroughStatement
+  = FallthroughToken EOS {
+      return insertLocationData(new ast.FallthroughStatement(), text(), line(), column());
+    }    
     
 DebuggerStatement
   = DebuggerToken EOS {
