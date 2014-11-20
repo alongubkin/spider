@@ -1,7 +1,9 @@
+use :node;
+
 var Node = require('../Node').Node;
 
-exports.WhileStatement = function (test, body) {
-  Node.call(this);
+func WhileStatement(test, body)
+  extends Node {
   
   this.type = 'WhileStatement';
   
@@ -10,12 +12,10 @@ exports.WhileStatement = function (test, body) {
   
   this.body = body;
   this.body.parent = this;
-};
+}
 
-exports.WhileStatement.prototype = Object.create(Node);
-
-exports.WhileStatement.prototype.codegen = function () {
-  if (!Node.prototype.codegen.call(this)) {
+WhileStatement.prototype.codegen = () -> {
+  if !super.codegen() {
     return;
   }
   
@@ -24,3 +24,5 @@ exports.WhileStatement.prototype.codegen = function () {
   
   return this;
 };
+
+exports.WhileStatement = WhileStatement;

@@ -1,0 +1,34 @@
+use :node;
+
+var Node = require('../Node').Node;
+
+func VariableDeclarationStatement(declarations)
+  extends Node {
+  
+  this.type = 'VariableDeclaration';
+  this.declarations = declarations;
+  this.kind = 'var';
+  
+  for decl in declarations {
+    decl.parent = this;
+  }
+}
+
+VariableDeclarationStatement.prototype.codegen = () -> {
+  if !super.codegen() {
+    return;
+  }
+  
+  var i = 0;
+  while (i < this.declarations.length) {
+    var statement = this.declarations[i].codegen();
+    if statement? {
+      this.declarations[this.declarations.indexOf(statement)] = statement;
+    }
+    i++;
+  }
+  
+  return this;
+};
+
+exports.VariableDeclarationStatement = VariableDeclarationStatement;
