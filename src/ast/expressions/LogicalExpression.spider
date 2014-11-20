@@ -31,6 +31,10 @@ LogicalExpression.prototype.codegen = () -> {
   }
   
   var enforceBooleanExpression = (o) -> {
+    if o.type == "UnaryExpression" and o.operator == "!" {
+      return o;
+    }
+    
     return {
       "type": "UnaryExpression",
       "operator": "!",
