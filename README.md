@@ -25,6 +25,11 @@ Compile a script:
 
 ### Changelog
 
+2014 11 20 - **v0.0.6-alpha**
+
+ * Fallthrough Statement
+ * Fix line endings
+
 2014 11 20 - **v0.0.5-alpha**
 
  * Spider is now [self-hosted](http://en.wikipedia.org/wiki/Self-hosting)
