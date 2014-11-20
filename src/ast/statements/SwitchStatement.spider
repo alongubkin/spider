@@ -1,0 +1,69 @@
+use :node;
+
+var Node = require('../Node').Node;
+
+func SwitchStatement(discriminant, cases)
+  extends Node {
+  
+  this.type = 'SwitchStatement';
+  
+  this.discriminant = discriminant;
+  this.discriminant.parent = this;
+  
+  this.cases = cases;
+  
+  for caseClause in this.cases {
+    caseClause.parent = this;
+  }
+}
+
+SwitchStatement.prototype.codegen = () -> {
+  if !super.codegen() {
+    return;
+  }
+  
+  this.discriminant = this.discriminant.codegen();
+  
+  var firstCase, currentCase, defaultCase;
+  
+  for caseClause in this.cases {
+    if (!caseClause.tests) {
+      defaultCase = caseClause;
+      return;
+    }
+    
+    if !firstCase? {
+      firstCase = caseClause.codegen();
+      currentCase = firstCase;
+    } else {
+      currentCase.alternate = caseClause.codegen();
+      currentCase = currentCase.alternate;
+    }
+  }
+  
+  if defaultCase? {
+    if !firstCase? {
+      Node.getErrorManager().error({
+        type: "SingleDefaultClause",
+        message: "default clause without other case clauses is disallowed.",
+        loc: defaultCase.loc
+      });
+    } else {
+      currentCase.alternate = defaultCase.codegen();
+    }
+  }
+  
+  if !firstCase? {
+    this.type = "ExpressionStatement";
+    this.expression = this.discriminant;
+  } else {
+    this.type = firstCase.type;
+    this.test = firstCase.test;
+    this.consequent = firstCase.consequent;
+    this.alternate = firstCase.alternate;
+  }
+  
+  return this;
+};
+
+exports.SwitchStatement = SwitchStatement;

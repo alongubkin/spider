@@ -96,7 +96,7 @@ CaseClause.prototype.codegen = () -> {
       loc: rangeError.loc
     });
     
-    return false;
+    return null;
   }
         
   this.consequent = this.body.codegen();
