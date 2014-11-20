@@ -1,66 +1,63 @@
+use :node;
+
 var Node = require('../Node').Node,
     Parameter = require('../Parameter').Parameter,
     CallExpression = require('../expressions/CallExpression').CallExpression;
 
-exports.FunctionDeclarationStatement = function (id, params, body, inheritsFrom) {
-  var self = this;
-  Node.call(self);
+func FunctionDeclarationStatement(id, params, body, inheritsFrom)
+  extends Node {
   
-  self.type = 'FunctionDeclaration';
-  self.defaults = [];
-  self.rest = null;
-  self.generator = false;
-  self.expression = false;
+  this.type = 'FunctionDeclaration';
+  this.defaults = [];
+  this.rest = null;
+  this.generator = false;
+  this.expression = false;
   
-  self.id = id;
-  self.id.parent = self;
+  this.id = id;
+  this.id.parent = this;
   
-  self.body = body;
-  self.body.parent = self;
+  this.body = body;
+  this.body.parent = this;
   
-  self.params = params;
+  this.params = params;
   
-  params.forEach(function (param) {
-    param.parent = self;
-  });
-  
-  self.inheritsFrom = inheritsFrom;
-  
-  if (self.inheritsFrom) {
-    self.inheritsFrom.parent = self;
+  for param in params {
+    param.parent = this;
   }
-};
-
-exports.FunctionDeclarationStatement.prototype = Object.create(Node);
-
-exports.FunctionDeclarationStatement.prototype.codegen = function () {
-  var self = this;
   
-  if (!Node.prototype.codegen.call(self)) {
+  this.inheritsFrom = inheritsFrom;
+  
+  if this.inheritsFrom? {
+    this.inheritsFrom.parent = this;
+  }
+}
+
+FunctionDeclarationStatement.prototype.codegen = () -> {
+  if !super.codegen() {
     return;
   }
   
-  self.id = self.id.codegen();
-  Parameter.generateFunctionBody(self, self.params, self.body);
+  this.id = this.id.codegen();
+  Parameter.generateFunctionBody(this, this.params, this.body);
   
-  self.body = self.body.codegen();
+  this.body = this.body.codegen();
   
-  if (self.inheritsFrom) {
-    if (self.inheritsFrom.type !== 'CallExpression') {
-      self.inheritsFrom = new CallExpression(self.inheritsFrom, []);
-      self.inheritsFrom.parent = self;
+  if this.inheritsFrom? {
+    if this.inheritsFrom.type != 'CallExpression' {
+      this.inheritsFrom = new CallExpression(this.inheritsFrom, []);
+      this.inheritsFrom.parent = this;
     }
         
-    self.inheritsFrom = self.inheritsFrom.codegen();
+    this.inheritsFrom = this.inheritsFrom.codegen();
     
-    self.body.body.splice(0, 0, {
+    this.body.body.splice(0, 0, {
       "type": "ExpressionStatement",
       "expression": {
         "type": "CallExpression",
         "callee": {
           "type": "MemberExpression",
           "computed": false,
-          "object": self.inheritsFrom.callee,
+          "object": this.inheritsFrom.callee,
           "property": {
             "type": "Identifier",
             "name": "call"
@@ -68,11 +65,11 @@ exports.FunctionDeclarationStatement.prototype.codegen = function () {
         },
         "arguments": [
           { "type": "ThisExpression" }
-        ].concat(self.inheritsFrom.arguments)
+        ].concat(this.inheritsFrom.arguments)
       }
     });
     
-    var context = self.getContext();
+    var context = this.getContext();
     context.node.body.splice(context.position + 1, 0, {
       "type": "ExpressionStatement",
       "codeGenerated": "true",
@@ -82,7 +79,7 @@ exports.FunctionDeclarationStatement.prototype.codegen = function () {
         "left": {
           "type": "MemberExpression",
           "computed": false,
-          "object": self.id,
+          "object": this.id,
           "property": {
             "type": "Identifier",
             "name": "prototype"
@@ -103,7 +100,7 @@ exports.FunctionDeclarationStatement.prototype.codegen = function () {
             }
           },
           "arguments": [
-            self.inheritsFrom.callee
+            this.inheritsFrom.callee
           ]
         }
       }
@@ -113,6 +110,6 @@ exports.FunctionDeclarationStatement.prototype.codegen = function () {
   return this;
 };
 
-exports.FunctionDeclarationStatement.prototype.hasCallExpression = function () {
-  return true;
-};
+FunctionDeclarationStatement.prototype.hasCallExpression = () -> true;
+
+exports.FunctionDeclarationStatement = FunctionDeclarationStatement;
