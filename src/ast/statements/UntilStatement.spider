@@ -1,7 +1,9 @@
+use :node;
+
 var Node = require('../Node').Node;
 
-exports.UntilStatement = function (test, body) {
-  Node.call(this);
+func UntilStatement(test, body)
+  extends Node {
   
   this.type = 'UntilStatement';
   
@@ -10,12 +12,10 @@ exports.UntilStatement = function (test, body) {
   
   this.body = body;
   this.body.parent = this;
-};
+}
 
-exports.UntilStatement.prototype = Object.create(Node);
-
-exports.UntilStatement.prototype.codegen = function () {
-  if (!Node.prototype.codegen.call(this)) {
+UntilStatement.prototype.codegen = () -> {
+  if !super.codegen() {
     return;
   }
   
@@ -32,3 +32,5 @@ exports.UntilStatement.prototype.codegen = function () {
   
   return this;
 };
+
+exports.UntilStatement = UntilStatement;
