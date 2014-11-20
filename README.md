@@ -22,3 +22,13 @@ Execute a script:
 Compile a script:
 
     spider -c /path/to/script.spider
+
+### Changelog
+
+2014 11 20 - **v0.0.5-alpha**
+
+ * Spider is now [self-hosted](http://en.wikipedia.org/wiki/Self-hosting)
+ * Parenthesis in `while` and `until` statements are now optional
+ * Massive parsing performance improvements
+ * Fix "use strict" in output JS
+ * add `setTimeout` to `use :node` and `use :browser`
