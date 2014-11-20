@@ -124,7 +124,13 @@
                   <li><a href="#ranges-array-splicing">Array Splicing</a></li>
                 </ul>
               </li>  
-              <li><a href="#switch">Switch</a></li>
+              <li>
+                <a href="#switch">Switch</a>
+                <ul class="nav nav-stacked">
+                  <li><a href="#switch-no-implicit-fallthrough">No Implicit Fallthrough</a></li>
+                  <li><a href="#switch-range-matching">Range Matching</a></li>
+                </ul>
+              </li>
             </ul>
           </div>
         </div>
@@ -701,7 +707,11 @@ var copy   = numbers[<span class="dot">..</span>];</code></pre>
   }
 }</code></pre>
 
-              <p>Note that <code>break</code> is not required. The cases of a <code>switch</code> statement do not "fall through" to the next case in Spider, avoiding common JavaScript errors caused by a missing `break` statements. If you really need JavaScript-style fallthrough behaviour, you can opt in to this behavior on a case-by-case basis with the <code>fallthrough</code> keyword.</p>
+              <h3 class="docs-heading">No Implicit Fallthrough<span class="anchor-target" id="switch-no-implicit-fallthrough"></span>
+                <a href="#switch-no-implicit-fallthrough" name="switch-no-implicit-fallthrough" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+              
+              <p>Note that <code>break</code> is not required. The cases of a <code>switch</code> statement do not "fall through" to the next case in Spider, avoiding common JavaScript errors caused by a missing <code>break</code> statements. If you really need JavaScript-style fallthrough behaviour, you can opt in to this behavior on a case-by-case basis with the <code>fallthrough</code> keyword.</p>
 
               <pre><code class="lang-js">switch integerToDescribe {
   case 2, 3, 5, 7, 11, 13, 17, 19: {
@@ -713,6 +723,10 @@ var copy   = numbers[<span class="dot">..</span>];</code></pre>
     description += " an integer."
   }
 }</code></pre>
+
+              <h3 class="docs-heading">Range Matching<span class="anchor-target" id="switch-range-matching"></span>
+                <a href="#switch-range-matching" name="switch-range-matching" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
               
               <p>Switch statements can also be used with ranges:</p>
             
