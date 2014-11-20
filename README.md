@@ -30,5 +30,6 @@ Compile a script:
  * Spider is now [self-hosted](http://en.wikipedia.org/wiki/Self-hosting)
  * Parenthesis in `while` and `until` statements are now optional
  * Massive parsing performance improvements
- * Fix "use strict" in output JS
- * add `setTimeout` to `use :node` and `use :browser`
+ * Fix "use strict" in compiled JS
+ * Add `setTimeout` to `use :node` and `use :browser`
+ * Optimize `!!!` to `!` in compiled JS
