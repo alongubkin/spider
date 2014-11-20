@@ -1,0 +1,23 @@
+use :node;
+
+var Node = require('../Node').Node;
+
+func ThrowStatement(argument)
+  extends Node {
+    
+  this.type = 'ThrowStatement';
+  
+  this.argument = argument;
+  this.argument.parent = this;
+}
+
+ThrowStatement.prototype.codegen = () -> {
+  if !super.codegen() {
+    return;
+  }
+  
+  this.argument = this.argument.codegen();
+  return this;
+};
+
+exports.ThrowStatement = ThrowStatement;
