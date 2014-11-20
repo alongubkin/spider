@@ -1,7 +1,9 @@
+use :node;
+
 var Node = require('../Node').Node;
 
-exports.ForInStatement = function (item, index, array, body) {
-  Node.call(this);
+func ForInStatement(item, index, array, body)
+  extends Node {
   
   this.type = 'ForInStatement';
   
@@ -9,7 +11,7 @@ exports.ForInStatement = function (item, index, array, body) {
   this.item.parent = this;
   
   this.index = index;
-  if (this.index) {
+  if this.index? {
     this.index.parent = this;
   }
   
@@ -18,12 +20,10 @@ exports.ForInStatement = function (item, index, array, body) {
   
   this.body = body;
   this.body.parent = this;
-};
+}
 
-exports.ForInStatement.prototype = Object.create(Node);
-
-exports.ForInStatement.prototype.codegen = function () {
-  if (!Node.prototype.codegen.call(this)) {
+ForInStatement.prototype.codegen = () -> {
+  if !super.codegen() {
     return;
   }
   
@@ -32,7 +32,7 @@ exports.ForInStatement.prototype.codegen = function () {
   var params = [this.item];
   this.defineIdentifier(this.item);
   
-  if (this.index) {
+  if this.index? {
     this.index = this.index.codegen(false);
     params.push(this.index);
     
@@ -65,3 +65,5 @@ exports.ForInStatement.prototype.codegen = function () {
   
   return this;
 };
+
+exports.ForInStatement = ForInStatement;
