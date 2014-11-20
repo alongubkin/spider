@@ -1,3 +1,9 @@
 test.js
 test.js.map
 test.spider
+src/
+test/
+coverage/
+.git*
+*.map
+npm-debug.log
