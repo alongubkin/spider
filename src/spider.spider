@@ -1,18 +1,18 @@
-/*jshint undef:false*/
+use :node;
 
 var parser = require('./parser'),
     escodegen = require('escodegen'),
     ast = require('./ast');
   
-function ErrorManager(errors) {
+func ErrorManager(errors) {
   this.errors = errors;
 }
 
-ErrorManager.prototype.error = function (e) {
+ErrorManager.prototype.error = (e) -> {
   this.errors.push(e);
 };
 
-exports.compile = function (text, verbose, errors, sourceMap, sourceMapUrl, iifi, useStrict) {
+exports.compile = (text, verbose, errors, sourceMap, sourceMapUrl, iifi, useStrict) -> {
   ast.Node.setErrorManager(new ErrorManager(errors));
   
   ast.NullPropagatingExpression.resetVariableNames();
@@ -27,11 +27,11 @@ exports.compile = function (text, verbose, errors, sourceMap, sourceMapUrl, iifi
   
   try {
     parsed = parser.parse(text);
-  } catch (e) {
+  } catch e {
     var message;
     
-    if (e.expected) {
-      if (e.found) {
+    if e.expected {
+      if e.found {
         message = "unexpected " + e.found;
       } else {
         message = "unexpected end of input";
@@ -52,14 +52,14 @@ exports.compile = function (text, verbose, errors, sourceMap, sourceMapUrl, iifi
     });
   }
   
-  if (parsed) {
+  if parsed {
     var tree = parsed.codegen();
     
-    if (iifi || useStrict) {
+    if iifi or useStrict {
       // Add ;(function () { ... })()
       var body = [];
       
-      if (useStrict) {
+      if useStrict {
         body.push({
           "type": "ExpressionStatement",
           "expression": {
@@ -69,7 +69,7 @@ exports.compile = function (text, verbose, errors, sourceMap, sourceMapUrl, iifi
         });
       }
       
-      if (iifi) {
+      if iifi {
         body.push({
           "type": "ExpressionStatement",
           "expression": {
@@ -100,25 +100,20 @@ exports.compile = function (text, verbose, errors, sourceMap, sourceMapUrl, iifi
       
     var output = escodegen.generate(tree, {
       sourceMap: sourceMap,
-      sourceMapWithCode: !!sourceMap,
+      sourceMapWithCode: sourceMap?,
       format: { 
         quotes: 'double'
       }
     });
     
-    var js = sourceMap ? output.code : output;
-    if (sourceMap) {
-      js += "\n\n//# sourceMappingURL=" + sourceMapUrl;
-    }
-    
-    if (sourceMap) {
+    var js = output;
+    if sourceMap {
+      js = output.code + "\n\n//# sourceMappingURL=" + sourceMapUrl;
       output.code = js;
-    } else {
-      output = js;
-    }
+    } 
     
-    if (verbose) {
-      console.log(JSON.stringify(parsed, null, 4));
+    if verbose {
+      console.log(::JSON.stringify(parsed, null, 4));
       console.log(js);
     }
     
