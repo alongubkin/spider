@@ -36,7 +36,7 @@
     "mocha": "~2.0.1",
     "istanbul": "~0.3.2",
     "grunt-mocha-istanbul": "~2.2.0",
-    "grunt-spider-script": "0.0.4",
+    "grunt-spider-script": "0.0.5",
     "grunt-contrib-copy": "~0.7.0",
     "grunt-contrib-clean": "~0.6.0",
     "grunt-eslint": "~2.0.0"
