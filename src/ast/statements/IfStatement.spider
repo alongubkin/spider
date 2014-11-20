@@ -1,7 +1,9 @@
+use :node;
+
 var Node = require('../Node').Node;
 
-exports.IfStatement = function (test, consequent, alternate) {
-  Node.call(this);
+func IfStatement(test, consequent, alternate)
+  extends Node {
   
   this.type = 'IfStatement';
   
@@ -13,24 +15,24 @@ exports.IfStatement = function (test, consequent, alternate) {
   
   this.alternate = alternate;
   
-  if (this.alternate) {
+  if this.alternate? {
     this.alternate.parent = this;
   }
-};
+}
 
-exports.IfStatement.prototype = Object.create(Node);
-
-exports.IfStatement.prototype.codegen = function () {
-  if (!Node.prototype.codegen.call(this)) {
+IfStatement.prototype.codegen = () -> {
+  if !super.codegen() {
     return;
   }
   
   this.test = this.test.codegen();
   this.consequent = this.consequent.blockWrap().codegen();
   
-  if (this.alternate) {
+  if this.alternate? {
     this.alternate = this.alternate.blockWrap().codegen();
   }
   
   return this;
 };
+
+exports.IfStatement = IfStatement;
