@@ -23,6 +23,11 @@ Compile a script:
 
     spider -c /path/to/script.spider
 
+### Join the Community
+
+* Website: http://spiderlang.org 
+* IRC: #spiderlang on Freenode
+
 ### Changelog
 
 2014 11 20 - **v0.0.6-alpha**
