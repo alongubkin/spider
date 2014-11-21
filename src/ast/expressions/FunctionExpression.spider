@@ -4,7 +4,7 @@ var Node = require('../Node').Node,
     Parameter = require('../Parameter').Parameter,
     CallExpression = require('../expressions/CallExpression').CallExpression;
     
-func FunctionExpression (id, params, body, inheritsFrom) 
+func FunctionExpression (id, params, body, inheritsFrom, operator) 
   extends Node {
  
   this.type = 'FunctionExpression'; 
@@ -12,6 +12,7 @@ func FunctionExpression (id, params, body, inheritsFrom)
   this.rest = null;
   this.generator = false;
   this.expression = false;  
+  this.operator = operator;
   
   this.id = id;
   
@@ -71,6 +72,51 @@ FunctionExpression.prototype.codegen = () -> {
     this.body.body[0].argument = this.body.body[this.body.body.length - 1].argument.codegen();
   } else {
     this.body = this.body.codegen();
+  }
+  
+  if this.operator == '=>' {
+    var parent = this.parent;
+    while parent? and parent.type != "FunctionExpression" and !parent.__fatArrow {
+      parent = parent.parent;
+    }
+  
+    if !parent? {
+      this.type = "CallExpression";
+      this.callee = {
+        "type": "FunctionExpression",
+        "id": null,
+        "params": [{
+          "type": "Identifier",
+          "name": "_this"
+        }],
+        "defaults": [],
+        "body": {
+          "type": "BlockStatement",
+          "body": [{
+            "type": "ReturnStatement",
+            "argument": {
+              "type": "FunctionExpression",
+              "id": null,
+              "params": [],
+              "defaults": [],
+              "body": this.body,
+              "rest": null,
+              "generator": false,
+              "expression": false
+            },
+            "rest": null,
+            "generator": false,
+            "expression": false
+          }]
+        },
+        "__fatArrow": true,
+      };
+      
+      ::Object.defineProperty(this, 'arguments', { 
+        value: [{ "type": "ThisExpression" }], 
+        enumerable: true 
+      });
+    }
   }
   
   if this.inheritsFrom? {

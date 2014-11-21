@@ -1013,7 +1013,7 @@ describe('function expressions:', function () {
       'var a = function () {\n    return 1;\n};'));
       
   it('function expression with 1 argument',
-    generateTest('var a = (a) => a;', 
+    generateTest('var a = (a) -> a;', 
       'var a = function (a) {\n    return a;\n};'));
 
   it('function expression with 2 arguments',
@@ -1021,7 +1021,7 @@ describe('function expressions:', function () {
       'var a = function (a, b) {\n    return a + b;\n};'));
 
   it('function expression with 3 arguments',
-    generateTest('var a = (a, b, c) => a+b-c;', 
+    generateTest('var a = (a, b, c) -> a+b-c;', 
       'var a = function (a, b, c) {\n    return a + b - c;\n};')); 
       
   it('block function expression without arguments',
@@ -1029,7 +1029,7 @@ describe('function expressions:', function () {
       'var a = function () {\n};'));
     
   it('block function expression with 1 argument',
-    generateTest('var a = (a) => { };', 
+    generateTest('var a = (a) -> { };', 
       'var a = function (a) {\n};'));
 
   it('block function expression with 2 arguments',
@@ -1037,7 +1037,7 @@ describe('function expressions:', function () {
       'var a = function (a, b) {\n};'));
 
   it('block function expression with 3 arguments',
-    generateTest('var a = (a, b, c) => { };', 
+    generateTest('var a = (a, b, c) -> { };', 
       'var a = function (a, b, c) {\n};')); 
       
   it('block function expression (func syntax) without arguments',
@@ -1696,6 +1696,15 @@ describe('fallthrough statement:', function () {
       
   it('switch with normal-fallthrough-normal-fallthrough cases with default', 
     generateTest('switch n { case 1..2: { a(); }, case 1..4: { b(); fallthrough; }, case 1..6: { c(); }, case 1..8: { d(); fallthrough; }, default: { def(); } }',
-      'var fallthrough0 = 0;\nif (n >= 1 && n <= 2) {\n    fallthrough0 = 2;\n    a();\n} else if (n >= 1 && n <= 4) {\n    fallthrough0 = 2;\n    b();\n    fallthrough0 = 1;\n}\nif (fallthrough0 < 2 && (n >= 1 && n <= 6)) {\n    fallthrough0 = 2;\n    c();\n} else if (fallthrough0 < 2 && (n >= 1 && n <= 8)) {\n    fallthrough0 = 2;\n    d();\n    fallthrough0 = 1;\n}\nif (fallthrough0 < 2) {\n    def();\n}'));
+      'var fallthrough0 = 0;\nif (n >= 1 && n <= 2) {\n    fallthrough0 = 2;\n    a();\n} else if (n >= 1 && n <= 4) {\n    fallthrough0 = 2;\n    b();\n    fallthrough0 = 1;\n}\nif (fallthrough0 < 2 && (n >= 1 && n <= 6)) {\n    fallthrough0 = 2;\n    c();\n} else if (fallthrough0 < 2 && (n >= 1 && n <= 8)) {\n    fallthrough0 = 2;\n    d();\n    fallthrough0 = 1;\n}\nif (fallthrough0 < 2) {\n    def();\n}'));   
+});
+
+describe('fat arrow:', function () {
+  it('fat arrow function expression',
+    generateTest('var x = () => this.test;',
+      'var x = function (_this) {\n    return function () {\n        return _this.test;\n    };\n}(this);'));
       
+  it('fat arrow function expression inside another',
+    generateTest('var x = () => () => this.test;',
+      'var x = function (_this) {\n    return function () {\n        return function () {\n            return _this.test;\n        };\n    };\n}(this);'));
 });

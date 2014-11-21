@@ -1017,23 +1017,27 @@ FunctionExpression
       );
     }
   / "(" __ params:(FormalParameterList __)? ")" 
-    __ FunctionExpressionOperator
+    __ operator:FunctionExpressionOperator
     __ body:Block __
     {      
       return new ast.FunctionExpression(
         null,
         optionalList(extractOptional(params, 0)),
-        body
+        body,
+        null,
+        operator
       );
     }    
   / "(" __ params:(FormalParameterList __)? ")" 
-    __ FunctionExpressionOperator
+    __ operator:FunctionExpressionOperator
     __ body:Expression __
     {
       return new ast.FunctionExpression(
         null, 
         optionalList(extractOptional(params, 0)),
-        body
+        body,
+        null,
+        operator
       );
     }
   / ForInExpression
