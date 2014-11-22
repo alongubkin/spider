@@ -32,6 +32,16 @@ Compile a script:
 
 ### Changelog
 
+2014 11 22 - **v0.0.7-alpha**
+
+ * Fat Arrow (`=>`) Function Expressions
+ * `not` keyword
+ * Fix `break` and `return` statements inside `for-in` and `for-of` statements
+ * Disable source map generation option in CLI
+ * Fix CLI execute script
+ * Comma is now optional between switch case clauses
+ * Regular Expression Literals
+
 2014 11 20 - **v0.0.6-alpha**
 
  * Fallthrough Statement
