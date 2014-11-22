@@ -155,14 +155,14 @@
 func Tardis() 
   <span class="extends">extends</span> TimeMachine("The Doctor") {
   
-  this.go = () -> 
+  this.go = () => 
     super.go("vorp vorp");
 }
 
 func DeLorean() 
   <span class="extends">extends</span> TimeMachine("Marty") {
 
-  this.go = () -> 
+  this.go = () => 
     super.go("One point twenty-one gigawatts!");
 }
 
@@ -385,6 +385,15 @@ var cube = func (x) {
 app.controller("MyCtrl", ($scope, MyService) -> {
   $scope.items = [];
 });</code></pre>
+
+              <p>Spider provides the fat arrow syntax to bind the current scope:</p>
+              
+              <pre><code class="lang-js">func Animal(name) {
+this.name = name;
+
+this.printName = () => 
+  console.log(this.name);
+}</code></pre>
 
               <h3 class="docs-heading">Default Params Value<span class="anchor-target" id="functions-default-params-value"></span>
                 <a href="#functions-default-params-value" name="functions-default-params-value" class="anchor glyphicon glyphicon-link"></a>
