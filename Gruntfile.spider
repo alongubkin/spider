@@ -5,7 +5,7 @@ module.exports = func (grunt) {
   require('time-grunt')(grunt);
   // Load all grunt tasks
   require('load-grunt-tasks')(grunt);
-  
+
   // Project configuration.
   grunt.initConfig({
     nodeunit: {
@@ -25,7 +25,7 @@ module.exports = func (grunt) {
     },
     mochacli: {
       options: {
-        reporter: 'nyan',
+        reporter: 'spec',
         bail: true,
         timeout: 15000
       },
@@ -86,7 +86,7 @@ module.exports = func (grunt) {
       }
     }
   });
-    
+
   // Default task.
   grunt.registerTask('default', ['build', 'eslint', 'mochacli']);
   grunt.registerTask('build', ['clean:build', 'peg', 'spider_script:build', 'copy:build']);
