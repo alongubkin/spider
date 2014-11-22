@@ -163,7 +163,7 @@ opts.files.forEach(function (fileName, fileIndex) {
             });
         }        
       } else {
-        vm.runInThisContext(compilerOutput);
+        vm.runInThisContext(compilerOutput.code);
       }
     }
   });
