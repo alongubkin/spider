@@ -194,6 +194,7 @@ Keyword
   / CaseToken
   / DefaultToken
   / FallthroughToken
+  / NotToken
 
 Literal
   = NullLiteral
@@ -413,6 +414,7 @@ SwitchToken       = "switch"      !IdentifierPart
 CaseToken         = "case"        !IdentifierPart
 DefaultToken      = "default"     !IdentifierPart
 FallthroughToken  = "fallthrough" !IdentifierPart
+NotToken          = "not"         !IdentifierPart
 
 __
   = (WhiteSpace / LineTerminatorSequence / Comment)*
@@ -857,6 +859,7 @@ UnaryExpression
 
 UnaryOperator
   = $TypeofToken
+  / $NotToken { return "!" }
   / "++"
   / "--"
   / $("+" !"=")
