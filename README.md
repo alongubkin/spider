@@ -26,7 +26,7 @@ Compile a script:
 ### Join the Community
 
 * Website: http://spiderlang.org 
-* IRC: #spiderlang on Freenode
+* IRC: [#spiderlang](http://webchat.freenode.net/?channels=spiderlang) on Freenode
 * Q/A: [spiderlang](http://stackoverflow.com/questions/tagged/spiderlang) tag in StackOverflow
 * [Google Group](http://groups.google.com/d/forum/spiderlang?hl=en)
 
