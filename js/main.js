@@ -1,5 +1,3 @@
-var spider = require('spider-script');
-
 $(function() {
 
   // IE10 viewport hack for Surface/desktop Windows 8 bug
@@ -105,7 +103,3 @@ $(function() {
   }, 0);
 
 });
-
-var compileSpider = function(text) {
-  spider.compile(text);
-}
