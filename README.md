@@ -27,6 +27,7 @@ Compile a script:
 
 * Website: http://spiderlang.org 
 * IRC: #spiderlang on Freenode
+* Q/A: [spiderlang](http://stackoverflow.com/questions/tagged/spiderlang) tag in StackOverflow
 
 ### Changelog
 
