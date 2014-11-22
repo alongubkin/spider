@@ -106,7 +106,7 @@ ForInExpression.prototype.codegen = () -> {
           "kind": "var",
           "codeGenerated": true
         },
-        forInStatement.codegen(),
+        forInStatement.codegen(false),
         {
           "type": "ReturnStatement",
           "argument": id

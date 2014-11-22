@@ -76,7 +76,19 @@ ForOfStatement.prototype.codegen = () -> {
   } else {
     this.body = this.body.blockWrap().codegen();
   }
-  
+
+  if this.body.body.length == 0 or
+     this.body.body[this.body.body.length - 1].type != "ReturnStatement" {
+    this.body.body.push({
+      "type": "ReturnStatement",
+      "codeGenerated": true,
+      "argument": {
+        "type": "Literal",
+        "value": true
+      }
+    });
+  }
+
   this.type = "ExpressionStatement";
   this.expression = {
     "type": "CallExpression",
@@ -101,7 +113,7 @@ ForOfStatement.prototype.codegen = () -> {
       },
       "property": {
         "type": "Identifier",
-        "name": "forEach"
+        "name": "every"
       }
     },
     "arguments": [{

@@ -22,7 +22,7 @@ func ForInStatement(item, index, array, body)
   this.body.parent = this;
 }
 
-ForInStatement.prototype.codegen = () -> {
+ForInStatement.prototype.codegen = (every = true) -> {
   if !super.codegen() {
     return;
   }
@@ -38,17 +38,32 @@ ForInStatement.prototype.codegen = () -> {
     
     this.defineIdentifier(this.index);
   }
-  
+
+  this.array = this.array.codegen();
+  this.body = this.body.blockWrap().codegen();
+
+  if every and (this.body.body.length == 0 or
+     this.body.body[this.body.body.length - 1].type != "ReturnStatement") {
+    this.body.body.push({
+      "type": "ReturnStatement",
+      "codeGenerated": true,
+      "argument": {
+        "type": "Literal",
+        "value": true
+      }
+    });
+  }
+
   this.type = "ExpressionStatement";
   this.expression = {
     "type": "CallExpression",
     "callee": {
       "type": "MemberExpression",
       "computed": false,
-      "object": this.array.codegen(),
+      "object": this.array,
       "property": {
         "type": "Identifier",
-        "name": "forEach"
+        "name": "every" if every else "forEach"
       }
     },
     "arguments": [{
@@ -56,7 +71,7 @@ ForInStatement.prototype.codegen = () -> {
       "id": null,
       "params": params,
       "defaults": [],
-      "body": this.body.blockWrap().codegen(),
+      "body": this.body,
       "rest": null,
       "generator": false,
       "expression": false

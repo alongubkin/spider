@@ -13,6 +13,19 @@ BreakStatement.prototype.codegen = () -> {
     return;
   }
   
+  var parent = this.parent;
+  while parent? and parent.type != "ForInStatement" and parent.type != "ForOfStatement" {
+    parent = parent.parent;
+  }
+
+  if parent? {
+  	this.type = "ReturnStatement";
+  	this.argument = {
+  		"type": "Literal",
+  		"value": false
+  	};
+  }
+
   return this;
 };
 
