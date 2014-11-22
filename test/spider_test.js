@@ -1746,3 +1746,8 @@ describe('for-in and for-of with break and return:', function () {
     generateTest('for x of obj { if x == 5 { return 5; } }',
       'var returned0 = false, returnValue0;\nObject.keys(obj).every(function (x) {\n    if (x === 5) {\n        returned0 = true;\n        returnValue0 = 5;\n        return false;\n    }\n    return true;\n}, this);\nif (returned0) {\n    return returnValue0;\n}'));
 });
+
+describe('regular expression literals:', function () {
+  it('regular expression literal',
+    generateTest('var re = /ab+c/g;', 'var re = /ab+c/g;'));
+});

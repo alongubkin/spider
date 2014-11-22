@@ -54,7 +54,8 @@ var nodes = [
   'literals/NumberLiteral',
   'literals/StringLiteral',
   'literals/NullLiteral',
-  'literals/Identifier'
+  'literals/Identifier',
+  'literals/RegularExpressionLiteral'
 ];
 
 module.exports = {};

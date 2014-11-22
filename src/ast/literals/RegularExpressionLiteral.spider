@@ -1,0 +1,24 @@
+use :node;
+
+var Node = require('../Node').Node;
+
+func RegularExpressionLiteral(pattern, flags)
+  extends Node {
+  
+  this.type = 'Literal';
+  this.pattern = pattern;
+  this.flags = flags;
+}
+
+RegularExpressionLiteral.prototype.codegen = () -> { 
+  if !super.codegen() {
+    return;
+  }
+  
+  this.value = new ::RegExp(this.pattern, this.flags);
+  return this; 
+};
+
+RegularExpressionLiteral.prototype.hasCallExpression = () -> false;
+
+exports.RegularExpressionLiteral = RegularExpressionLiteral;

@@ -201,6 +201,7 @@ Literal
   / BooleanLiteral
   / NumericLiteral
   / StringLiteral
+  / RegularExpressionLiteral
   
 NullLiteral
   = NullToken { return insertLocationData(new ast.NullLiteral(), text(), line(), column()); }
@@ -321,7 +322,41 @@ ExpressionSequence
   = "(" expression:Expression ")" {
       return expression;
     }
-    
+
+RegularExpressionLiteral "regular expression"
+  = "/" pattern:$RegularExpressionBody "/" flags:$RegularExpressionFlags {
+      return insertLocationData(new ast.RegularExpressionLiteral(pattern, flags), text(), line(), column());
+    }
+
+RegularExpressionBody
+  = RegularExpressionFirstChar RegularExpressionChar*
+
+RegularExpressionFirstChar
+  = ![*\\/[] RegularExpressionNonTerminator
+  / RegularExpressionBackslashSequence
+  / RegularExpressionClass
+
+RegularExpressionChar
+  = ![\\/[] RegularExpressionNonTerminator
+  / RegularExpressionBackslashSequence
+  / RegularExpressionClass
+
+RegularExpressionBackslashSequence
+  = "\\" RegularExpressionNonTerminator
+
+RegularExpressionNonTerminator
+  = !LineTerminator SourceCharacter
+
+RegularExpressionClass
+  = "[" RegularExpressionClassChar* "]"
+
+RegularExpressionClassChar
+  = ![\]\\] RegularExpressionNonTerminator
+  / RegularExpressionBackslashSequence
+
+RegularExpressionFlags
+  = IdentifierPart*
+
 /*
  * Unicode Character Categories
  *
