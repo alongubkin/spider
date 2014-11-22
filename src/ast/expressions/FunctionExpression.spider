@@ -68,6 +68,10 @@ FunctionExpression.prototype.codegen = () -> {
   
   Parameter.generateFunctionBody(this, this.params, this.body);
   
+  if this.operator == '=>' {
+    this.__fatArrow = true;
+  }
+
   if this.autoBlock {
     this.body.body[0].argument = this.body.body[this.body.body.length - 1].argument.codegen();
   } else {
@@ -76,7 +80,7 @@ FunctionExpression.prototype.codegen = () -> {
   
   if this.operator == '=>' {
     var parent = this.parent;
-    while parent? and parent.type != "FunctionExpression" and !parent.__fatArrow {
+    while parent? and (parent.type != "FunctionExpression" or !parent.__fatArrow) {
       parent = parent.parent;
     }
   

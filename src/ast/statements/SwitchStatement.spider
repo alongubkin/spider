@@ -33,7 +33,7 @@ SwitchStatement.prototype.codegen = () -> {
   for caseClause in this.cases {
     if (!caseClause.tests) {
       defaultCase = caseClause;
-      return;
+      break;
     }
     
     if !firstCase? {

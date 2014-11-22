@@ -64,33 +64,32 @@ ReturnStatement.prototype.codegen = () -> {
       "kind": "var"
     });
 
-    var expressions = [{
-      "type": "AssignmentExpression",
-      "operator": "=",
-      "left": returnedId,
-      "right": {
-        "type": "Literal",
-        "value": true
-      }
-    }];
-
-    if this.argument? {
-      expressions.push({
-        "type": "AssignmentExpression",
-        "operator": "=",
-        "left": returnValueId,
-        "right": this.argument
-      });
-    }
-
     context.node.body.splice(context.position, 0, {
       "type": "ExpressionStatement",
       "codeGenerated": true,
       "expression": {
-        "type": "SequenceExpression",
-        "expressions": expressions
+        "type": "AssignmentExpression",
+        "operator": "=",
+        "left": returnedId,
+        "right": {
+          "type": "Literal",
+          "value": true
+        }
       }
     });
+
+    if this.argument? {
+      context.node.body.splice(context.position + 1, 0, {
+        "type": "ExpressionStatement",
+        "codeGenerated": true,
+        "expression": {
+          "type": "AssignmentExpression",
+          "operator": "=",
+          "left": returnValueId,
+          "right": this.argument
+        }
+      });
+    }
 
     this.type = "ReturnStatement";
     this.argument = {

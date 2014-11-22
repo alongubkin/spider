@@ -14,7 +14,7 @@ ThisExpression.prototype.codegen = () -> {
   }
   
   var parent = this.parent;
-  while parent? and parent.type != "FunctionExpression" and !parent.__fatArrow {
+  while parent? and (parent.type != "FunctionExpression" or !parent.__fatArrow) {
     parent = parent.parent;
   }
   

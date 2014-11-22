@@ -1720,7 +1720,7 @@ describe('for-in and for-of with break and return:', function () {
 
   it('for-in with return', 
     generateTest('for x in array { return 5; }',
-      'var returned0 = false, returnValue0;\narray.every(function (x) {\n    returned0 = true, returnValue0 = 5;\n    return false;\n}, this);\nif (returned0) {\n    return returnValue0;\n}'));
+      'var returned0 = false, returnValue0;\narray.every(function (x) {\n    returned0 = true;\n    returnValue0 = 5;\n    return false;\n}, this);\nif (returned0) {\n    return returnValue0;\n}'));
 
   it('for-in with return w/o argument', 
     generateTest('for x in array { return; }',
@@ -1728,7 +1728,7 @@ describe('for-in and for-of with break and return:', function () {
 
   it('for-in with conditional return', 
     generateTest('for x in array { if x == 5 { return 5; } }',
-      'var returned0 = false, returnValue0;\narray.every(function (x) {\n    if (x === 5) {\n        returned0 = true, returnValue0 = 5;\n        return false;\n    }\n    return true;\n}, this);\nif (returned0) {\n    return returnValue0;\n}'));
+      'var returned0 = false, returnValue0;\narray.every(function (x) {\n    if (x === 5) {\n        returned0 = true;\n        returnValue0 = 5;\n        return false;\n    }\n    return true;\n}, this);\nif (returned0) {\n    return returnValue0;\n}'));
 
   it('for-of with break', 
     generateTest('for x of obj { break; }',
@@ -1740,9 +1740,9 @@ describe('for-in and for-of with break and return:', function () {
 
   it('for-of with return', 
     generateTest('for x of obj { return 5; }',
-      'var returned0 = false, returnValue0;\nObject.keys(obj).every(function (x) {\n    returned0 = true, returnValue0 = 5;\n    return false;\n}, this);\nif (returned0) {\n    return returnValue0;\n}'));
+      'var returned0 = false, returnValue0;\nObject.keys(obj).every(function (x) {\n    returned0 = true;\n    returnValue0 = 5;\n    return false;\n}, this);\nif (returned0) {\n    return returnValue0;\n}'));
 
   it('for-of with conditional return', 
     generateTest('for x of obj { if x == 5 { return 5; } }',
-      'var returned0 = false, returnValue0;\nObject.keys(obj).every(function (x) {\n    if (x === 5) {\n        returned0 = true, returnValue0 = 5;\n        return false;\n    }\n    return true;\n}, this);\nif (returned0) {\n    return returnValue0;\n}'));
+      'var returned0 = false, returnValue0;\nObject.keys(obj).every(function (x) {\n    if (x === 5) {\n        returned0 = true;\n        returnValue0 = 5;\n        return false;\n    }\n    return true;\n}, this);\nif (returned0) {\n    return returnValue0;\n}'));
 });

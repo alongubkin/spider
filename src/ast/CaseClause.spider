@@ -68,7 +68,7 @@ CaseClause.prototype.codegen = (branchFallthrough) -> {
           equalsToDiscriminant = fromCheck ?? toCheck;
         } else {
           rangeError = test;
-          return false;
+          break;
         }
       } else {
         equalsToDiscriminant = {

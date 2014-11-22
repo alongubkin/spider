@@ -23,23 +23,23 @@
     ""
   ],
   "devDependencies": {
+    "coveralls": "~2.11.2",
+    "grunt-contrib-clean": "~0.6.0",
+    "grunt-contrib-copy": "~0.7.0",
     "grunt-contrib-nodeunit": "^0.3.3",
     "grunt-contrib-watch": "^0.6.1",
-    "load-grunt-tasks": "^0.4.0",
-    "time-grunt": "^0.3.1",
+    "grunt-eslint": "~2.0.0",
     "grunt-mocha-cli": "^1.9.0",
-    "should": "~4.1.0",
-    "shelljs-nodecli": "~0.1.1",
-    "grunt-peg": "~1.5.0",
-    "coveralls": "~2.11.2",
-    "mocha-lcov-reporter": "0.0.1",
-    "mocha": "~2.0.1",
-    "istanbul": "~0.3.2",
     "grunt-mocha-istanbul": "~2.2.0",
+    "grunt-peg": "~1.5.0",
     "grunt-spider-script": "0.0.5",
-    "grunt-contrib-copy": "~0.7.0",
-    "grunt-contrib-clean": "~0.6.0",
-    "grunt-eslint": "~2.0.0"
+    "istanbul": "~0.3.2",
+    "load-grunt-tasks": "^0.4.0",
+    "mocha": "~2.0.1",
+    "mocha-lcov-reporter": "0.0.1",
+    "shelljs-nodecli": "~0.1.1",
+    "should": "~4.1.0",
+    "time-grunt": "^0.3.1"
   },
   "scripts": {
     "test": "grunt"
