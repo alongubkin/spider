@@ -23,7 +23,11 @@ var opts = require("nomnom")
     abbr: "v",
     flag: true,
     help: "verbose mode"
-  })  
+  })
+  .option("disable-source-map", {
+    flag: true,
+    help: "disable source map files (.map) generation"
+  })
   .option("version", {
     flag: true,
     help: "display the version number",
@@ -69,11 +73,13 @@ opts.files.forEach(function (fileName, fileIndex) {
       return console.log(error);
     }
     
+    var enableSourceMap = !opts['disable-source-map'];
+
     var errors = [];
     var outFileName = fileName.substring(0, 
           fileName.lastIndexOf('.')) + ".js";
     var compilerOutput = spider.compile(content, opts.verbose, errors, 
-      opts.compile ? path.basename(fileName) : false, outFileName + ".map", true, true);
+      opts.compile && enableSourceMap ? path.basename(fileName) : false, outFileName + ".map", true, true);
     
     if (errors.length > 0) {
       var output = [];
@@ -146,13 +152,16 @@ opts.files.forEach(function (fileName, fileIndex) {
             return console.log(error);
           }
         });
-        fs.writeFile(outFileName + ".map", 
-          compilerOutput.map.toString(), 
-          function (error) {
-            if (error) {
-              return console.log(error);
-            }
-          });        
+
+        if (enableSourceMap) {
+          fs.writeFile(outFileName + ".map", 
+            compilerOutput.map.toString(), 
+            function (error) {
+              if (error) {
+                return console.log(error);
+              }
+            });
+        }        
       } else {
         vm.runInThisContext(compilerOutput);
       }
