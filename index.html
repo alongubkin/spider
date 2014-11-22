@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Spider is a programming language that compiles to JavaScript. It's just JavaScript, but better.">
     <title>Getting Started | Spider</title>
-    
+
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/default.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css'>
@@ -17,13 +17,13 @@
       <div class="container">
         <div class="navbar-header">
           <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
           </button>
           <a href="index.html" class="navbar-brand">
-          Spider
+            Spider
           </a>
         </div>
         <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
@@ -74,7 +74,7 @@
                   <li><a href="#code-safety-logical-operators-consistency">Logical Operators Consistency</a></li>
                   <li><a href="#code-safety-typeof">Typeof</a></li>
                 </ul>
-              </li> 
+              </li>
               <li><a href="#string-interpolation">String Interpolation</a></li>
               <li>
                 <a href="#functions">Functions</a>
@@ -100,7 +100,7 @@
                   <li><a href="#for-in-statement">For-In Statement</a></li>
                   <li><a href="#for-of-statement">For-Of Statement</a></li>
                   <li><a href="#while-statement">While Statement</a></li>
-                  <li><a href="#until-statement">Until Statement</a></li> 
+                  <li><a href="#until-statement">Until Statement</a></li>
                   <li><a href="#list-comprehensions">List Comprehensions</a></li>
                 </ul>
               </li>
@@ -112,7 +112,7 @@
                   <li><a href="#operators-in-operator">In Operator</a></li>
                   <li><a href="#operators-chained-comparisons">Chained Comparisons</a></li>
                   <li><a href="#operators-exponentiation">Exponentiation (**)</a></li>
-                  <li><a href="#operators-integer-division">Integer division (#)</a></li> 
+                  <li><a href="#operators-integer-division">Integer division (#)</a></li>
                   <li><a href="#operators-math-modulo">Math modulo (%%)</a></li>
                 </ul>
               </li>
@@ -123,7 +123,7 @@
                   <li><a href="#ranges-array-slicing">Array Slicing</a></li>
                   <li><a href="#ranges-array-splicing">Array Splicing</a></li>
                 </ul>
-              </li>  
+              </li>
               <li>
                 <a href="#switch">Switch</a>
                 <ul class="nav nav-stacked">
@@ -144,47 +144,49 @@
               </div>
               <p>Spider is a programming language that compiles to JavaScript. It takes the best ideas of Swift, Python, C# and CoffeeScript.</p>
               <p><strong>It's just JavaScript, but better.</strong></p>
-              <pre><code class="lang-js">func TimeMachine(pilot) {
-  this.pilot = pilot;
-  
-  this.go = func (noise) {
-    ::console.log(noise);
-  };
-}
+              <pre><code class="lang-js">
+                func TimeMachine(pilot) {
+                  this.pilot = pilot;
 
-func Tardis() 
-  <span class="extends">extends</span> TimeMachine("The Doctor") {
-  
-  this.go = () => 
-    super.go("vorp vorp");
-}
+                  this.go = func (noise) {
+                    ::console.log(noise);
+                  };
+                }
 
-func DeLorean() 
-  <span class="extends">extends</span> TimeMachine("Marty") {
+                func Tardis()
+                  <span class="extends">extends</span> TimeMachine("The Doctor") {
 
-  this.go = () => 
-    super.go("One point twenty-one gigawatts!");
-}
+                  this.go = () =>
+                    super.go("vorp vorp");
+                }
 
-for timeMachine in ::getTimeMachines() {
-  timeMachine?.go();
-}</code></pre>
+                func DeLorean()
+                  <span class="extends">extends</span> TimeMachine("Marty") {
+
+                  this.go = () =>
+                    super.go("One point twenty-one gigawatts!");
+                }
+
+                for timeMachine in ::getTimeMachines() {
+                  timeMachine?.go();
+                }
+              </code></pre>
 
               <blockquote><strong>Note:</strong> Spider is still work in progress. Make sure to <a href="https://github.com/alongubkin/spider">star the project</a> in GitHub if you are interested!</blockquote>
-              
+
               <h3 class="docs-heading">Why Spider?<span class="anchor-target" id="why-spider"></span>
                 <a href="#why-spider" name="why-spider" class="anchor glyphicon glyphicon-link"></a>
               </h3>
-              
+
               <p>There are <em>many</em> languages that compile to JavaScript. The most popular ones are <a href="http://coffeescript.org/">CoffeeScript</a>, <a href="http://www.typescriptlang.org/">TypeScript</a> and <a href="https://www.dartlang.org/">Dart</a>.</li>
               <p>But all of them have problems:</p>
-              
+
               <ul class="ul-space">
                 <li><strong>CoffeeScript</strong> (and its derivatives: LiveScript, Coco, etc) have serious issues of <a href="http://ceronman.com/2012/09/17/coffeescript-less-typing-bad-readability/">ambiguous code</a>, alien syntax and scoping problems.</li>
                 <li><strong>TypeScript</strong> (and AtScript) are supersets of JavaScript, so they inherit all of its problems. Additionally, loose typing can be one of JavaScript's best features if used correctly.</li>
                 <li><strong>Dart</strong> is an extreme departure from JavaScript, which makes it impossible to interact with JavaScript libraries <em>directly</em>. Instead, you must use a <a href="https://www.dartlang.org/articles/js-dart-interop/">special interop library</a> that exposes wrapped versions of any JavaScript objects you access.</li>
               </ul>
-              
+
               <p>Spider tries to <em>learn</em> from its predecessors and build a real programming language that will make developers and teams happy:</p>
               <ul class="ul-space">
                 <li>Instead of bringing a completely new indentation-based syntax like CoffeeScript, <strong>Spider preserves JavaScript's familiar syntax</strong> that we all use everyday.</li>
@@ -193,33 +195,33 @@ for timeMachine in ::getTimeMachines() {
                 <li><strong>Spider is an extremely safe language</strong>. It has a great compile-time error reporting system, and all uses of the global scope <a href="#code-safety-global-scope-usage">must be explicit</a>. Spider also fixes many JavaScript problems. For example, <code>==</code> is automatically compiled to <code>===</code>, and the <a href="#code-safety-typeof">typeof</a> operator supports <code>array</code>, <code>date</code>, <code>regexp</code> and more.</li>
                 <li>Spider has <strong>useful syntactic sugar</strong> like <a href="#functions-splats">Splats</a>, <a href="#ranges-array-slicing">Array Slicing</a> and <a href="#ranges-array-splicing">Splicing</a>, <a href="#operators-existential-operator">Existential Operator</a>, <a href="#ranges">Ranges</a>, <a href="#list-comprehensions">List Comprehensions</a> and much more.</li>
               </ul>
-              
+
               <p>Spider also has great debugging support:</p>
               <img src="img/debugging.png" style="width: 500px"></img>
-              
+
               <h3 class="docs-heading">Tools<span class="anchor-target" id="tools"></span>
                 <a href="#tools" name="tools" class="anchor glyphicon glyphicon-link"></a>
               </h3>
-              
+
               <p>If you want to add your tool to this list, <a href="https://github.com/alongubkin/spider/pulls">create a pull request</a> in GitHub.</p>
               <p><strong>Syntax Highlighting</strong></p>
 
               <ul>
                 <li><a href="https://github.com/Namek/Spider-Sublime-Plugin">Sublime Text</a></li>
                 <li><a href="https://github.com/Namek/NotepadPlusPlus-SpiderScript-Plugin">Notepad++</a></li>
-                <li><a href="github.com/ZucchiniZe/vim-spider">Vim</a></li>
+                <li><a href="https://github.com/ZucchiniZe/vim-spider">Vim</a></li>
               </ul>
-              
+
               <p><strong>Building</strong></p>
-              
+
               <ul>
                 <li><a href="https://github.com/mariusc23/grunt-spider-script">grunt-spider-script</a></li>
                 <li><a href="https://github.com/izolate/gulp-spider">gulp-spider</a></li>
                 <li><a href="https://github.com/FullR/gulp-spider-script">gulp-spider-script</a></li>
               </ul>
-              
+
               <p><strong>Other</strong></p>
-              
+
               <ul>
                 <li><a href="https://github.com/sagiegurari/node-spider-script">node-spider-script</a></li>
               </ul>
@@ -235,17 +237,17 @@ for timeMachine in ::getTimeMachines() {
               </h3>
               <p>Install Spider via npm, the <a href="http://nodejs.org/">node.js</a> package manager:</p>
               <pre><code class="lang-js">npm install -g spider-script</code></pre>
-              
+
               <h3 class="docs-heading">Command-line usage<span class="anchor-target" id="using-spider-command-line-usage"></span>
                 <a href="#using-spider-command-line-usage" name="using-spider-command-line-usage" class="anchor glyphicon glyphicon-link"></a>
-              </h3>     
-              
+              </h3>
+
               <p>To execute a script, run:</p>
               <pre><code class="lang-js">spider /path/to/script.spider</code></pre>
-              
+
               <p>To compile a script:</p>
-              <pre><code class="lang-js">spider -c /path/to/script.spider</code></pre> 
-              
+              <pre><code class="lang-js">spider -c /path/to/script.spider</code></pre>
+
               <p>The compiler will generate the output JavaScript file and a source map file for debugging. Note that the original spider file and the source map file aren't necessary for production.</p>
             </div>
             <div class="docs-section">
@@ -254,16 +256,16 @@ for timeMachine in ::getTimeMachines() {
                   <a href="#code-safety" name="code-safety" class="anchor glyphicon glyphicon-link"></a>
                 </h1>
               </div>
-              
+
               <p>All Spider code is compiled to JavaScript strict mode and wrapped in <a href="http://benalman.com/news/2010/11/immediately-invoked-function-expression/">Immediately-Invoked Function Expression (IIFE)</a>.</p>
-              
+
               <h3 class="docs-heading">Global Scope Usage<span class="anchor-target" id="code-safety-global-scope-usage"></span>
                 <a href="#code-safety-global-scope-usage" name="code-safety-global-scope-usage" class="anchor glyphicon glyphicon-link"></a>
               </h3>
-              
+
               <p>In Spider, all uses of the global scope must be explicit. Use <code>::</code> to access the global scope.</p>
               <pre><code class="lang-js">::console.log("Hello world!");</code></pre>
-              
+
               <p>You can also pull global variables into the local scope with the <code>use</code> statement:</p>
               <pre><code class="lang-js">use console;
 
@@ -303,56 +305,56 @@ console.log("Hello world!");</code></pre>
                 <tr>
                   <td>setTimeout</td>
                   <td>setTimeout</td>
-                </tr>                
+                </tr>
                 <tr>
                   <td>alert</td>
                   <td></td>
-                </tr>                
+                </tr>
               </table>
-              
+
               <h3 class="docs-heading">Scoping<span class="anchor-target" id="code-safety-scoping"></span>
                 <a href="#code-safety-scoping" name="code-safety-scoping" class="anchor glyphicon glyphicon-link"></a>
               </h3>
-              
+
               <p>The Spider compiler will raise an error if you try to refer to a variable that doesn't exist in the current scope or in one of its parents.</p>
               <p><img src="img/undefined-error.png"></p>
               <p>Scoping just works, without any surprises. Spider will protect you against any unintended behaviour.</p>
-              
+
               <h3 class="docs-heading">Logical Operators Consistency<span class="anchor-target" id="code-safety-logical-operators-consistency"></span>
                 <a href="#code-safety-logical-operators-consistency" name="code-safety-logical-operators-consistency" class="anchor glyphicon glyphicon-link"></a>
               </h3>
-              
+
               <p>In Spider, logical operators always result in a boolean value regardless of the types passed to it. In addition, <code>==</code> is automatically compiled to <code>===</code>.</p>
               <pre><code class="lang-js">x = false or 5;  // x == true;
 x = 5 and 4;     // x == true;
 x = 1 == "1";    // false (== compiles to ===)</code></pre>
 
-              <p>Note that Spider adds the <code>and</code> and <code>or</code> operators that behave exactly like <code>&&</code> and <code>||</code> respectively.</p>      
-              
+              <p>Note that Spider adds the <code>and</code> and <code>or</code> operators that behave exactly like <code>&&</code> and <code>||</code> respectively.</p>
+
               <p>Spider provides the <a href="#operators-null-coalescing-operator">null-coalescing operator</a> to replace the useful <code>options.property || defaultValue</code> idiom.</p>
-            
+
               <h3 class="docs-heading">Typeof<span class="anchor-target" id="code-safety-typeof"></span>
                 <a href="#code-safety-typeof" name="code-safety-typeof" class="anchor glyphicon glyphicon-link"></a>
               </h3>
-              
+
               <p>Spider's <code>typeof</code> operator returns the lowered-cased <code>[[Class]]</code> internal property of the argument.</p>
-              
+
               <pre><code class="lang-js">typeof { a: 4 };          // "object"
 typeof [1, 2, 3];         // "array"
 typeof new Date;          // "date"
 typeof new Number(4);     // "number"
 typeof new String("abc"); // "string"
-typeof new Boolean(true); // "boolean"</code></pre>             
-            </div> 
+typeof new Boolean(true); // "boolean"</code></pre>
+            </div>
             <div class="docs-section">
               <div class="page-header">
                 <h1 class="docs-heading">String Interpolation<span class="anchor-target" id="string-interpolation"></span>
                   <a href="#string-interpolation" name="string-interpolation" class="anchor glyphicon glyphicon-link"></a>
                 </h1>
               </div>
-              
+
               <p>String interpolation is a way to construct a new string from a mix of constants, variables, literals, and expressions by including their values inside a string literal.</p>
-              
+
               <pre><code class="lang-js">var multiplier = 3;
 var message = "\(multiplier) times 2.5 is \(multiplier * 2.5)";
 
@@ -367,13 +369,13 @@ var message = "\(multiplier) times 2.5 is \(multiplier * 2.5)";
               <h3 class="docs-heading">Declaration<span class="anchor-target" id="functions-declaration"></span>
                 <a href="#functions-declaration" name="functions-declaration" class="anchor glyphicon glyphicon-link"></a>
               </h3>
-              
+
               <p>Functions in Spider are declared using the <code>func</code> keyword:</p>
-              <pre><code class="lang-js">func square(x) { 
+              <pre><code class="lang-js">func square(x) {
   return x * x;
 }
 
-var cube = func (x) { 
+var cube = func (x) {
   return square(x) * x;
 };</code></pre>
 
@@ -382,30 +384,30 @@ var cube = func (x) {
               </h3>
               <p>Functions can also be expressed using the arrow syntax:</p>
               <pre><code class="lang-js">var isEven = (x) -> x % 2 == 0;
-              
+
 app.controller("MyCtrl", ($scope, MyService) -> {
   $scope.items = [];
 });</code></pre>
 
               <p>Spider provides the fat arrow syntax to bind the current scope:</p>
-              
+
               <pre><code class="lang-js">func Animal(name) {
   this.name = name;
 
-  this.printName = () => 
+  this.printName = () =>
     console.log(this.name);
 }</code></pre>
 
               <h3 class="docs-heading">Default Params Value<span class="anchor-target" id="functions-default-params-value"></span>
                 <a href="#functions-default-params-value" name="functions-default-params-value" class="anchor glyphicon glyphicon-link"></a>
-              </h3>    
+              </h3>
               <p>Functions may also have default values for arguments, which will be used if the incoming argument is missing (<code>null</code> or <code>undefined</code>).</p>
               <pre><code class="lang-js">func legCount(animal = "spider") {
   switch animal {
     case "spider": {
       return 8;
-    },  
-    
+    },
+
     default: {
       return 2;
     }
@@ -414,16 +416,16 @@ app.controller("MyCtrl", ($scope, MyService) -> {
               <h3 class="docs-heading">Splats<span class="anchor-target" id="functions-splats"></span>
                 <a href="#functions-splats" name="functions-splats" class="anchor glyphicon glyphicon-link"></a>
               </h3>
-              
+
               <p>The JavaScript arguments object is a useful way to work with functions that accept variable numbers of arguments. Spider provides splats <code>...</code>, both for function definition as well as invocation, making variable numbers of arguments a little bit more palatable.</p>
-              
+
               <pre><code class="lang-js">var gold, silver, rest;
-              
+
 func awardMedals(first, second, others...) {
   // others is an array
   gold = first;
   silver = second;
-  rest = others; 
+  rest = others;
 }
 
 var contenders = [
@@ -437,27 +439,27 @@ awardMedals(contenders...);</code></pre>
               <h3 class="docs-heading">Inheritance<span class="anchor-target" id="functions-inheritance"></span>
                 <a href="#functions-inheritance" name="functions-inheritance" class="anchor glyphicon glyphicon-link"></a>
               </h3>
-              
+
               <p>Instead of just adding classes, Spider embraces JavaScript prototypes and makes them much easier to use. <strong>Spider's inheritance is compatible with almost any JavaScript class implementation out there.</strong></p>
-              
+
               <pre><code class="lang-js">func Animal(name) {
   this.move = func (distance) {
     alert("\(name) moved \(distance)m.");
   };
 }
 
-func Snake(name) 
+func Snake(name)
   <span class="extends">extends</span> Animal(name) {
-  
+
   this.move = func() {
     alert("Slithering...");
     super.move(5);
   };
 }
 
-func Horse(name) 
+func Horse(name)
   <span class="extends">extends</span> Animal(name) {
-  
+
   this.move = func() {
     alert("Galloping...");
     super.move(45);
@@ -482,7 +484,7 @@ tom.move();</code></pre>
               </h3>
 
               <p>In Spider, if statements (as well as most other statements) can be written without the use of parentheses.</p>
-              
+
               <pre><code class="lang-js">if happy and knowsIt {
   clapHands();
 } else {
@@ -492,11 +494,11 @@ tom.move();</code></pre>
               <h3 class="docs-heading">Conditional Expression<span class="anchor-target" id="conditional-expressions"></span>
                 <a href="#conditional-expressions" name="conditional-expressions" class="anchor glyphicon glyphicon-link"></a>
               </h3>
-              
+
               <p>There's no ternary operator (?:) in Spider. Instead, Spider provides Python-like <code>if</code> expressions:</p>
-              
+
               <pre><code class="lang-js">var date = sue if friday else jill;</code></pre>
-          </div>
+            </div>
             <div class="docs-section">
               <div class="page-header">
                 <h1 class="docs-heading">Loops<span class="anchor-target" id="loops"></span>
@@ -509,11 +511,11 @@ tom.move();</code></pre>
               <p>Spider provides 3 types of <code>for</code> statements. The first type allows a block of code to be executed repeatedly while incrementing a counter, as long as a condition remains true.</p>
               <pre><code class="lang-js">for var i = 0; i &lt; 5; i++ {
   ::console.log(i);
-}</code></pre>         
+}</code></pre>
               <h3 class="docs-heading">For-In Statement<span class="anchor-target" id="for-in-statement"></span>
                 <a href="#for-in-statement" name="for-in-statement" class="anchor glyphicon glyphicon-link"></a>
               </h3>
-              
+
               <p>A <code>for-in</code> statement allows a block of code to be executed once for each item in an array.</p>
               <pre><code class="lang-js">var foods = ['broccoli', 'spinach', 'chocolate'];
 
@@ -531,11 +533,11 @@ for food in foods {
               <h3 class="docs-heading">For-Of Statement<span class="anchor-target" id="for-of-statement"></span>
                 <a href="#for-of-statement" name="for-of-statement" class="anchor glyphicon glyphicon-link"></a>
               </h3>
-              
+
               <p>A <code>for-of</code> statement allows a block of code to be executed once for each property in an object.</p>
-              
-              <pre><code class="lang-js">var player = { 
-  "name": "Daniel", 
+
+              <pre><code class="lang-js">var player = {
+  "name": "Daniel",
   "address": "Tel Aviv",
   "age": 18
 };
@@ -544,43 +546,43 @@ for key of player {
   console.log("Found property \(key).");
 }</code></pre>
 
-            <p>You can also get the value of the key by adding another variable:</p>
-            <pre><code class="lang-js">for key, value of player {
+              <p>You can also get the value of the key by adding another variable:</p>
+              <pre><code class="lang-js">for key, value of player {
   console.log("\(key): \(value)");
 }</code></pre>
 
-            <h3 class="docs-heading">While Statement<span class="anchor-target" id="while-statement"></span>
-              <a href="#while-statement" name="while-statement" class="anchor glyphicon glyphicon-link"></a>
-            </h3>
-              
-            <p>Spider provides a <code>while</code> loop that behaves exactly like the JavaScript equivalent except parenthesis aren't required:</p> 
-          
-            <pre><code class="lang-js">while supply > demand {
+              <h3 class="docs-heading">While Statement<span class="anchor-target" id="while-statement"></span>
+                <a href="#while-statement" name="while-statement" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+
+              <p>Spider provides a <code>while</code> loop that behaves exactly like the JavaScript equivalent except parenthesis aren't required:</p>
+
+              <pre><code class="lang-js">while supply > demand {
   buy();
 }</code></pre>
 
-            <h3 class="docs-heading">Until Statement<span class="anchor-target" id="until-statement"></span>
-              <a href="#until-statement" name="until-statement" class="anchor glyphicon glyphicon-link"></a>
-            </h3>
-              
-            <p>For readability, Spider also provides an <code>until</code> loop that is equivalent to <code>while not</code>:</p> 
-          
-            <pre><code class="lang-js">until supply > demand {
+              <h3 class="docs-heading">Until Statement<span class="anchor-target" id="until-statement"></span>
+                <a href="#until-statement" name="until-statement" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+
+              <p>For readability, Spider also provides an <code>until</code> loop that is equivalent to <code>while not</code>:</p>
+
+              <pre><code class="lang-js">until supply > demand {
   sell();
 }</code></pre>
 
-            <h3 class="docs-heading">List Comprehensions<span class="anchor-target" id="list-comprehensions"></span>
-              <a href="#list-comprehensions" name="list-comprehensions" class="anchor glyphicon glyphicon-link"></a>
-            </h3>
-          
-            <p>Spider provides Python-like list comprehensions. List comprehensions provide a concise way to create list from existing list.</p>
-          
-            <pre><code class="lang-js">var list = [1, 2, 3, 5, 6, 7];
+              <h3 class="docs-heading">List Comprehensions<span class="anchor-target" id="list-comprehensions"></span>
+                <a href="#list-comprehensions" name="list-comprehensions" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+
+              <p>Spider provides Python-like list comprehensions. List comprehensions provide a concise way to create list from existing list.</p>
+
+              <pre><code class="lang-js">var list = [1, 2, 3, 5, 6, 7];
 var doubles = [x * 2 for x in list];</code></pre>
 
-            <p>You can also filter elements with a condition:</p>
-          
-            <pre><code class="lang-js">var doubles = [x * 2 for x in list if x % 2 == 0];</code></pre>     
+              <p>You can also filter elements with a condition:</p>
+
+              <pre><code class="lang-js">var doubles = [x * 2 for x in list if x % 2 == 0];</code></pre>
             </div>
             <div class="docs-section">
               <div class="page-header">
@@ -588,36 +590,36 @@ var doubles = [x * 2 for x in list];</code></pre>
                   <a href="#operators" name="operators" class="anchor glyphicon glyphicon-link"></a>
                 </h1>
               </div>
-              
+
               <h3 class="docs-heading">Existential Operator<span class="anchor-target" id="operators-existential-operator"></span>
                 <a href="#operators-existential-operator" name="operators-existential-operator" class="anchor glyphicon glyphicon-link"></a>
               </h3>
-              
+
               <p>It's a little difficult to check for the existence of a variable in JavaScript. <code>if (variable) ...</code> comes close, but fails for zero, the empty string, and false. The existential operator <code>?</code> returns true unless a variable is <strong>null</strong> or <strong>undefined</strong></p>
               <pre><code class="lang-js">if game? {
   play();
-}</code></pre>    
-              
+}</code></pre>
+
               <p>The accessor variant of the existential operator <code>?.</code> can be used to soak up null references in a chain of properties. Use it instead of the dot accessor <code>.</code> in cases where the base value may be <strong>null</strong> or <strong>undefined</strong>. If all of the properties exist then you'll get the expected result, if the chain is broken, <strong>undefined</strong> is returned instead of the <strong>TypeError</strong> that would be raised otherwise.</p>
 
               <pre><code class="lang-js">var zip = lottery.drawWinner?().address?.zipcode;</code></pre>
-              
+
               <h3 class="docs-heading">Null-Coalescing Operator<span class="anchor-target" id="operators-null-coalescing-operator"></span>
                 <a href="#operators-null-coalescing-operator" name="operators-null-coalescing-operator" class="anchor glyphicon glyphicon-link"></a>
               </h3>
-              
+
               <p>The null-coalescing operator <code>??</code> returns the right expression if the left expression is null or undefined.</p>
-              
+
               <pre><code class="lang-js">var name = options.name ?? "default name";</code></pre>
-              
+
               <h3 class="docs-heading">In Operator<span class="anchor-target" id="operators-in-operator"></span>
                 <a href="#operators-in-operator" name="operators-in-operator" class="anchor glyphicon glyphicon-link"></a>
               </h3>
-              
+
               <p>The <code>in</code> operator checks if an array contains an specific item, or if an object contains a specific property.</p>
-              
+
               <pre><code class="lang-js">var people = [billy, robin, daniel];
-              
+
 var details = {
   "price": 45,
   "address": "New York, USA",
@@ -626,22 +628,22 @@ var details = {
 
 console.log(billy in people);     // => true
 console.log("address" in details) // => true</code></pre>
-              
+
               <h3 class="docs-heading">Chained Comparisons<span class="anchor-target" id="operators-chained-comparisons"></span>
                 <a href="#operators-chained-comparisons" name="operators-chained-comparisons" class="anchor glyphicon glyphicon-link"></a>
               </h3>
-                            
+
               <p>Chained comparisons make it easy to test if a value falls within a certain range.</p>
-              
+
               <pre><code class="lang-js">var isHealthy = 200 > cholesterol > 60;</code></pre>
-              
+
               <h3 class="docs-heading">Exponentiation (**)<span class="anchor-target" id="operators-exponentiation"></span>
                 <a href="#operators-exponentiation" name="operators-exponentiation" class="anchor glyphicon glyphicon-link"></a>
               </h3>
-              
+
               <p>To simplify math expressions, <code>**</code> can be used for exponentiation.</p>
               <pre><code class="lang-js">var volume = a ** 3; // => Math.pow(a, 3)</code></pre>
-              
+
               <h3 class="docs-heading">Integer division (#)<span class="anchor-target" id="operators-integer-division"></span>
                 <a href="#operators-integer-division" name="operators-integer-division" class="anchor glyphicon glyphicon-link"></a>
               </h3>
@@ -654,7 +656,7 @@ console.log("address" in details) // => true</code></pre>
               </h3>
 
               <p>The <code>%%</code> operator provides true mathematical modulo.</p>
-              <pre><code class="lang-js">var modulo = a %% b; // => (a % b + b) % b</code></pre>  
+              <pre><code class="lang-js">var modulo = a %% b; // => (a % b + b) % b</code></pre>
             </div>
             <div class="docs-section">
               <div class="page-header">
@@ -662,26 +664,26 @@ console.log("address" in details) // => true</code></pre>
                   <a href="#ranges" name="ranges" class="anchor glyphicon glyphicon-link"></a>
                 </h1>
               </div>
-              
+
               <h3 class="docs-heading">Range Literal<span class="anchor-target" id="ranges-range-literal"></span>
                 <a href="#ranges-range-literal" name="ranges-range-literal" class="anchor glyphicon glyphicon-link"></a>
               </h3>
-              
+
               <p>The range literal provides a simple way to generate a numbers array. With two dots <code>(3..6)</code>, the range is inclusive (<code>3, 4, 5, 6</code>); with three dots (<code>3...6</code>), the range excludes the end (<code>3, 4, 5</code>)</p>
-              
+
               <pre><code class="lang-js">var a = [1..5];    // => [1, 2, 3, 4, 5]
 var b = [1<span class="dot">...</span>5];   // => [1, 2, 3, 4]</code></pre>
-            
+
               <p>It can also work in the opposite direction:</p>
-<pre><code class="lang-js">var c = [5..1];    // => [5, 4, 3, 2, 1]
+              <pre><code class="lang-js">var c = [5..1];    // => [5, 4, 3, 2, 1]
 var d = [5<span class="dot">...</span>1];   // => [5, 4, 3, 2]</code></pre>
 
               <h3 class="docs-heading">Array Slicing<span class="anchor-target" id="ranges-array-slicing"></span>
                 <a href="#ranges-array-slicing" name="ranges-array-slicing" class="anchor glyphicon glyphicon-link"></a>
               </h3>
-              
+
               <p>Ranges can also be used to extract slices of arrays.</p>
-              
+
               <pre><code class="lang-js">var numbers = [1<span class="dot">...</span>10];
 
 var start  = numbers[0..2];
@@ -692,9 +694,9 @@ var copy   = numbers[<span class="dot">..</span>];</code></pre>
               <h3 class="docs-heading">Array Splicing<span class="anchor-target" id="ranges-array-splicing"></span>
                 <a href="#ranges-array-splicing" name="ranges-array-splicing" class="anchor glyphicon glyphicon-link"></a>
               </h3>
-              
+
               <p>The same syntax can be used with assignment to replace a segment of an array with new values, splicing it.</p>
-              
+
               <pre><code class="lang-js">numbers[3..6] = [-3, -4, -5, -6];</code></pre>
             </div>
             <div class="docs-section">
@@ -702,10 +704,10 @@ var copy   = numbers[<span class="dot">..</span>];</code></pre>
                 <h1 class="docs-heading">Switch<span class="anchor-target" id="switch"></span>
                   <a href="#switch" name="switch" class="anchor glyphicon glyphicon-link"></a>
                 </h1>
-              </div> 
-              
+              </div>
+
               <p>The <code>switch</code> statement in Spider is much more powerful than the JavaScript equivalent:</p>
-              
+
               <pre><code class="lang-js">switch day {
   case "Monday": {
     go(work);
@@ -714,11 +716,11 @@ var copy   = numbers[<span class="dot">..</span>];</code></pre>
   case "Tuesday": {
     go(relax);
   },
-  
+
   case "Friday", "Saturday": {
     go(bingo);
   },
-  
+
   default: {
     go(work);
   }
@@ -727,7 +729,7 @@ var copy   = numbers[<span class="dot">..</span>];</code></pre>
               <h3 class="docs-heading">No Implicit Fallthrough<span class="anchor-target" id="switch-no-implicit-fallthrough"></span>
                 <a href="#switch-no-implicit-fallthrough" name="switch-no-implicit-fallthrough" class="anchor glyphicon glyphicon-link"></a>
               </h3>
-              
+
               <p>The cases of a <code>switch</code> statement do not "fall through" to the next case in Spider, avoiding common JavaScript errors caused by a missing <code>break</code> statements.</p>
               <p>If you really need JavaScript-style fallthrough behaviour, you can opt in to this behavior on a case-by-case basis with the <code>fallthrough</code> statement.</p>
 
@@ -736,7 +738,7 @@ var copy   = numbers[<span class="dot">..</span>];</code></pre>
     description += " a prime number, and also";
     fallthrough;
   },
-    
+
   default: {
     description += " an integer.";
   }
@@ -745,9 +747,9 @@ var copy   = numbers[<span class="dot">..</span>];</code></pre>
               <h3 class="docs-heading">Range Matching<span class="anchor-target" id="switch-range-matching"></span>
                 <a href="#switch-range-matching" name="switch-range-matching" class="anchor glyphicon glyphicon-link"></a>
               </h3>
-              
+
               <p>Switch statements can also be used with ranges:</p>
-            
+
               <pre><code class="lang-js">switch score {
   case <span class="dot">.</span>.60: {
     return "F";
@@ -756,15 +758,15 @@ var copy   = numbers[<span class="dot">..</span>];</code></pre>
   case 60..70: {
     return "D";
   },
-  
+
   case 70..80: {
     return "C";
   },
-  
+
   case 80..90: {
     return "B";
   }
-  
+
   default: {
     return "A";
   }
