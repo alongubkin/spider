@@ -1,105 +1,111 @@
- $(function() {
+var spider = require('spider-script');
 
-   // IE10 viewport hack for Surface/desktop Windows 8 bug
-   //
-   // See Getting Started docs for more information
-   if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
-     var msViewportStyle = document.createElement('style')
-     msViewportStyle.appendChild(
-       document.createTextNode(
-         '@-ms-viewport{width:auto!important}'
-       )
-     )
-     document.querySelector('head').appendChild(msViewportStyle)
-   }
+$(function() {
 
-   var $window = $(window)
-   var $body = $(document.body)
+  // IE10 viewport hack for Surface/desktop Windows 8 bug
+  //
+  // See Getting Started docs for more information
+  if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+    var msViewportStyle = document.createElement('style')
+    msViewportStyle.appendChild(
+      document.createTextNode(
+        '@-ms-viewport{width:auto!important}'
+    )
+    )
+    document.querySelector('head').appendChild(msViewportStyle)
+  }
 
-   $body.scrollspy({
-     target: '.sidebar',
-     offset: 20
-   });
+  var $window = $(window)
+  var $body = $(document.body)
 
-   $window.on('load', function() {
-     $body.scrollspy('refresh')
-   });
+  $body.scrollspy({
+    target: '.sidebar',
+    offset: 20
+  });
 
-   $('.docs-container [href=#]').click(function(e) {
-     e.preventDefault()
-   });
+  $window.on('load', function() {
+    $body.scrollspy('refresh')
+  });
 
-
-   $('.source-link').each(function() {
-     var id = $(this).data('content');
-     var content = $('<span>').append($('#' + id)).html();
-     $(this).attr('data-content', content);
-
-     // Keep popovers open when hovered
-     $(this).popover({
-       trigger: 'manual',
-       container: 'body',
-       placement: 'left',
-       template: '<div class="popover popover-source"> <div class="arrow"></div> <div class="popover-inner"> <h3 class="popover-title"></h3> <div class="popover-content"> <p></p> </div> </div> </div>',
-       html: true,
-       delay: {
-         show: 50,
-         hide: 750
-       }
-     }).on('mouseenter', function() {
-       var self = this;
-       $(this).popover('show');
-       $(this).addClass('active');
-       $(this).addClass('popover-source');
-
-       $('.popover').on('mouseleave', function() {
-         $(self).popover('hide');
-         $(self).removeClass('active');
-       });
-
-     }).on('mouseleave', function() {
-       var self = this;
-       setTimeout(function() {
-         if (!$('.popover:hover').length) {
-           $(self).popover('hide');
-           $(self).removeClass('active');
-         }
-       }, 100);
-     });
-   });
+  $('.docs-container [href=#]').click(function(e) {
+    e.preventDefault()
+  });
 
 
-   // back to top
-   setTimeout(function() {
-     var $sideBar = $('.sidebar')
+  $('.source-link').each(function() {
+    var id = $(this).data('content');
+    var content = $('<span>').append($('#' + id)).html();
+    $(this).attr('data-content', content);
 
-     $sideBar.affix({
-       offset: {
-         top: function() {
-           var offsetTop = $sideBar.offset().top
-           var sideBarMargin = parseInt($sideBar.children(0).css('margin-top'), 10)
-           var navOuterHeight = $('.docs-nav').height()
+    // Keep popovers open when hovered
+    $(this).popover({
+      trigger: 'manual',
+      container: 'body',
+      placement: 'left',
+      template: '<div class="popover popover-source"> <div class="arrow"></div> <div class="popover-inner"> <h3 class="popover-title"></h3> <div class="popover-content"> <p></p> </div> </div> </div>',
+      html: true,
+      delay: {
+        show: 50,
+        hide: 750
+      }
+    }).on('mouseenter', function() {
+      var self = this;
+      $(this).popover('show');
+      $(this).addClass('active');
+      $(this).addClass('popover-source');
 
-           return (this.top = offsetTop - navOuterHeight - sideBarMargin)
-         },
-         bottom: function() {
-           return (this.bottom = $('.footer').outerHeight(true))
-         }
-       }
-     })
-   }, 100);
+      $('.popover').on('mouseleave', function() {
+        $(self).popover('hide');
+        $(self).removeClass('active');
+      });
 
-   setTimeout(function() {
-     $('.top').affix()
-   }, 100);
+    }).on('mouseleave', function() {
+      var self = this;
+      setTimeout(function() {
+        if (!$('.popover:hover').length) {
+          $(self).popover('hide');
+          $(self).removeClass('active');
+        }
+      }, 100);
+    });
+  });
+
+
+  // back to top
+  setTimeout(function() {
+    var $sideBar = $('.sidebar')
+
+    $sideBar.affix({
+      offset: {
+        top: function() {
+          var offsetTop = $sideBar.offset().top
+          var sideBarMargin = parseInt($sideBar.children(0).css('margin-top'), 10)
+          var navOuterHeight = $('.docs-nav').height()
+
+          return (this.top = offsetTop - navOuterHeight - sideBarMargin)
+        },
+        bottom: function() {
+          return (this.bottom = $('.footer').outerHeight(true))
+        }
+      }
+    })
+  }, 100);
+
+  setTimeout(function() {
+    $('.top').affix()
+  }, 100);
 
   $('pre code').each(function(i, block) {
     hljs.highlightBlock(block);
   });
-  
+
   setTimeout(function () {
     $('.extends span span').css('color', '#c26230');
     $('.dot').css('color', '#a5c261');
   }, 0);
-  
- });
+
+});
+
+var compileSpider = function(text) {
+  spider.compile(text);
+}
