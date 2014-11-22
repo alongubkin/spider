@@ -597,7 +597,7 @@ SwitchStatement
     }
     
 CaseClauseList
-  = first:CaseClause rest:(__ "," __ CaseClause)* { 
+  = first:CaseClause rest:(__ ","? __ CaseClause)* { 
       return buildList(first, rest, 3); 
     }
     
