@@ -6,6 +6,7 @@
         grunt.initConfig({
             nodeunit: { files: ["test/**/*_test.js"] },
             eslint: {
+                gruntfile: ["Gruntfile.js"],
                 lib: [
                     "lib/**/*.js",
                     "!lib/parser.js"

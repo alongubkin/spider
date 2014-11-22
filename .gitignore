@@ -2,6 +2,7 @@
 coverage/
 npm-debug.log
 
+Gruntfile.js
 test.js
 test.spider
 

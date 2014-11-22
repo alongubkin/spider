@@ -42,7 +42,7 @@
     "time-grunt": "^0.3.1"
   },
   "scripts": {
-    "test": "grunt"
+    "test": "spider -c Gruntfile.spider && grunt"
   },
   "bin": {
     "spider": "cli.js"
