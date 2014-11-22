@@ -14,7 +14,7 @@
             },
             mochacli: {
                 options: {
-                    reporter: "spec",
+                    reporter: "list",
                     bail: true,
                     timeout: 15000
                 },
