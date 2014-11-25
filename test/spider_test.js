@@ -197,51 +197,51 @@ describe('member and null propagating member expressions:', function () {
 
 describe('call expressions and statements:', function () {
   it('call statement without arguments',
-    generateTest('fn();', 'fn();'));
+    generateTest('f();', 'f();'));
      
   it('call statement with 1 argument',
-    generateTest('fn(1);', 'fn(1);'));
+    generateTest('f(1);', 'f(1);'));
     
   it('call statement with 2 arguments',
-    generateTest('fn(1, true);', 
-      'fn(1, true);'));
+    generateTest('f(1, true);', 
+      'f(1, true);'));
     
   it('call statement with 3 arguments',
-    generateTest('fn(1, true, "test");', 
-      'fn(1, true, "test");'));
+    generateTest('f(1, true, "test");', 
+      'f(1, true, "test");'));
     
   it('call statement with 4 arguments',
-    generateTest('fn(1, true, "test", { a: 1 });', 
-      'fn(1, true, "test", { a: 1 });'));
+    generateTest('f(1, true, "test", { a: 1 });', 
+      'f(1, true, "test", { a: 1 });'));
       
   it('call expression without arguments',
-    generateTest('var a = fn();', 'var a = fn();'));
+    generateTest('var a = f();', 'var a = f();'));
     
   it('call expression with 1 argument',
-    generateTest('var a = fn(1);', 'var a = fn(1);'));
+    generateTest('var a = f(1);', 'var a = f(1);'));
     
   it('call expression with 2 arguments',
-    generateTest('var a = fn(1, true);', 
-      'var a = fn(1, true);'));
+    generateTest('var a = f(1, true);', 
+      'var a = f(1, true);'));
     
   it('call expression with 3 arguments',
-    generateTest('var a = fn(1, true, "test");', 
-      'var a = fn(1, true, "test");'));
+    generateTest('var a = f(1, true, "test");', 
+      'var a = f(1, true, "test");'));
     
   it('call expression with 4 arguments',
-    generateTest('var a = fn(1, true, "test", { a: 1 });', 
-      'var a = fn(1, true, "test", { a: 1 });'));
+    generateTest('var a = f(1, true, "test", { a: 1 });', 
+      'var a = f(1, true, "test", { a: 1 });'));
 });
 
 describe('call statements with member expressions:', function () {
   it('1 member expression and 1 call statement', 
-    generateTest('a.fn();', 'a.fn();'));
+    generateTest('a.f();', 'a.f();'));
     
   it('2 member expressions and 1 call statement', 
-    generateTest('a.b.fn();', 'a.b.fn();'));
+    generateTest('a.b.f();', 'a.b.f();'));
     
   it('3 member expressions and 1 call statement', 
-    generateTest('a.b.c.fn();', 'a.b.c.fn();'));  
+    generateTest('a.b.c.f();', 'a.b.c.f();'));  
     
   it('1 member expression and 2 call statements', 
     generateTest('a.fn1().fn2();', 'a.fn1().fn2();'));
@@ -258,15 +258,15 @@ describe('call statements with member expressions:', function () {
 
 describe('call statements with null propagating member expressions:', function () {
   it('1 null propagating member expression and 1 call statement', 
-    generateTest('a?.fn();', 'if (typeof a !== \"undefined\" && a !== null) {\n    a.fn();\n}'));
+    generateTest('a?.f();', 'if (typeof a !== \"undefined\" && a !== null) {\n    a.f();\n}'));
     
   it('2 null propagating member expressions and 1 call statement', 
-    generateTest('a?.b?.fn();', 
-      'if (typeof a !== \"undefined\" && (a !== null && a.b !== null)) {\n    a.b.fn();\n}'));
+    generateTest('a?.b?.f();', 
+      'if (typeof a !== \"undefined\" && (a !== null && a.b !== null)) {\n    a.b.f();\n}'));
     
   it('3 null propagating member expressions and 1 call statement', 
-    generateTest('a?.b?.c?.fn();', 
-      'if (typeof a !== \"undefined\" && (a !== null && a.b !== null && a.b.c !== null)) {\n    a.b.c.fn();\n}'));  
+    generateTest('a?.b?.c?.f();', 
+      'if (typeof a !== \"undefined\" && (a !== null && a.b !== null && a.b.c !== null)) {\n    a.b.c.f();\n}'));  
     
   it('1 null propagating member expression and 2 call statements', 
     generateTest('a?.fn1()?.fn2();', 
@@ -325,13 +325,13 @@ describe('call statements with member and null propagating member expressions:',
 
 describe('call expressions with member expressions:', function () {
   it('1 member expression and 1 call expression', 
-    generateTest('var x = a.fn();', 'var x = a.fn();'));
+    generateTest('var x = a.f();', 'var x = a.f();'));
     
   it('2 member expressions and 1 call expression', 
-    generateTest('var x = a.b.fn();', 'var x = a.b.fn();'));
+    generateTest('var x = a.b.f();', 'var x = a.b.f();'));
     
   it('3 member expressions and 1 call expression', 
-    generateTest('var x = a.b.c.fn();', 'var x = a.b.c.fn();'));  
+    generateTest('var x = a.b.c.f();', 'var x = a.b.c.f();'));  
     
   it('1 member expression and 2 call expressions', 
     generateTest('var x = a.fn1().fn2();', 'var x = a.fn1().fn2();'));
@@ -348,15 +348,15 @@ describe('call expressions with member expressions:', function () {
 
 describe('call expressions with null propagating member expressions:', function () {
   it('1 null propagating member expression and 1 call expression', 
-    generateTest('var x = a?.fn();', 'var x = typeof a !== \"undefined\" && a !== null ? a.fn() : void 0;'));
+    generateTest('var x = a?.f();', 'var x = typeof a !== \"undefined\" && a !== null ? a.f() : void 0;'));
     
   it('2 null propagating member expressions and 1 call expression', 
-    generateTest('var x = a?.b?.fn();', 
-      'var x = typeof a !== \"undefined\" && (a !== null && a.b !== null) ? a.b.fn() : void 0;'));
+    generateTest('var x = a?.b?.f();', 
+      'var x = typeof a !== \"undefined\" && (a !== null && a.b !== null) ? a.b.f() : void 0;'));
     
   it('3 null propagating member expressions and 1 call expression', 
-    generateTest('var x = a?.b?.c?.fn();', 
-      'var x = typeof a !== \"undefined\" && (a !== null && a.b !== null && a.b.c !== null) ? a.b.c.fn() : void 0;'));  
+    generateTest('var x = a?.b?.c?.f();', 
+      'var x = typeof a !== \"undefined\" && (a !== null && a.b !== null && a.b.c !== null) ? a.b.c.f() : void 0;'));  
     
   it('1 null propagating member expression and 2 call expressions', 
     generateTest('var x = a?.fn1()?.fn2();', 
@@ -456,20 +456,20 @@ describe('null check call expressions:', function () {
       'var x = typeof a === \"function\" ? a() : void 0;'));
       
   it('null check call expression with 1 argument',
-    generateTest('var a = fn?(1);', 
-      'var a = typeof fn === \"function\" ? fn(1) : void 0;'));
+    generateTest('var a = f?(1);', 
+      'var a = typeof f === \"function\" ? f(1) : void 0;'));
     
   it('null check call expression with 2 arguments',
-    generateTest('var a = fn?(1, true);', 
-      'var a = typeof fn === \"function\" ? fn(1, true) : void 0;'));
+    generateTest('var a = f?(1, true);', 
+      'var a = typeof f === \"function\" ? f(1, true) : void 0;'));
     
   it('null check call expression with 3 arguments',
-    generateTest('var a = fn?(1, true, "test");', 
-      'var a = typeof fn === \"function\" ? fn(1, true, \"test\") : void 0;'));
+    generateTest('var a = f?(1, true, "test");', 
+      'var a = typeof f === \"function\" ? f(1, true, \"test\") : void 0;'));
     
   it('null check call expression with 4 arguments',
-    generateTest('var a = fn?(1, true, "test", { a: 1 });', 
-      'var a = typeof fn === \"function\" ? fn(1, true, \"test\", { a: 1 }) : void 0;'));
+    generateTest('var a = f?(1, true, "test", { a: 1 });', 
+      'var a = typeof f === \"function\" ? f(1, true, \"test\", { a: 1 }) : void 0;'));
       
   it('call expression with null check call expression',
     generateTest('var x = a?()();', 
@@ -534,20 +534,20 @@ describe('null check call statements:', function () {
       'if (typeof a === \"function\") {\n    a();\n}'));
       
   it('null check call statement with 1 argument',
-    generateTest('fn?(1);', 
-      'if (typeof fn === \"function\") {\n    fn(1);\n}'));
+    generateTest('f?(1);', 
+      'if (typeof f === \"function\") {\n    f(1);\n}'));
     
   it('null check call statement with 2 arguments',
-    generateTest('fn?(1, true);', 
-      'if (typeof fn === \"function\") {\n    fn(1, true);\n}'));
+    generateTest('f?(1, true);', 
+      'if (typeof f === \"function\") {\n    f(1, true);\n}'));
     
   it('null check call statement with 3 arguments',
-    generateTest('fn?(1, true, "test");', 
-      'if (typeof fn === \"function\") {\n    fn(1, true, \"test\");\n}'));
+    generateTest('f?(1, true, "test");', 
+      'if (typeof f === \"function\") {\n    f(1, true, \"test\");\n}'));
     
   it('null check call statement with 4 arguments',
-    generateTest('fn?(1, true, "test", { a: 1 });', 
-      'if (typeof fn === \"function\") {\n    fn(1, true, \"test\", { a: 1 });\n}'));
+    generateTest('f?(1, true, "test", { a: 1 });', 
+      'if (typeof f === \"function\") {\n    f(1, true, \"test\", { a: 1 });\n}'));
       
   it('call statement with null check call expression',
     generateTest('a?()();', 
@@ -994,17 +994,17 @@ describe('for statement:', function () {
 });
 
 describe('function declarations:', function () {
-  it('func decl without arguments',
-    generateTest('func fn() { }', 'function fn() {\n}'));
+  it('fn decl without arguments',
+    generateTest('fn f() { }', 'function f() {\n}'));
     
-  it('func decl with 1 argument',
-    generateTest('func fn(a) { }', 'function fn(a) {\n}'));
+  it('fn decl with 1 argument',
+    generateTest('fn f(a) { }', 'function f(a) {\n}'));
 
-  it('func decl with 2 arguments',
-    generateTest('func fn(a, b) { }', 'function fn(a, b) {\n}'));
+  it('fn decl with 2 arguments',
+    generateTest('fn f(a, b) { }', 'function f(a, b) {\n}'));
 
-  it('func decl with 3 arguments',
-    generateTest('func fn(a, b, c) { }', 'function fn(a, b, c) {\n}'));    
+  it('fn decl with 3 arguments',
+    generateTest('fn f(a, b, c) { }', 'function f(a, b, c) {\n}'));    
 });
 
 describe('function expressions:', function () {
@@ -1040,42 +1040,42 @@ describe('function expressions:', function () {
     generateTest('var a = (a, b, c) -> { };', 
       'var a = function (a, b, c) {\n};')); 
       
-  it('block function expression (func syntax) without arguments',
-    generateTest('var a = func () { };', 
+  it('block function expression (fn syntax) without arguments',
+    generateTest('var a = fn () { };', 
       'var a = function () {\n};'));
     
-  it('block function expression (func syntax) with 1 argument',
-    generateTest('var a = func (a) { };', 
+  it('block function expression (fn syntax) with 1 argument',
+    generateTest('var a = fn (a) { };', 
       'var a = function (a) {\n};'));
 
-  it('block function expression (func syntax) with 2 arguments',
-    generateTest('var a = func (a, b) { };', 
+  it('block function expression (fn syntax) with 2 arguments',
+    generateTest('var a = fn (a, b) { };', 
       'var a = function (a, b) {\n};'));
 
-  it('block function expression (func syntax) with 3 arguments',
-    generateTest('var a = func (a, b, c) { };', 
+  it('block function expression (fn syntax) with 3 arguments',
+    generateTest('var a = fn (a, b, c) { };', 
       'var a = function (a, b, c) {\n};'));
 
-  it('block function expression (func syntax with id) without arguments',
-    generateTest('var a = func f() { };', 
+  it('block function expression (fn syntax with id) without arguments',
+    generateTest('var a = fn f() { };', 
       'var a = function f() {\n};'));
     
-  it('block function expression (func syntax with id) with 1 argument',
-    generateTest('var a = func f(a) { };', 
+  it('block function expression (fn syntax with id) with 1 argument',
+    generateTest('var a = fn f(a) { };', 
       'var a = function f(a) {\n};'));
 
-  it('block function expression (func syntax with id) with 2 arguments',
-    generateTest('var a = func f(a, b) { };', 
+  it('block function expression (fn syntax with id) with 2 arguments',
+    generateTest('var a = fn f(a, b) { };', 
       'var a = function f(a, b) {\n};'));
 
-  it('block function expression (func syntax with id) with 3 arguments',
-    generateTest('var a = func f(a, b, c) { };', 
+  it('block function expression (fn syntax with id) with 3 arguments',
+    generateTest('var a = fn f(a, b, c) { };', 
       'var a = function f(a, b, c) {\n};'));        
 });
 
 describe('return statement:', function () {
   it('function declaration with a return statement',
-    generateTest('func x() { return 1; }',
+    generateTest('fn x() { return 1; }',
       'function x() {\n    return 1;\n}'));
       
   it('function expression with a return statement',
@@ -1083,7 +1083,7 @@ describe('return statement:', function () {
       'var a = function () {\n    return 1;\n};'));
 
   it('function declaration with empty return statement',
-    generateTest('func x() { return; }',
+    generateTest('fn x() { return; }',
       'function x() {\n    return;\n}'));
       
   it('function expression with empty return statement',
@@ -1147,103 +1147,103 @@ describe('this keyword:', function () {
     generateTest('this.a.b();', 'this.a.b();'));     
 });
 
-describe('func extends:', function () {
+describe('fn extends:', function () {
   it('extended function with no constructor', 
-    generateTest('func A() {} func B() extends A {}', 
+    generateTest('fn A() {} fn B() extends A {}', 
       'function A() {\n}\nfunction B() {\n    A.call(this);\n}\nB.prototype = Object.create(A);'));
 
   it('extended function with empty constructor', 
-    generateTest('func A() {} func B() extends A() {}', 
+    generateTest('fn A() {} fn B() extends A() {}', 
       'function A() {\n}\nfunction B() {\n    A.call(this);\n}\nB.prototype = Object.create(A);'));
 
   it('extended function with 1-param constructor', 
-    generateTest('func A() {} func B() extends A(1) {}', 
+    generateTest('fn A() {} fn B() extends A(1) {}', 
       'function A() {\n}\nfunction B() {\n    A.call(this, 1);\n}\nB.prototype = Object.create(A);'));
 
   it('extended function with 2-params constructor', 
-    generateTest('func A() {} func B(a) extends A(1, a) {}', 
+    generateTest('fn A() {} fn B(a) extends A(1, a) {}', 
       'function A() {\n}\nfunction B(a) {\n    A.call(this, 1, a);\n}\nB.prototype = Object.create(A);'));
       
   it('extended function with global identifier', 
-    generateTest('func B() extends ::A {}', 
+    generateTest('fn B() extends ::A {}', 
       'function B() {\n    A.call(this);\n}\nB.prototype = Object.create(A);'));
       
   it('extended function expression with no constructor', 
-    generateTest('var A = func () {}; var B = func () extends A {};', 
+    generateTest('var A = fn () {}; var B = fn () extends A {};', 
       'var A = function () {\n};\nvar functionExpression0 = function () {\n    A.call(this);\n};\nfunctionExpression0.prototype = Object.create(A);\nvar B = functionExpression0;'));
 
   it('extended function expression with empty constructor', 
-    generateTest('var A = func () {}; var b = func () extends A() {};', 
+    generateTest('var A = fn () {}; var b = fn () extends A() {};', 
       'var A = function () {\n};\nvar functionExpression0 = function () {\n    A.call(this);\n};\nfunctionExpression0.prototype = Object.create(A);\nvar b = functionExpression0;'));
 
   it('extended function expression with 1-param constructor', 
-    generateTest('var A = func () {}; var B = func () extends A(1) {};', 
+    generateTest('var A = fn () {}; var B = fn () extends A(1) {};', 
       'var A = function () {\n};\nvar functionExpression0 = function () {\n    A.call(this, 1);\n};\nfunctionExpression0.prototype = Object.create(A);\nvar B = functionExpression0;'));
 
   it('extended function expression with 2-params constructor', 
-    generateTest('var A = func () {}; var B = func (a) extends A(1, a) {};', 
+    generateTest('var A = fn () {}; var B = fn (a) extends A(1, a) {};', 
       'var A = function () {\n};\nvar functionExpression0 = function (a) {\n    A.call(this, 1, a);\n};\nfunctionExpression0.prototype = Object.create(A);\nvar B = functionExpression0;'));
       
   it('extended function expression with global identifier', 
-    generateTest('var B = func () extends ::A {};', 
+    generateTest('var B = fn () extends ::A {};', 
       'var functionExpression0 = function () {\n    A.call(this);\n};\nfunctionExpression0.prototype = Object.create(A);\nvar B = functionExpression0;'));
 });
 
 describe('super keyword:', function () {
   it('super call statement in a method', 
-    generateTest('func B() extends ::A { this.test = func () { super.test(); }; }', 
+    generateTest('fn B() extends ::A { this.test = fn () { super.test(); }; }', 
       'function B() {\n    A.call(this);\n    var _self = this;\n    var _test = this.test;\n    this.test = function () {\n        _test.call(_self);\n    };\n}\nB.prototype = Object.create(A);'));
       
   it('super call statement in a method inside an anonymous function', 
-    generateTest('func B() extends ::A { this.test = func () { (() -> { return super.test(); })(); }; }', 
+    generateTest('fn B() extends ::A { this.test = fn () { (() -> { return super.test(); })(); }; }', 
       'function B() {\n    A.call(this);\n    var _self = this;\n    var _test = this.test;\n    this.test = function () {\n        (function () {\n            return _test.call(_self);\n        }());\n    };\n}\nB.prototype = Object.create(A);'));
   
   it('super call statement in a method inside 2 anonymous functions', 
-    generateTest('func B() extends ::A { this.test = func () { (() -> () -> { return super.test(); } )()(); }; }', 
+    generateTest('fn B() extends ::A { this.test = fn () { (() -> () -> { return super.test(); } )()(); }; }', 
       'function B() {\n    A.call(this);\n    var _self = this;\n    var _test = this.test;\n    this.test = function () {\n        (function () {\n            return function () {\n                return _test.call(_self);\n            };\n        }()());\n    };\n}\nB.prototype = Object.create(A);'));
   
   it('super member expression in a method', 
-    generateTest('func B() extends ::A { this.test = func () { var x = super.x; }; }', 
+    generateTest('fn B() extends ::A { this.test = fn () { var x = super.x; }; }', 
       'function B() {\n    A.call(this);\n    var _x = this.x;\n    this.test = function () {\n        var x = _x;\n    };\n}\nB.prototype = Object.create(A);'));
       
   it('super member expression in a method inside an anonymous function', 
-    generateTest('func B() extends ::A { this.test = func () { var x = (() -> super.x)(); }; }', 
+    generateTest('fn B() extends ::A { this.test = fn () { var x = (() -> super.x)(); }; }', 
       'function B() {\n    A.call(this);\n    var _x = this.x;\n    this.test = function () {\n        var x = function () {\n            return _x;\n        }();\n    };\n}\nB.prototype = Object.create(A);'));
   
   it('super member expression in a method inside 2 anonymous functions', 
-    generateTest('func B() extends ::A { this.test = func () { var x = (() -> () -> super.x)()(); }; }', 
+    generateTest('fn B() extends ::A { this.test = fn () { var x = (() -> () -> super.x)()(); }; }', 
       'function B() {\n    A.call(this);\n    var _x = this.x;\n    this.test = function () {\n        var x = function () {\n            return function () {\n                return _x;\n            };\n        }()();\n    };\n}\nB.prototype = Object.create(A);'));
 
   it('super call statement in a prototype function', 
-    generateTest('func B() extends ::A {} B.prototype.test = () -> { super.test(); };', 
+    generateTest('fn B() extends ::A {} B.prototype.test = () -> { super.test(); };', 
       'function B() {\n    A.call(this);\n}\nB.prototype = Object.create(A);\nB.prototype.test = function () {\n    A.prototype.test.call(this);\n};'));
       
   it('super call statement in a prototype function inside an anonymous function', 
-    generateTest('func B() extends ::A {} B.prototype.test = () -> { (() -> super.test())(); };', 
+    generateTest('fn B() extends ::A {} B.prototype.test = () -> { (() -> super.test())(); };', 
       'function B() {\n    A.call(this);\n}\nB.prototype = Object.create(A);\nB.prototype.test = function () {\n    var _self = this;\n    (function () {\n        return A.prototype.test.call(_self);\n    }());\n};'));
       
   it('super member expression in a prototype function', 
-    generateTest('func B() extends ::A {} B.prototype.test = () -> { var x = super.x; };', 
+    generateTest('fn B() extends ::A {} B.prototype.test = () -> { var x = super.x; };', 
       'function B() {\n    A.call(this);\n}\nB.prototype = Object.create(A);\nB.prototype.test = function () {\n    var x = this.x;\n};'));
   
   it('super member expression in a prototype function inside an anonymous function', 
-    generateTest('func B() extends ::A {} B.prototype.test = () -> { var x = (() -> { return super.x; })(); };', 
+    generateTest('fn B() extends ::A {} B.prototype.test = () -> { var x = (() -> { return super.x; })(); };', 
       'function B() {\n    A.call(this);\n}\nB.prototype = Object.create(A);\nB.prototype.test = function () {\n    var _self = this;\n    var x = function () {\n        return _self.x;\n    }();\n};'));
   
   it('super call statement in a prototype object', 
-    generateTest('func B() extends ::A {} B.prototype = { test: () -> { super.test(); } };', 
+    generateTest('fn B() extends ::A {} B.prototype = { test: () -> { super.test(); } };', 
       'function B() {\n    A.call(this);\n}\nB.prototype = Object.create(A);\nB.prototype = {\n    test: function () {\n        A.prototype.test.call(this);\n    }\n};'));
       
   it('super call statement in a prototype object inside an anonymous function', 
-    generateTest('func B() extends ::A {} B.prototype = { test: () -> { (() -> super.test())(); } };', 
+    generateTest('fn B() extends ::A {} B.prototype = { test: () -> { (() -> super.test())(); } };', 
       'function B() {\n    A.call(this);\n}\nB.prototype = Object.create(A);\nB.prototype = {\n    test: function () {\n        var _self = this;\n        (function () {\n            return A.prototype.test.call(_self);\n        }());\n    }\n};'));
       
   it('super member expression in a prototype object', 
-    generateTest('func B() extends ::A {} B.prototype = { test: () -> { var x = super.x; } };', 
+    generateTest('fn B() extends ::A {} B.prototype = { test: () -> { var x = super.x; } };', 
       'function B() {\n    A.call(this);\n}\nB.prototype = Object.create(A);\nB.prototype = {\n    test: function () {\n        var x = this.x;\n    }\n};'));
   
   it('super member expression in a prototype object inside an anonymous function', 
-    generateTest('func B() extends ::A {} B.prototype = { test: () -> { var x = (() -> { return super.x; })(); } };', 
+    generateTest('fn B() extends ::A {} B.prototype = { test: () -> { var x = (() -> { return super.x; })(); } };', 
       'function B() {\n    A.call(this);\n}\nB.prototype = Object.create(A);\nB.prototype = {\n    test: function () {\n        var _self = this;\n        var x = function () {\n            return _self.x;\n        }();\n    }\n};'));   
 });
 
@@ -1423,75 +1423,75 @@ describe('new expressions:', function () {
     generateTest('var x = new A(1, b());', 'var x = new A(1, b());'));    
 });
 
-describe('default func param value:', function () {
-  it('func decl with 1 param with default value',
-    generateTest('func f(a = 5) {}', 
+describe('default fn param value:', function () {
+  it('fn decl with 1 param with default value',
+    generateTest('fn f(a = 5) {}', 
       'function f(a = 5) {\n}'));
     
-  it('func decl with 2 params with default values',
-    generateTest('func f(a = 5, b = 3) {}', 
+  it('fn decl with 2 params with default values',
+    generateTest('fn f(a = 5, b = 3) {}', 
       'function f(a = 5, b = 3) {\n}'));
     
-  it('func decl with 2 params - first with default value and second without',
-    generateTest('func f(a = 5, b) {}', 
+  it('fn decl with 2 params - first with default value and second without',
+    generateTest('fn f(a = 5, b) {}', 
       'function f(a = 5, b) {\n}'));
     
-  it('func decl with 2 params - second with default value and first without',
-    generateTest('func f(a, b = 3) {}', 
+  it('fn decl with 2 params - second with default value and first without',
+    generateTest('fn f(a, b = 3) {}', 
       'function f(a, b = 3) {\n}'));  
 
-  it('func decl with 3 params with default values',
-    generateTest('func f(a = 5, b = 3, k = { test: 1 }) {}', 
+  it('fn decl with 3 params with default values',
+    generateTest('fn f(a = 5, b = 3, k = { test: 1 }) {}', 
       'function f(a = 5, b = 3, k = { test: 1 }) {\n}'));    
    
-  it('func expression with 1 param with default value',
+  it('fn expression with 1 param with default value',
     generateTest('var x = (a = 5) -> a;', 
       'var x = function (a = 5) {\n    return a;\n};'));
     
-  it('func expression with 2 params with default values',
-    generateTest('var x = func (a = 5, b = 3) {};', 
+  it('fn expression with 2 params with default values',
+    generateTest('var x = fn (a = 5, b = 3) {};', 
       'var x = function (a = 5, b = 3) {\n};'));
     
-  it('func expression with 2 params - first with default value and second without',
-    generateTest('var x = func (a = 5, b) {};', 
+  it('fn expression with 2 params - first with default value and second without',
+    generateTest('var x = fn (a = 5, b) {};', 
       'var x = function (a = 5, b) {\n};'));
     
-  it('func expression with 2 params - second with default value and first without',
-    generateTest('var x = func (a, b = 3) {};', 
+  it('fn expression with 2 params - second with default value and first without',
+    generateTest('var x = fn (a, b = 3) {};', 
       'var x = function (a, b = 3) {\n};'));  
 
-  it('func expression with 3 params with default values',
-    generateTest('var x = func (a = 5, b = 3, k = { test: 1 }) {};', 
+  it('fn expression with 3 params with default values',
+    generateTest('var x = fn (a = 5, b = 3, k = { test: 1 }) {};', 
       'var x = function (a = 5, b = 3, k = { test: 1 }) {\n};'));    
 });
 
 describe('splat in function declaration:', function () {
-  it('func decl with splat',
-    generateTest('func f(a...) {}', 
+  it('fn decl with splat',
+    generateTest('fn f(a...) {}', 
       'function f() {\n    var __splat, a = 1 <= arguments.length ? [].slice.call(arguments, 0) : [];\n}'));
     
-  it('func decl with splat, parameter',
-    generateTest('func f(a..., b) {}', 
+  it('fn decl with splat, parameter',
+    generateTest('fn f(a..., b) {}', 
       'function f() {\n    var __splat, a = 2 <= arguments.length ? [].slice.call(arguments, 0, __splat = arguments.length - 1) : (__splat = 0, []), b = arguments[__splat++];\n}'));
     
-  it('func decl with parameter, splat',
-    generateTest('func f(a, b...) {}', 
+  it('fn decl with parameter, splat',
+    generateTest('fn f(a, b...) {}', 
       'function f() {\n    var __splat, a = arguments[0], b = 2 <= arguments.length ? [].slice.call(arguments, 1) : [];\n}'));
     
-  it('func decl with parameter, splat, parameter',
-    generateTest('func f(a, b..., c) {}', 
+  it('fn decl with parameter, splat, parameter',
+    generateTest('fn f(a, b..., c) {}', 
       'function f() {\n    var __splat, a = arguments[0], b = 3 <= arguments.length ? [].slice.call(arguments, 1, __splat = arguments.length - 1) : (__splat = 1, []), c = arguments[__splat++];\n}'));
     
-  it('func decl with parameter, parameter, splat, parameter',
-    generateTest('func f(a, b, c..., d) {}', 
+  it('fn decl with parameter, parameter, splat, parameter',
+    generateTest('fn f(a, b, c..., d) {}', 
       'function f() {\n    var __splat, a = arguments[0], b = arguments[1], c = 4 <= arguments.length ? [].slice.call(arguments, 2, __splat = arguments.length - 1) : (__splat = 2, []), d = arguments[__splat++];\n}'));
     
-  it('func decl with parameter, splat, parameter, parameter',
-    generateTest('func f(a, b..., c, d) {}', 
+  it('fn decl with parameter, splat, parameter, parameter',
+    generateTest('fn f(a, b..., c, d) {}', 
       'function f() {\n    var __splat, a = arguments[0], b = 4 <= arguments.length ? [].slice.call(arguments, 1, __splat = arguments.length - 2) : (__splat = 1, []), c = arguments[__splat++], d = arguments[__splat++];\n}'));    
 
-  it('multiple splats in func decl',
-    generateErrorTest('func f(a..., b...) {}', [{ type: "MultipleSplatsDisallowed" }]));
+  it('multiple splats in fn decl',
+    generateErrorTest('fn f(a..., b...) {}', [{ type: "MultipleSplatsDisallowed" }]));
 });
 
 describe('splat in call expressions:', function () {

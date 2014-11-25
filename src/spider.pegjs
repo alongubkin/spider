@@ -172,7 +172,7 @@ Keyword
   / IfToken
   / ElseToken
   / ForToken
-  / FuncToken
+  / FnToken
   / NewToken
   / UseToken
   / ThisToken
@@ -420,7 +420,7 @@ Zs = [\u0020\u00A0\u1680\u2000-\u200A\u202F\u205F\u3000]
 AndToken          = "and"         !IdentifierPart
 OrToken           = "or"          !IdentifierPart
 ReturnToken       = "return"      !IdentifierPart
-FuncToken         = "func"        !IdentifierPart
+FnToken           = "fn"          !IdentifierPart
 VarToken          = "var"         !IdentifierPart
 IfToken           = "if"          !IdentifierPart
 ElseToken         = "else"        !IdentifierPart
@@ -516,7 +516,7 @@ Initialiser
   = "=" !"=" __ expression:AssignmentExpression { return expression; }
   
 FunctionDeclaration
-  = FuncToken __ id:Identifier __
+  = FnToken __ id:Identifier __
     "(" __ params:(FormalParameterList __)? ")" __
     inheritsFrom:InheritsFrom?
     __ body:Block __ 
@@ -719,7 +719,7 @@ UseIdentifier
   }
     
 ExpressionStatement
-  = !("{" / FuncToken) expression:Expression EOS {
+  = !("{" / FnToken) expression:Expression EOS {
       return insertLocationData(new ast.ExpressionStatement(expression), text(), line(), column());
     }
 
@@ -1042,7 +1042,7 @@ Argument
   / AssignmentExpression
 
 FunctionExpression
-  = FuncToken __ id:(Identifier __)?
+  = FnToken __ id:(Identifier __)?
     "(" __ params:(FormalParameterList __)? ")" __
     inheritsFrom:InheritsFrom?
     __ body:Block __
