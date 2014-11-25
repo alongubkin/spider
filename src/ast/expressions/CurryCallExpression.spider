@@ -1,0 +1,109 @@
+use :node;
+
+var Node = require('../Node').Node,
+    CallExpression = require('./CallExpression').CallExpression;
+    
+func CurryCallExpression(callee, args) 
+  extends Node {
+  
+  this.type = 'CurryCallExpression';
+  
+  this.callee = callee;
+  this.args = args;
+}
+
+CurryCallExpression.prototype.codegen = () -> {
+  if !super.codegen() {
+    return;
+  }
+  
+  var call = new CallExpression(this.callee, this.args);
+  call.parent = this;
+  call = call.codegen();
+  
+  if call.type != "CallExpression" or (call?.callee.type == "MemberExpression" and call?.callee.property.name == "apply") {
+    Node.getErrorManager().error({
+      type: "InvalidFunctionCurrying",
+      message: "currying functions with existential operator or splats is disallowed.",
+      loc: this.loc
+    });
+  }
+  
+  this.type = "FunctionExpression";
+  this.id = null;
+  this.params = [];
+  this.defaults = [];
+  this.body = {
+    "type": "BlockStatement",
+    "body": [{
+      "type": "ReturnStatement",
+      "argument": {
+        "type": "CallExpression",
+        "callee": {
+          "type": "MemberExpression",
+          "computed": false,
+          "object": call.callee,
+          "property": {
+            "type": "Identifier",
+            "name": "apply"
+          }
+        },
+        "arguments": [
+          { "type": "ThisExpression" },
+          {
+            "type": "CallExpression",
+            "callee": {
+              "type": "MemberExpression",
+              "computed": false,
+              "object": {
+                "type": "ArrayExpression",
+                "elements": call.arguments,
+              },
+              "property": {
+                "type": "Identifier",
+                "name": "concat"
+              }
+            },
+            "arguments": [{
+              "type": "CallExpression",
+              "callee": {
+                "type": "MemberExpression",
+                "computed": false,
+                "object": {
+                  "type": "MemberExpression",
+                  "computed": false,
+                  "object": {
+                    "type": "ArrayExpression",
+                    "elements": []
+                  },
+                  "property": {
+                    "type": "Identifier",
+                    "name": "slice"
+                  }
+                },
+                "property": {
+                  "type": "Identifier",
+                  "name": "apply"
+                }
+              },
+              "arguments": [{
+                "type": "Identifier",
+                "name": "arguments"
+              }]
+            }]
+          }
+        ]
+      }
+    }]
+  };
+  
+  this.rest = null;
+  this.generator = false;
+  this.expression = false;
+
+  return this;
+};
+
+CurryCallExpression.prototype.hasCallExpression = () -> true;
+
+exports.CurryCallExpression = CurryCallExpression;

@@ -36,6 +36,7 @@ var nodes = [
   'expressions/ConditionalExpression',
   'expressions/InExpression',
   'expressions/ForInExpression',
+  'expressions/CurryCallExpression',
   'statements/BlockStatement',
   'statements/ExpressionStatement',
   'statements/IfStatement',

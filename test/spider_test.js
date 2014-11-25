@@ -1639,3 +1639,29 @@ describe('export statement:', function () {
     generateTest('export default () -> {};',
       'export default function () {\n};'));         
 });
+
+describe('curried functions:', function () {
+  it('single function curry',
+    generateTest('var x = a^(1);',
+      'let x = function () {\n    return a.apply(this, [1].concat([].slice.apply(arguments)));\n};'));
+      
+  it('double function curry',
+    generateTest('var x = a^(1)^(2, 3);',
+      'let x = function () {\n    return function () {\n        return a.apply(this, [1].concat([].slice.apply(arguments)));\n    }.apply(this, [\n        2,\n        3\n    ].concat([].slice.apply(arguments)));\n};'));
+      
+  it('single function curry with member expression',
+    generateTest('var x = m.a^(1);',
+      'let x = function () {\n    return m.a.apply(this, [1].concat([].slice.apply(arguments)));\n};'));
+      
+  it('double function curry with member expression',
+    generateTest('var x = m.a^(1)^(2, 3);',
+      'let x = function () {\n    return function () {\n        return m.a.apply(this, [1].concat([].slice.apply(arguments)));\n    }.apply(this, [\n        2,\n        3\n    ].concat([].slice.apply(arguments)));\n};'));
+      
+  it('curry function with splats', 
+    generateErrorTest('var x = ::a^(::s...);', 
+      [{ type: "InvalidFunctionCurrying" }]));
+      
+  it('curry function with null propagating operator', 
+    generateErrorTest('var x = ::m?.a^();', 
+      [{ type: "InvalidFunctionCurrying" }]));      
+});

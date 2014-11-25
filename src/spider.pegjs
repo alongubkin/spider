@@ -998,22 +998,32 @@ LeftHandSideExpression
 
 CallExpression
   = first:(
-      callee:MemberExpression call:(__ nullPropagatingOperator:"?"? __ args:Arguments)? {
+      callee:MemberExpression call:(__ CallExpressionOperator? __ args:Arguments)? {
         if (!call) {
           return callee;
         }
         
-        if (extractOptional(call, 1) === "?") {
+        var op = extractOptional(call, 1);
+        if (op === "?") {
           return insertLocationData(new ast.NullCheckCallExpression(callee, extractOptional(call, 3)), text(), line(), column());
+        } else if (op === "^") {
+          return insertLocationData(new ast.CurryCallExpression(callee, extractOptional(call, 3)), text(), line(), column());
         } else {
           return insertLocationData(new ast.CallExpression(callee, extractOptional(call, 3)), text(), line(), column());
         }
       }
     )
     rest:(
-        __ nullPropagatingOperator:"?"? __ args:Arguments {
+        __ operator:CallExpressionOperator? __ args:Arguments {
+          var type = "CallExpression";
+          if (operator === "?") {
+            type = "NullCheckCallExpression";
+          } else if (operator === "^") {
+            type = "CurryCallExpression";
+          }
+          
           return { 
-            type: nullPropagatingOperator === "?" ? "NullCheckCallExpression" : "CallExpression", 
+            type: type, 
             arguments: args 
           };
         }    
@@ -1046,6 +1056,8 @@ CallExpression
           return insertLocationData(new ast.NullPropagatingExpression(result, element.property, element.computed), text(), line(), column());
         } else if (element.type === "CallExpression") {
           return insertLocationData(new ast.CallExpression(result, element.arguments), text(), line(), column());
+        } else if (element.type === "CurryCallExpression") {
+          return insertLocationData(new ast.CurryCallExpression(result, element.arguments), text(), line(), column());
         } else if (element.type === "NullCheckCallExpression") {
           return insertLocationData(new ast.NullCheckCallExpression(result, element.arguments), text(), line(), column());
         } else if (element.type === "RangeMemberExpression") {
@@ -1054,6 +1066,10 @@ CallExpression
       });
     }
     
+CallExpressionOperator
+  = "?"
+  / "^"
+
 MemberExpression
   = first:( 
         FunctionExpression
