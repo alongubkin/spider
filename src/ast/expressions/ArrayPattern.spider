@@ -2,10 +2,10 @@ use :node;
 
 var Node = require('../Node').Node;
 
-func ArrayExpression(elements) 
+func ArrayPattern(elements) 
   extends Node {
 
-  this.type = 'ArrayExpression';
+  this.type = 'ArrayPattern';
   this.elements = elements;
   
   for element in this.elements {
@@ -15,18 +15,18 @@ func ArrayExpression(elements)
   }
 }
 
-ArrayExpression.prototype.codegen = () -> {
+ArrayPattern.prototype.codegen = () -> {
   if !super.codegen() {
     return;
   }
   
   for element, i in this.elements {
-    this.elements[i] = element?.codegen();
+    this.elements[i] = element?.codegen(false);
   }
   
   return this;
 };
 
-ArrayExpression.prototype.hasCallExpression = () -> true;
+ArrayPattern.prototype.hasCallExpression = () -> true;
 
-exports.ArrayExpression = ArrayExpression;
+exports.ArrayPattern = ArrayPattern;

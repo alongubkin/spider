@@ -4,9 +4,13 @@ var Node = require('./Node').Node;
 
 func Property(key, value)
   extends Node {
+  
   this.type = 'Property';
   this.kind = 'init';
-  
+  this.method = false;
+  this.shorthand = false;
+  this.computed = false;
+                
   this.key = key;
   this.key.parent = this;
   
@@ -20,7 +24,7 @@ Property.prototype.codegen = () -> {
   }
   
   this.key = this.key.codegen(false);
-  this.value = this.value.codegen();
+  this.value = this.value.codegen(this.parent.type != "ObjectPattern");
   
   return this;
 };

@@ -1665,3 +1665,37 @@ describe('curried functions:', function () {
     generateErrorTest('var x = ::m?.a^();', 
       [{ type: "InvalidFunctionCurrying" }]));      
 });
+
+describe('destructuring assignment:', function () {
+  it('array pattern destructuring assignment', 
+    generateTest('var [m, d, y] = [3, 14, 1977];', 
+      'let [\n    m,\n    d,\n    y\n] = [\n    3,\n    14,\n    1977\n];'));
+      
+  it('array pattern destructuring assignment with 1 null', 
+    generateTest('var [, d, y] = [3, 14, 1977];', 
+      'let [\n    ,\n    d,\n    y\n] = [\n    3,\n    14,\n    1977\n];'));
+      
+  it('array pattern destructuring assignment with 2 nulls', 
+    generateTest('var [,, y] = [3, 14, 1977];', 
+      'let [\n    ,\n    ,\n    y\n] = [\n    3,\n    14,\n    1977\n];'));
+      
+  it('array pattern destructuring assignment with sub array pattern', 
+    generateTest('var [,, [a,b,c]] = [3, 14, [1,2,3]];', 
+      'let [\n    ,\n    ,\n    [\n        a,\n        b,\n        c\n    ]\n] = [\n    3,\n    14,\n    [\n        1,\n        2,\n        3\n    ]\n];')); 
+      
+  it('object pattern destructuring assignment', 
+    generateTest('var { x: x } = f;', 
+      'let {x: x} = f;'));
+      
+  it('object pattern destructuring assignment with 2 properties', 
+    generateTest('var { x: x, y: test } = f;', 
+      'let {\n    x: x,\n    y: test\n} = f;'));
+      
+  it('object pattern destructuring assignment with sub object pattern', 
+    generateTest('var { x: x, y: { b: b } } = f;', 
+      'let {\n    x: x,\n    y: {b: b}\n} = f;'));
+      
+  it('swap', 
+    generateTest('[x,y]=[y,x];', 
+      '[\n    x,\n    y\n] = [\n    y,\n    x\n];'));           
+});

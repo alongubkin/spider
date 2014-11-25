@@ -521,6 +521,9 @@ VariableDeclaration
   = id:Identifier init:(__ Initialiser)? {
       return insertLocationData(new ast.VariableDeclarator(id, extractOptional(init, 1)), text(), line(), column());
     }
+  / id:Pattern init:(__ Initialiser)? {
+    return insertLocationData(new ast.VariableDeclarator(id, extractOptional(init, 1)), text(), line(), column());
+  }
 
 Initialiser
   = "=" !"=" __ expression:AssignmentExpression { return expression; }
@@ -794,7 +797,11 @@ ExpressionStatement
     }
 
 AssignmentExpression
-  = left:ConditionalExpression 
+  = left:Pattern __ "=" !"=" __ right:AssignmentExpression {
+      return insertLocationData(new ast.AssignmentExpression(
+        left, "=", right), text(), line(), column()); 
+  }
+  / left:ConditionalExpression 
     assignment:(__ operator:AssignmentOperator __
     right:AssignmentExpression)? { 
       if (!assignment) {
@@ -805,8 +812,7 @@ AssignmentExpression
         left, 
         extractOptional(assignment, 1), 
         extractOptional(assignment, 3)), text(), line(), column()); 
-    }
-  
+    } 
   
 AssignmentOperator
   = "=" !"=" { return "=" }
@@ -1262,7 +1268,35 @@ ElementList
       }
     )*
     { return Array.prototype.concat.apply(first, rest); }
+    
+ArrayPattern
+  = "[" __ elision:(Elision __)? "]" {
+      return insertLocationData(new ast.ArrayPattern(optionalList(extractOptional(elision, 0))), text(), line(), column());
+    }
+  / "[" __ elements:PatternElementList __ "]" {
+      return insertLocationData(new ast.ArrayPattern(elements), text(), line(), column());
+    }
+  / "[" __ elements:PatternElementList __ "," __ elision:(Elision __)? "]" {
+      return insertLocationData(new ast.ArrayPattern(elements.concat(optionalList(extractOptional(elision, 0)))), text(), line(), column());
+    }
 
+PatternElementList
+  = first:(
+      elision:(Elision __)? element:PatternElement {
+        return optionalList(extractOptional(elision, 0)).concat(element);
+      }
+    )
+    rest:(
+      __ "," __ elision:(Elision __)? element:PatternElement {
+        return optionalList(extractOptional(elision, 0)).concat(element);
+      }
+    )*
+    { return Array.prototype.concat.apply(first, rest); }
+
+PatternElement
+  = Identifier
+  / ArrayPattern
+  
 Elision
   = "," commas:(__ ",")* { return filledArray(commas.length + 1, null); }
 
@@ -1286,11 +1320,36 @@ PropertyAssignment
   = key:PropertyName __ ":" __ value:AssignmentExpression {
       return insertLocationData(new ast.Property(key, value), text(), line(), column());
     }
-
+    
 PropertyName
   = IdentifierName
   / StringLiteral
   / NumericLiteral
+  
+ObjectPattern
+  = "{" __ "}" { 
+       return  new ast.ObjectPattern([]); 
+     }
+  / "{" __ properties:PatternPropertyNameAndValueList __ "}" {
+       return insertLocationData(new ast.ObjectPattern(properties), text(), line(), column());
+     }
+  / "{" __ properties:PatternPropertyNameAndValueList __ "," __ "}" {
+       return insertLocationData(new ast.ObjectPattern(properties), text(), line(), column());
+     }
+     
+PatternPropertyNameAndValueList
+  = first:PatternPropertyAssignment rest:(__ "," __ PatternPropertyAssignment)* {
+      return buildList(first, rest, 3);
+    }
 
-PropertySetParameterList
-  = id:Identifier { return [id]; }
+PatternPropertyAssignment
+  = key:IdentifierName __ ":" __ value:IdentifierName {
+      return insertLocationData(new ast.Property(key, value), text(), line(), column());
+    }
+  / key:IdentifierName __ ":" __ value:ObjectPattern {
+      return insertLocationData(new ast.Property(key, value), text(), line(), column());
+    }   
+
+Pattern
+  = ObjectPattern
+  / ArrayPattern

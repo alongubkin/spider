@@ -26,6 +26,8 @@ var nodes = [
   'expressions/UnaryExpression',
   'expressions/ObjectExpression',
   'expressions/ArrayExpression',
+  'expressions/ObjectPattern',
+  'expressions/ArrayPattern',  
   'expressions/UpdateExpression',
   'expressions/FunctionExpression',
   'expressions/RangeMemberExpression',

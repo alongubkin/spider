@@ -1,0 +1,30 @@
+use :node;
+
+var Node = require('../Node').Node;
+
+func ObjectPattern(properties)
+  extends Node {
+  
+  this.type = 'ObjectPattern';
+  this.properties = properties;
+  
+  for property in this.properties {
+    property.parent = this;
+  }
+}
+
+ObjectPattern.prototype.codegen = () -> {
+  if !super.codegen() {
+    return;
+  }
+    
+  for property, i in this.properties {
+    this.properties[i] = property.codegen();
+  }
+  
+  return this;
+};
+
+ObjectPattern.prototype.hasCallExpression = () -> true;
+
+exports.ObjectPattern = ObjectPattern;
