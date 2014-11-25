@@ -621,6 +621,11 @@ ImportDeclarationStatement
   = ImportToken __ specifiers:ImportSpecifierList __ FromToken __ source:StringLiteral EOS {
     return insertLocationData(new ast.ImportDeclarationStatement(specifiers, source, "named"), text(), line(), column());
   }
+  / ImportToken __ "*" __ AsToken __ id:Identifier __ FromToken __ source:StringLiteral EOS {
+    return insertLocationData(new ast.ImportDeclarationStatement([
+      new ast.ImportNamespaceSpecifier(id)
+    ], source, "named"), text(), line(), column());
+  }  
   / ImportToken __ source:StringLiteral __ AsToken __ id:Identifier EOS {
     return insertLocationData(new ast.ImportDeclarationStatement([
       new ast.ImportDefaultSpecifier(id)
@@ -636,9 +641,6 @@ ImportSpecifier
   = id:Identifier __ AsToken __ alias:Identifier {
     return insertLocationData(new ast.ImportSpecifier(id, alias), text(), line(), column());
   }
-  / "*" __ AsToken __ id:Identifier {
-    return insertLocationData(new ast.ImportNamespaceSpecifier(id), text(), line(), column());
-  }  
   / id:Identifier {
     return insertLocationData(new ast.ImportSpecifier(id, null), text(), line(), column());
   }
