@@ -1,0 +1,25 @@
+use :node;
+
+var Node = require('./Node').Node;
+
+func ImportNamespaceSpecifier(id)
+  extends Node {
+  
+  this.type = "ImportNamespaceSpecifier";
+  
+  this.id = id;
+  this.id.parent = this;
+}
+
+ImportNamespaceSpecifier.prototype.codegen = () -> {
+  if !super.codegen() {
+    return;
+  }
+  
+  this.id = this.id.codegen(false);
+  this.getContext().node.defineIdentifier(this.id);
+  
+  return this;
+};
+
+exports.ImportNamespaceSpecifier = ImportNamespaceSpecifier;

@@ -195,6 +195,9 @@ Keyword
   / DefaultToken
   / FallthroughToken
   / NotToken
+  / ImportToken
+  / FromToken
+  / AsToken
 
 Literal
   = NullLiteral
@@ -450,6 +453,9 @@ CaseToken         = "case"        !IdentifierPart
 DefaultToken      = "default"     !IdentifierPart
 FallthroughToken  = "fallthrough" !IdentifierPart
 NotToken          = "not"         !IdentifierPart
+ImportToken       = "import"      !IdentifierPart
+FromToken         = "from"        !IdentifierPart
+AsToken           = "as"          !IdentifierPart
 
 __
   = (WhiteSpace / LineTerminatorSequence / Comment)*
@@ -491,6 +497,7 @@ Statement
   / UntilStatement
   / SwitchStatement
   / FallthroughStatement
+  / ImportDeclarationStatement
   
 Block
   = "{" __ body:(StatementList __)? "}" {
@@ -605,8 +612,36 @@ ContinueStatement
 FallthroughStatement
   = FallthroughToken EOS {
       return insertLocationData(new ast.FallthroughStatement(), text(), line(), column());
-    }    
+    }  
     
+ImportDeclarationStatement
+  = ImportToken __ specifiers:ImportSpecifierList __ FromToken __ source:StringLiteral EOS {
+    return insertLocationData(new ast.ImportDeclarationStatement(specifiers, source, "named"), text(), line(), column());
+  }
+  / ImportToken __ source:StringLiteral __ AsToken __ id:Identifier EOS {
+    return insertLocationData(new ast.ImportDeclarationStatement([
+      new ast.ImportDefaultSpecifier(id)
+    ], source, "default"), text(), line(), column());
+  }
+  
+ImportSpecifierList
+  = first:ImportSpecifier rest:("," __ ImportSpecifier)* { 
+      return buildList(first, rest, 2); 
+    }
+
+ImportSpecifier
+  = id:Identifier __ AsToken __ alias:Identifier {
+    return insertLocationData(new ast.ImportSpecifier(id, alias), text(), line(), column());
+  }
+  / "*" __ AsToken __ id:Identifier {
+    return insertLocationData(new ast.ImportNamespaceSpecifier(id), text(), line(), column());
+  }  
+  / id:Identifier {
+    return insertLocationData(new ast.ImportSpecifier(id, null), text(), line(), column());
+  }
+  
+
+  
 DebuggerStatement
   = DebuggerToken EOS {
       return insertLocationData(new ast.DebuggerStatement(), text(), line(), column());

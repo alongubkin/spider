@@ -1563,3 +1563,29 @@ describe('regular expression literals:', function () {
   it('regular expression literal',
     generateTest('var re = /ab+c/g;', 'let re = /ab+c/g;'));
 });
+
+describe('import statement:', function () {
+  it('import with 1 identifier',
+    generateTest('import foo from "foobar";',
+      'import { foo } from \"foobar\";'));
+      
+  it('import with 2 identifiers',
+    generateTest('import foo, bar from "foobar";',
+      'import {\n    foo,\n    bar\n} from \"foobar\";'));
+      
+  it('import with 1 identifier with as',
+    generateTest('import foo as a from "foobar";',
+      'import { foo as a } from \"foobar\";'));
+      
+  it('import with 2 identifiers with as',
+    generateTest('import foo as a, bar as b from "foobar";',
+      'import {\n    foo as a,\n    bar as b\n} from \"foobar\";'));
+
+  it('wildcard import',
+    generateTest('import * as lib from "lib";',
+      'import * as lib from \"lib\";'));
+
+  it('import default',
+    generateTest('import "jquery" as $;',
+      'import $ from "jquery";'));
+});

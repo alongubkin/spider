@@ -94,7 +94,7 @@ opts.files.forEach(function (fileName, fileIndex) {
           fileName.lastIndexOf('.'));    
     var outFileName = outFileNameWithoutExtension + ".js";
     var compilerOutput = spider.compile(content, opts.verbose, errors, 
-      opts.compile && enableSourceMap ? path.basename(fileName) : false, outFileNameWithoutExtension + ".map", true, opts.target !== "ES5");
+      opts.compile && enableSourceMap ? path.basename(fileName) : false, outFileNameWithoutExtension + ".map", opts.target !== "ES5", opts.target !== "ES5");
     
     if (errors.length > 0) {
       var output = [];

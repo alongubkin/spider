@@ -1,0 +1,33 @@
+use :node;
+
+var Node = require('../Node').Node;
+
+func ImportDeclarationStatement(specifiers, source, kind)
+  extends Node {
+  
+  this.type = "ImportDeclaration";
+  this.kind = kind;
+  
+  this.specifiers = specifiers;
+  for specifier in this.specifiers {
+    specifier.parent = this;
+  }
+  
+  this.source = source;
+  this.source.parent = this;
+}
+
+ImportDeclarationStatement.prototype.codegen = () -> {
+  if !super.codegen() {
+    return;
+  }
+  
+  for specifier, i in this.specifiers {
+    this.specifiers[i] = specifier.codegen();
+  }
+  
+  this.source = this.source.codegen();
+  return this;
+};
+
+exports.ImportDeclarationStatement = ImportDeclarationStatement;
