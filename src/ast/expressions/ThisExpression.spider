@@ -13,19 +13,6 @@ ThisExpression.prototype.codegen = () -> {
     return;
   }
   
-  var parent = this.parent;
-  while parent? and (parent.type != "FunctionExpression" or !parent.__fatArrow) {
-    parent = parent.parent;
-  }
-  
-  if parent? {
-    this.type = "Identifier";
-    ::Object.defineProperty(this, 'name', { 
-      value: "_this", 
-      enumerable: true 
-    });
-  }
-  
   return this;
 };
 

@@ -1702,11 +1702,11 @@ describe('fallthrough statement:', function () {
 describe('fat arrow:', function () {
   it('fat arrow function expression',
     generateTest('var x = () => this.test;',
-      'var x = function (_this) {\n    return function () {\n        return _this.test;\n    };\n}(this);'));
+      'var x = () => {\n    return this.test;\n};'));
       
   it('fat arrow function expression inside another',
     generateTest('var x = () => () => this.test;',
-      'var x = function (_this) {\n    return function () {\n        return function () {\n            return _this.test;\n        };\n    };\n}(this);'));
+      'var x = () => {\n    return () => {\n        return this.test;\n    };\n};'));
 });
 
 describe('for-in and for-of with break and return:', function () {
