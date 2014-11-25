@@ -27,36 +27,9 @@ Parameter.prototype.codegen = () -> {
   
   if this.defaultValue? {
     this.defaultValue = this.defaultValue.codegen();
-    
-    return {
-      "type": "IfStatement",
-      "test": {
-        "type": "BinaryExpression",
-        "operator": "==",
-        "left": this.id,
-        "right": {
-          "type": "Literal",
-          "value": null,
-          "raw": "null"
-        }
-      },
-      "consequent": {
-        "type": "BlockStatement",
-        "body": [{
-          "type": "ExpressionStatement",
-          "expression": {
-            "type": "AssignmentExpression",
-            "operator": "=",
-            "left": this.id,
-            "right": this.defaultValue
-          }
-        }]
-      },
-      "alternate": null
-    };
   }
   
-  return null;
+  return this;
 };
 
 
@@ -64,13 +37,10 @@ Parameter.prototype.hasCallExpression = () -> {
   return false;
 };
 
-Parameter.generateFunctionBody = (fn, params, body) -> {
-  var addToBody = [];
+Parameter.generateFunctionBody = (fn, params, body, defaults) -> {
   var splatPosition = -1;
   
-  for param, i in params {
-    var paramBodyCode = param.codegen();
-    
+  for param, i in params {   
     if param.splat {
       if splatPosition != -1 {
         Node.getErrorManager().error({
@@ -83,16 +53,11 @@ Parameter.generateFunctionBody = (fn, params, body) -> {
       splatPosition = i;
     }
     
+    param = param.codegen();
+    defaults.push(param.defaultValue);
     params[i] = param.id;
     fn.defineIdentifier(param.id);
-    
-    if paramBodyCode? {
-      paramBodyCode.codeGenerated = true;
-      addToBody.push(paramBodyCode);
-    }
   }
-    
-  body.body = addToBody.concat(body.body);
   
   if splatPosition != -1 {
     var declarations = [{
