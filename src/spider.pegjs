@@ -1139,36 +1139,36 @@ FunctionExpression
     inheritsFrom:InheritsFrom?
     __ body:Block __
     {
-      return new ast.FunctionExpression(
+      return insertLocationData(new ast.FunctionExpression(
         extractOptional(id, 0), 
         optionalList(extractOptional(params, 0)),
         body,
         inheritsFrom
-      );
+      ), text(), line(), column());
     }
   / "(" __ params:(FormalParameterList __)? ")" 
     __ operator:FunctionExpressionOperator
     __ body:Block __
     {      
-      return new ast.FunctionExpression(
+      return insertLocationData(new ast.FunctionExpression(
         null,
         optionalList(extractOptional(params, 0)),
         body,
         null,
         operator
-      );
+      ), text(), line(), column());
     }    
   / "(" __ params:(FormalParameterList __)? ")" 
     __ operator:FunctionExpressionOperator
     __ body:Expression __
     {
-      return new ast.FunctionExpression(
+      return insertLocationData(new ast.FunctionExpression(
         null, 
         optionalList(extractOptional(params, 0)),
         body,
         null,
         operator
-      );
+      ), text(), line(), column());
     }
   / ForInExpression
 
