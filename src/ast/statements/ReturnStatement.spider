@@ -61,7 +61,7 @@ ReturnStatement.prototype.codegen = () -> {
         "id": returnValueId,
         "init": null
       }],
-      "kind": "var"
+      "kind": "let"
     });
 
     context.node.body.splice(context.position, 0, {

@@ -120,7 +120,7 @@ FunctionExpression.prototype.codegen = () -> {
           "init": this
         }
       ],
-      "kind": "var",
+      "kind": "let",
       "codeGenerated": true
     });
 

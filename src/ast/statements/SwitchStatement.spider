@@ -109,7 +109,7 @@ SwitchStatement.prototype.codegen = () -> {
           }
         }
       ],
-      "kind": "var"
+      "kind": "let"
     });
   }
   

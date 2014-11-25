@@ -60,7 +60,7 @@ NullCheckCallExpression.prototype.codegen = () -> {
           "init": this.callee
         }
       ],
-      "kind": "var",
+      "kind": "let",
       "codeGenerated": true
     });
     

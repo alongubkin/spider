@@ -51,7 +51,7 @@ NullPropagatingExpression.prototype.codegen = () -> {
           "init": this.object
         }
       ],
-      "kind": "var",
+      "kind": "let",
       "codeGenerated": true
     });
     

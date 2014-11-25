@@ -103,7 +103,7 @@ ForInExpression.prototype.codegen = () -> {
               }
             }
           ],
-          "kind": "var",
+          "kind": "let",
           "codeGenerated": true
         },
         forInStatement.codegen(false),

@@ -78,7 +78,7 @@ SuperExpression.prototype.codegen = () -> {
             type: "ThisExpression"
           }
         }],
-        "kind": "var"
+        "kind": "let"
       });
       
       context.node.__isSelfDefined = true;
@@ -208,7 +208,7 @@ SuperExpression.prototype.codegen = () -> {
         "id": id,
         "init": extend({}, lastObject)
       }],
-      "kind": "var"
+      "kind": "let"
     });
     
     superContext.node.defineIdentifier(id);

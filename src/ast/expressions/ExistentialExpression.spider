@@ -40,7 +40,7 @@ ExistentialExpression.prototype.codegen = () -> {
           "init": this.argument
         }
       ],
-      "kind": "var",
+      "kind": "let",
       "codeGenerated": true
     });
     

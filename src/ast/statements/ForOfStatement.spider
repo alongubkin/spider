@@ -52,7 +52,7 @@ ForOfStatement.prototype.codegen = () -> {
           "id": id,
           "init": this.object
         }],
-        "kind": "var",
+        "kind": "let",
         "codeGenerated": true
       });
       
@@ -71,7 +71,7 @@ ForOfStatement.prototype.codegen = () -> {
           "property": this.key
         }
       }],
-      "kind": "var",
+      "kind": "let",
     }].concat(this.body.body);
   } else {
     this.body = this.body.blockWrap().codegen();

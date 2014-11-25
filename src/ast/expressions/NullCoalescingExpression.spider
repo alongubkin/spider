@@ -48,7 +48,7 @@ NullCoalescingExpression.prototype.codegen = () -> {
           "init": this.left
         }
       ],
-      "kind": "var",
+      "kind": "let",
       "codeGenerated": true
     });
     

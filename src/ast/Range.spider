@@ -214,7 +214,7 @@ Range.prototype.codegen = () -> {
             {
               "type": "VariableDeclaration",
               "declarations": declarations,
-              "kind": "var"
+              "kind": "let"
             },
             {
               "type": "ForStatement",
@@ -228,7 +228,7 @@ Range.prototype.codegen = () -> {
                   },
                   "init": this.from
                 }],
-                "kind": "var"
+                "kind": "let"
               },
               "test": testExpression,
               "update": updateExpression,

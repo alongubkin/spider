@@ -41,7 +41,7 @@ InExpression.prototype.codegen = () -> {
           "init": this.right
         }
       ],
-      "kind": "var",
+      "kind": "let",
       "codeGenerated": true
     });
     

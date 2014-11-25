@@ -223,7 +223,7 @@ Parameter.generateFunctionBody = (fn, params, body, defaults) -> {
       "type": "VariableDeclaration",
       "codeGenerated": true,
       "declarations": declarations,
-      "kind": "var"
+      "kind": "let"
     }].concat(body.body);
     
     params.length = 0;
