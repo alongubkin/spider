@@ -7,7 +7,7 @@ func VariableDeclarationStatement(declarations)
   
   this.type = 'VariableDeclaration';
   this.declarations = declarations;
-  this.kind = 'var';
+  this.kind = 'let';
   
   for decl in declarations {
     decl.parent = this;
