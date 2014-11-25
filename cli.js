@@ -5,7 +5,9 @@
 var path = require("path");
 var vm = require("vm");
 var fs = require("fs");
-var chalk = require('chalk');
+var chalk = require("chalk");
+var traceur = require("traceur");
+var transfer = require("multi-stage-sourcemap").transfer;
 var spider = require("./lib/spider");
 
 var opts = require("nomnom")
@@ -28,6 +30,11 @@ var opts = require("nomnom")
     flag: true,
     help: "disable source map files (.map) generation"
   })
+  .option("target", {
+    choices: ["ES6", "ES5"],
+    default: "ES5",
+    help: "target"
+  })  
   .option("version", {
     flag: true,
     help: "display the version number",
@@ -66,6 +73,13 @@ function generateErrorColumnString(errorStartIndex, errorEndIndex) {
 }
 
 var problems = 0;
+var traceurCompiler;
+
+if (opts.target === "ES5") {
+  traceurCompiler = new traceur.NodeCompiler({
+    sourceMaps: true
+  });
+}
 
 opts.files.forEach(function (fileName, fileIndex) {
   fs.readFile(fileName, "utf-8", function (error, content) {
@@ -76,10 +90,11 @@ opts.files.forEach(function (fileName, fileIndex) {
     var enableSourceMap = !opts['disable-source-map'];
 
     var errors = [];
-    var outFileName = fileName.substring(0, 
-          fileName.lastIndexOf('.')) + ".js";
+    var outFileNameWithoutExtension = fileName.substring(0, 
+          fileName.lastIndexOf('.'));    
+    var outFileName = outFileNameWithoutExtension + ".js";
     var compilerOutput = spider.compile(content, opts.verbose, errors, 
-      opts.compile && enableSourceMap ? path.basename(fileName) : false, outFileName + ".map", true, true);
+      opts.compile && enableSourceMap ? path.basename(fileName) : false, outFileNameWithoutExtension + ".map", true, opts.target !== "ES5");
     
     if (errors.length > 0) {
       var output = [];
@@ -144,6 +159,16 @@ opts.files.forEach(function (fileName, fileIndex) {
       
       console.log(str.replace(new RegExp(tabCharacter, "g"), generateSpace(2)));
     } else {
+      if (opts.target === "ES5") {
+        compilerOutput.code = traceurCompiler.compile(compilerOutput.code, path.basename(fileName), outFileName);
+        if (enableSourceMap) {
+          compilerOutput.map = transfer({
+            toSourceMap: compilerOutput.map.toString(),
+            fromSourceMap: traceurCompiler.getSourceMap().toString()
+          });
+        }
+      }
+      
       if (opts.compile) {
         var code = compilerOutput.code;
         
@@ -154,14 +179,14 @@ opts.files.forEach(function (fileName, fileIndex) {
         });
 
         if (enableSourceMap) {
-          fs.writeFile(outFileName + ".map", 
+          fs.writeFile(outFileNameWithoutExtension + ".map", 
             compilerOutput.map.toString(), 
             function (error) {
               if (error) {
                 return console.log(error);
               }
             });
-        }        
+        }  
       } else {
         vm.runInThisContext(compilerOutput.code);
       }
