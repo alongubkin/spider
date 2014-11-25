@@ -1318,12 +1318,23 @@ PropertyNameAndValueList
 
 PropertyAssignment
   = key:PropertyName __ ":" __ value:AssignmentExpression {
-      return insertLocationData(new ast.Property(key, value, false), text(), line(), column());
+      return insertLocationData(new ast.Property(key, value, false, false), text(), line(), column());
     }
+  / key:IdentifierName __ 
+    "(" __ params:(FormalParameterList __)? ")"
+    __ body:Block __
+    {
+      return insertLocationData(new ast.Property(key, new ast.FunctionExpression(
+        null, 
+        optionalList(extractOptional(params, 0)),
+        body,
+        null
+      ), false, true), text(), line(), column());
+    }    
   / key:IdentifierName {
-    return insertLocationData(new ast.Property(key, key, true), text(), line(), column());
+    return insertLocationData(new ast.Property(key, key, true, false), text(), line(), column());
   }
-    
+
 PropertyName
   = IdentifierName
   / StringLiteral
@@ -1347,13 +1358,13 @@ PatternPropertyNameAndValueList
 
 PatternPropertyAssignment
   = key:IdentifierName __ ":" __ value:IdentifierName {
-      return insertLocationData(new ast.Property(key, value, false), text(), line(), column());
+      return insertLocationData(new ast.Property(key, value, false, false), text(), line(), column());
     }
   / key:IdentifierName __ ":" __ value:ObjectPattern {
-      return insertLocationData(new ast.Property(key, value, false), text(), line(), column());
+      return insertLocationData(new ast.Property(key, value, false, false), text(), line(), column());
     }
   / key:IdentifierName {
-    return insertLocationData(new ast.Property(key, key, true), text(), line(), column());
+    return insertLocationData(new ast.Property(key, key, true, false), text(), line(), column());
   }    
 
 Pattern

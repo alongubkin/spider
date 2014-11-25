@@ -1700,7 +1700,7 @@ describe('destructuring assignment:', function () {
       '[\n    x,\n    y\n] = [\n    y,\n    x\n];'));           
 });
 
-describe('object initializer shorthand', function () {
+describe('object initializer shorthand:', function () {
   it('object literal initializer shorthand', 
     generateTest('var a = {x, y};', 
       'let a = {\n    x,\n    y\n};'));
@@ -1708,4 +1708,10 @@ describe('object initializer shorthand', function () {
   it('object pattern initializer shorthand', 
     generateTest('var {x, y} = {x: 1, y: 2};', 
       'let {x, y} = {\n    x: 1,\n    y: 2\n};'));      
+});
+
+describe('property method assignments:', function () {
+  it('property method assignment', 
+    generateTest('var object = {value: 42, toString() { return this.value; }};', 
+      'let object = {\n    value: 42,\n    toString() {\n        return this.value;\n    }\n};'));
 });

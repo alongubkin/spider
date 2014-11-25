@@ -2,12 +2,12 @@ use :node;
 
 var Node = require('./Node').Node;
 
-func Property(key, value, shorthand)
+func Property(key, value, shorthand, method)
   extends Node {
   
   this.type = 'Property';
   this.kind = 'init';
-  this.method = false;
+  this.method = method;
   this.shorthand = shorthand;
   this.computed = false;
                 
