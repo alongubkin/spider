@@ -1699,3 +1699,13 @@ describe('destructuring assignment:', function () {
     generateTest('[x,y]=[y,x];', 
       '[\n    x,\n    y\n] = [\n    y,\n    x\n];'));           
 });
+
+describe('object initializer shorthand', function () {
+  it('object literal initializer shorthand', 
+    generateTest('var a = {x, y};', 
+      'let a = {\n    x,\n    y\n};'));
+      
+  it('object pattern initializer shorthand', 
+    generateTest('var {x, y} = {x: 1, y: 2};', 
+      'let {x, y} = {\n    x: 1,\n    y: 2\n};'));      
+});

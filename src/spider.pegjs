@@ -1318,8 +1318,11 @@ PropertyNameAndValueList
 
 PropertyAssignment
   = key:PropertyName __ ":" __ value:AssignmentExpression {
-      return insertLocationData(new ast.Property(key, value), text(), line(), column());
+      return insertLocationData(new ast.Property(key, value, false), text(), line(), column());
     }
+  / key:IdentifierName {
+    return insertLocationData(new ast.Property(key, key, true), text(), line(), column());
+  }
     
 PropertyName
   = IdentifierName
@@ -1344,11 +1347,14 @@ PatternPropertyNameAndValueList
 
 PatternPropertyAssignment
   = key:IdentifierName __ ":" __ value:IdentifierName {
-      return insertLocationData(new ast.Property(key, value), text(), line(), column());
+      return insertLocationData(new ast.Property(key, value, false), text(), line(), column());
     }
   / key:IdentifierName __ ":" __ value:ObjectPattern {
-      return insertLocationData(new ast.Property(key, value), text(), line(), column());
-    }   
+      return insertLocationData(new ast.Property(key, value, false), text(), line(), column());
+    }
+  / key:IdentifierName {
+    return insertLocationData(new ast.Property(key, key, true), text(), line(), column());
+  }    
 
 Pattern
   = ObjectPattern
