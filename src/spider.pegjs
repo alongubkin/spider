@@ -1320,7 +1320,7 @@ PropertyAssignment
   = key:PropertyName __ ":" __ value:AssignmentExpression {
       return insertLocationData(new ast.Property(key, value, false, false), text(), line(), column());
     }
-  / key:IdentifierName __ 
+  / key:PropertyName __ 
     "(" __ params:(FormalParameterList __)? ")"
     __ body:Block __
     {
