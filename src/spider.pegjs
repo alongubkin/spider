@@ -262,21 +262,23 @@ HexDigit
   
 StringLiteral "string"
   = '"' chars:DoubleStringCharacter* '"' {
-      return insertLocationData(new ast.StringLiteral(chars), text(), line(), column());
+      return insertLocationData(new ast.StringLiteral(chars, column()), text(), line(), column());
     }
   / "'" chars:SingleStringCharacter* "'" {
-      return insertLocationData(new ast.StringLiteral(chars), text(), line(), column());
+      return insertLocationData(new ast.StringLiteral(chars, column()), text(), line(), column());
     }
 
 DoubleStringCharacter
   = !('"' / "\\" / LineTerminator) SourceCharacter { return text(); }
   / "\\" sequence:EscapeSequence { return sequence; }
   / LineContinuation
+  / LineTerminator __ { return new ast.StringLiteral.NewLine(text()); }
 
 SingleStringCharacter
   = !("'" / "\\" / LineTerminator) SourceCharacter { return text(); }
   / "\\" sequence:EscapeSequence { return sequence; }
   / LineContinuation
+  / LineTerminator __ { return new ast.StringLiteral.NewLine(text()); }
 
 LineContinuation
   = "\\" LineTerminatorSequence { return ""; }

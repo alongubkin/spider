@@ -2,11 +2,12 @@ use :node;
 
 var Node = require('../Node').Node;
 
-func StringLiteral(chars)
+func StringLiteral(chars, column)
   extends Node {
   
   this.type = 'StringLiteral';
   this.chars = chars;
+  this.column = column;
 }
 
 StringLiteral.prototype.codegen = () -> {
@@ -17,14 +18,26 @@ StringLiteral.prototype.codegen = () -> {
   var elements = [];
   
   for value in this.chars {
+    var lastElement;
+    
     if typeof value == 'string' {
-      var lastElement = elements[elements.length - 1];
+      lastElement = elements[elements.length - 1];
       if lastElement?.type == 'Literal' {
         lastElement.value += value;
       } else {
         elements.push({
           type: 'Literal',
           value: value
+        });
+      }
+    } else if value?.type == "StringLiteralNewLine" {
+      lastElement = elements[elements.length - 1];
+      if lastElement?.type == 'Literal' {
+        lastElement.value += value.toString(this.column - 1);
+      } else {
+        elements.push({
+          type: 'Literal',
+          value: value.toString(this.column - 1)
         });
       }
     } else {
@@ -60,5 +73,19 @@ StringLiteral.prototype.codegen = () -> {
 };
 
 StringLiteral.prototype.hasCallExpression = () -> false;
+
+StringLiteral.NewLine = func (text) {
+  this.type = "StringLiteralNewLine";
+  
+  this.toString = (column) -> {
+	var t = text.replace(/\r\n/g, '').replace(/\t/g, '    ');
+	
+    if t.length < column {
+      return '';
+    }
+    
+    return t.substring(column);
+  };
+};
 
 exports.StringLiteral = StringLiteral;
