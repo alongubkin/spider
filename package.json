@@ -49,7 +49,7 @@
   },
   "preferGlobal": "true",
   "dependencies": {
-    "escodegen": "~1.4.1",
+    "escodegen": "estools/escodegen",
     "pegjs": "~0.8.0",
     "nomnom": "~1.8.1",
     "chalk": "~0.5.1",
