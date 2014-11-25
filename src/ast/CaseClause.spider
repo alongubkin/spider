@@ -35,7 +35,7 @@ CaseClause.prototype.codegen = (branchFallthrough) -> {
   if this.tests? {
     for test in this.tests {
       var equalsToDiscriminant;
-    
+      
       if test.type == "Range" {
         var fromCheck;
         if test.from {
@@ -69,6 +69,50 @@ CaseClause.prototype.codegen = (branchFallthrough) -> {
         } else {
           rangeError = test;
           break;
+        }
+      } else if test.type == "ArrayExpression" {
+        test = test.codegen();
+        
+        equalsToDiscriminant = {
+          "type": "BinaryExpression",
+          "operator": ">=",
+          "left": {
+            "type": "MemberExpression",
+            "computed": false,
+            "object": this.parent.discriminant,
+            "property": {
+              "type": "Identifier",
+              "name": "length"
+            }
+          },
+          "right": {
+            "type": "Literal",
+            "value": test.elements.length
+          }
+        };
+        
+        for element, i in test.elements {
+          if element? {
+            equalsToDiscriminant = {
+              "type": "LogicalExpression",
+              "operator": "&&",
+              "left": equalsToDiscriminant,
+              "right": {
+                "type": "BinaryExpression",
+                "operator": "===",
+                "left": {
+                  "type": "MemberExpression",
+                  "computed": true,
+                  "object": this.parent.discriminant,
+                  "property": {
+                    "type": "Literal",
+                    "value": i
+                  }
+                },
+                "right": element
+              }
+            };
+          }
         }
       } else {
         equalsToDiscriminant = {

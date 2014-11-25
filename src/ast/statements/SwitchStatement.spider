@@ -27,7 +27,27 @@ SwitchStatement.prototype.codegen = () -> {
   var fallthroughPosition = 1;
   
   this.discriminant = this.discriminant.codegen();
- 
+  
+  if this.discriminant.hasCallExpression() {
+    var id = {
+      "type": "Identifier",
+      "name": SwitchStatement.getNextVariableName()
+    };
+    
+    context.node.body.splice(context.position, 0, {
+      "type": "VariableDeclaration",
+      "codeGenerated": true,
+      "declarations": [{
+        "type": "VariableDeclarator",
+        "id": id,
+        "init": this.discriminant
+      }],
+      "kind": "let"
+    });
+    
+    this.discriminant = id;
+  }
+  
   var hasFallthrough = false;
   
   for caseClause in this.cases {
@@ -124,6 +144,18 @@ SwitchStatement.prototype.codegen = () -> {
   }
   
   return this;
+};
+
+SwitchStatement.getNextVariableName = () -> {
+  if !this.switchStatementIndex? { 
+    this.switchStatementIndex = 0;
+  }
+  
+  return "switchStatement" + this.switchStatementIndex++;
+};
+
+SwitchStatement.resetVariableNames = () -> {
+  this.switchStatementIndex = 0;
 };
 
 exports.SwitchStatement = SwitchStatement;
