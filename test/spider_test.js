@@ -1581,11 +1581,61 @@ describe('import statement:', function () {
     generateTest('import foo as a, bar as b from "foobar";',
       'import {\n    foo as a,\n    bar as b\n} from \"foobar\";'));
 
-  it('wildcard import',
+  it('batch import',
     generateTest('import * as lib from "lib";',
       'import * as lib from \"lib\";'));
 
   it('import default',
     generateTest('import "jquery" as $;',
       'import $ from "jquery";'));
+});
+
+describe('export statement:', function () {
+  it('export with 1 identifier',
+    generateTest('export foo;',
+      'export {\n    foo\n};'));
+      
+  it('export with 2 identifiers',
+    generateTest('export foo, bar;',
+      'export {\n    foo,\n    bar\n};'));
+      
+  it('export with 1 identifier with as',
+    generateTest('export foo as f;',
+      'export {\n    foo as f\n};'));
+      
+  it('export with 2 identifiers with as',
+    generateTest('export foo as f, bar as b;',
+      'export {\n    foo as f,\n    bar as b\n};'));
+      
+  it('export with 1 identifier with source',
+    generateTest('export foo from "foo";',
+      'export {\n    foo\n} from \"foo\";'));
+      
+  it('export with 2 identifiers with source',
+    generateTest('export foo, bar from "foobar";',
+      'export {\n    foo,\n    bar\n} from \"foobar\";'));      
+  
+  it('batch export',
+    generateTest('export * from "foobar";',
+      'export * from \"foobar\";'));
+      
+  it('export variable statement',
+    generateTest('export var sqrt = Math.sqrt;',
+      'export let sqrt = Math.sqrt;'));
+      
+  it('export function statement',
+    generateTest('export fn x() {}',
+      'export function x() {\n}'));
+      
+  it('export function statement with extends',
+    generateTest('export fn x() extends A {}',
+      'export function x() {\n    A.call(this);\n}\nx.prototype = Object.create(A);'));
+      
+  it('export default identifier',
+    generateTest('export default x;',
+      'export default x;'));
+      
+  it('export default function expression',
+    generateTest('export default () -> {};',
+      'export default function () {\n};'));         
 });

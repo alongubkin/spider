@@ -198,6 +198,7 @@ Keyword
   / ImportToken
   / FromToken
   / AsToken
+  / ExportToken
 
 Literal
   = NullLiteral
@@ -456,6 +457,7 @@ NotToken          = "not"         !IdentifierPart
 ImportToken       = "import"      !IdentifierPart
 FromToken         = "from"        !IdentifierPart
 AsToken           = "as"          !IdentifierPart
+ExportToken       = "export"      !IdentifierPart
 
 __
   = (WhiteSpace / LineTerminatorSequence / Comment)*
@@ -498,6 +500,7 @@ Statement
   / SwitchStatement
   / FallthroughStatement
   / ImportDeclarationStatement
+  / ExportDeclarationStatement
   
 Block
   = "{" __ body:(StatementList __)? "}" {
@@ -640,7 +643,37 @@ ImportSpecifier
     return insertLocationData(new ast.ImportSpecifier(id, null), text(), line(), column());
   }
   
+ExportDeclarationStatement
+  = ExportToken __ specifiers:ExportSpecifierList source:(__ FromToken __ StringLiteral)? EOS {
+    return insertLocationData(new ast.ExportDeclarationStatement(specifiers, extractOptional(source, 3), null, false), text(), line(), column());
+  }
+  / ExportToken __ "*" __ FromToken __ source:StringLiteral EOS {
+    return insertLocationData(new ast.ExportDeclarationStatement([
+      new ast.ExportBatchSpecifier()
+    ], source, null, false), text(), line(), column());
+  }
+  / ExportToken __ statement:VariableStatement {
+    return insertLocationData(new ast.ExportDeclarationStatement(null, null, statement, false), text(), line(), column());
+  }
+  / ExportToken __ statement:FunctionDeclaration {
+    return insertLocationData(new ast.ExportDeclarationStatement(null, null, statement, false), text(), line(), column());
+  }
+  / ExportToken __ DefaultToken __ expression:Expression EOS {
+    return insertLocationData(new ast.ExportDeclarationStatement(null, null, expression, true), text(), line(), column());
+  }    
+  
+ExportSpecifierList
+  = first:ExportSpecifier rest:("," __ ExportSpecifier)* { 
+      return buildList(first, rest, 2); 
+    }
 
+ExportSpecifier
+  = id:Identifier __ AsToken __ alias:Identifier {
+    return insertLocationData(new ast.ExportSpecifier(id, alias), text(), line(), column());
+  }
+  / id:Identifier {
+    return insertLocationData(new ast.ExportSpecifier(id, null), text(), line(), column());
+  }
   
 DebuggerStatement
   = DebuggerToken EOS {

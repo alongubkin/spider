@@ -1,0 +1,46 @@
+use :node;
+
+var Node = require('../Node').Node;
+
+func ExportDeclarationStatement(specifiers, source, declaration, isDefault)
+  extends Node {
+  
+  this.type = "ExportDeclaration";
+  this['default'] = isDefault;
+  
+  this.specifiers = specifiers;
+  if specifiers? {
+    for specifier in this.specifiers {
+      specifier.parent = this;
+    }
+  }
+  
+  this.source = source;
+  if source? {
+    this.source.parent = this;
+  }
+  
+  this.declaration = declaration;
+  if declaration? {
+    this.declaration.parent = this;
+  }
+}
+
+ExportDeclarationStatement.prototype.codegen = () -> {
+  if !super.codegen() {
+    return;
+  }
+  
+  if this.specifiers? {
+    for specifier, i in this.specifiers {
+      this.specifiers[i] = specifier.codegen();
+    }
+  }
+  
+  this.source = this.source?.codegen();
+  this.declaration = this.declaration?.codegen();
+    
+  return this;
+};
+
+exports.ExportDeclarationStatement = ExportDeclarationStatement;

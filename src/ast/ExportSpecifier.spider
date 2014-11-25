@@ -1,0 +1,37 @@
+use :node;
+
+var Node = require('./Node').Node;
+
+func ExportSpecifier(id, alias)
+  extends Node {
+  
+  this.type = "ExportSpecifier";
+  
+  this.id = id;
+  this.id.parent = this;
+  
+  if alias? {
+    this.alias = alias;
+    this.alias.parent = this;
+  }  
+}
+
+ExportSpecifier.prototype.codegen = () -> {
+  if !super.codegen() {
+    return;
+  }
+  
+  this.id = this.id.codegen(false);
+  
+  ::Object.defineProperty(this, 'name', { 
+    value: {
+      "type": "Identifier",
+      "name": this.alias.name
+    } if this.alias? else null, 
+    enumerable: true 
+  });
+  
+  return this;
+};
+
+exports.ExportSpecifier = ExportSpecifier;
