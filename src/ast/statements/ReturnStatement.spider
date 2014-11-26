@@ -23,7 +23,7 @@ ReturnStatement.prototype.codegen = () -> {
   }
 
   var parent = this.parent;
-  while parent? and parent.type != "ForInStatement" and parent.type != "ForOfStatement" {
+  while parent? and parent.type != "ForOfStatement" {
     parent = parent.parent;
   }
 

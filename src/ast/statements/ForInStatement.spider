@@ -22,62 +22,68 @@ func ForInStatement(item, index, array, body)
   this.body.parent = this;
 }
 
-ForInStatement.prototype.codegen = (every = true) -> {
+ForInStatement.prototype.codegen = () -> {
   if !super.codegen() {
     return;
   }
   
   this.item = this.item.codegen(false);
   
-  var params = [this.item];
-  this.defineIdentifier(this.item);
-  
   if this.index? {
+    var context = this.getContext();
     this.index = this.index.codegen(false);
-    params.push(this.index);
     
-    this.defineIdentifier(this.index);
-  }
-
-  this.array = this.array.codegen();
-  this.body = this.body.blockWrap().codegen();
-
-  if every and (this.body.body.length == 0 or
-     this.body.body[this.body.body.length - 1].type != "ReturnStatement") {
-    this.body.body.push({
-      "type": "ReturnStatement",
-      "codeGenerated": true,
-      "argument": {
-        "type": "Literal",
-        "value": true
-      }
+    context.node.body.splice(context.position, 0, {
+      "type": "VariableDeclaration",
+      "declarations": [{
+        "type": "VariableDeclarator",
+        "id": this.index,
+        "init": {
+          "type": "Literal",
+          "value": 0
+        }
+      }],
+      "kind": "let"
     });
   }
 
-  this.type = "ExpressionStatement";
-  this.expression = {
-    "type": "CallExpression",
-    "callee": {
-      "type": "MemberExpression",
-      "computed": false,
-      "object": this.array,
-      "property": {
-        "type": "Identifier",
-        "name": "every" if every else "forEach"
-      }
-    },
-    "arguments": [{
-      "type": "FunctionExpression",
-      "id": null,
-      "params": params,
-      "defaults": [],
-      "body": this.body,
-      "rest": null,
-      "generator": false,
-      "expression": false
-    }, { "type": "ThisExpression" }]
-  };
+  this.array = this.array.codegen();
+ 
+  this.body = this.body.blockWrap();
+  this.body.defineIdentifier(this.item);
   
+  if this.index? {
+    this.body.defineIdentifier(this.index);
+  }
+  
+  this.body = this.body.codegen();
+  
+  if this.index? {
+    this.body.body.push({
+      "type": "ExpressionStatement",
+      "codeGenerated": true,
+      "expression": {
+        "type": "UpdateExpression",
+        "operator": "++",
+        "argument": this.index,
+        "prefix": false
+      }
+    });
+  }
+  
+  this.type = "ForOfStatement";
+  this.right = this.array;
+  this.left = {
+    "type": "VariableDeclaration",
+    "declarations": [{
+      "type": "VariableDeclarator",
+      "id": this.item,
+      "init": null
+    }],
+    "kind": "let"
+  };
+  this.each = false;
+    
   return this;
 };
 

@@ -79,8 +79,32 @@ ForInExpression.prototype.codegen = () -> {
   
   var forInStatement = new ForInStatement(this.item, this.index, this.array, 
     new BlockStatement([pushStatement]));
-    
-  forInStatement.parent = this;
+  
+  var fnBlock = new BlockStatement([
+    {
+      "type": "VariableDeclaration",
+      "declarations": [
+        {
+          "type": "VariableDeclarator",
+          "id": id,
+          "init": {
+            "type": "ArrayExpression",
+            "elements": []
+          }
+        }
+      ],
+      "kind": "let",
+      "codeGenerated": true
+    },
+    forInStatement,
+    {
+      "type": "ReturnStatement",
+      "codeGenerated": true,
+      "argument": id
+    }        
+  ]);
+  
+  forInStatement.parent = fnBlock;
   
   this.type = "CallExpression";
   this.callee = {
@@ -88,31 +112,7 @@ ForInExpression.prototype.codegen = () -> {
     "id": null,
     "params": [],
     "defaults": [],
-    "body": {
-      "type": "BlockStatement",
-      "body": [
-        {
-          "type": "VariableDeclaration",
-          "declarations": [
-            {
-              "type": "VariableDeclarator",
-              "id": id,
-              "init": {
-                "type": "ArrayExpression",
-                "elements": []
-              }
-            }
-          ],
-          "kind": "let",
-          "codeGenerated": true
-        },
-        forInStatement.codegen(false),
-        {
-          "type": "ReturnStatement",
-          "argument": id
-        }        
-      ]
-    }
+    "body": fnBlock.codegen()
   };
   
   ::Object.defineProperty(this, 'arguments', { 

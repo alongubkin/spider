@@ -1376,11 +1376,11 @@ describe('conditional expressions:', function () {
 describe('for in statement:', function () {
   it('for in statement without index',
     generateTest('for item in array {}', 
-      'array.every(function (item) {\n    return true;\n}, this);'));
+      'for (let item of array) {\n}'));
     
   it('for in statement with index',
     generateTest('for item, index in array {}', 
-      'array.every(function (item, index) {\n    return true;\n}, this);'));  
+      'let index = 0;\nfor (let item of array) {\n    index++;\n}'));  
 });
 
 describe('for of statement:', function () {
@@ -1424,16 +1424,20 @@ describe('in expression:', function () {
 
 describe('list comprehensions:', function () {
   it('list comprehension without condition and without index', 
-    generateTest('var x = [item + 1 for item in array];', 'let x = function () {\n    let forIn0 = [];\n    array.forEach(function (item) {\n        forIn0.push(item + 1);\n    }, this);\n    return forIn0;\n}();'));
+    generateTest('var x = [item + 1 for item in array];', 
+      'let x = function () {\n    let forIn0 = [];\n    for (let item of array) {\n        forIn0.push(item + 1);\n    }\n    return forIn0;\n}();'));
   
   it('list comprehension with condition and without index', 
-    generateTest('var x = [item + 1 for item in array if condition];', 'let x = function () {\n    let forIn0 = [];\n    array.forEach(function (item) {\n        if (condition) {\n            forIn0.push(item + 1);\n        }\n    }, this);\n    return forIn0;\n}();'));
+    generateTest('var x = [item + 1 for item in array if condition];', 
+      'let x = function () {\n    let forIn0 = [];\n    for (let item of array) {\n        if (condition) {\n            forIn0.push(item + 1);\n        }\n    }\n    return forIn0;\n}();'));
       
   it('list comprehension without condition and with index', 
-    generateTest('var x = [item + index for item, index in array];', 'let x = function () {\n    let forIn0 = [];\n    array.forEach(function (item, index) {\n        forIn0.push(item + index);\n    }, this);\n    return forIn0;\n}();'));
+    generateTest('var x = [item + index for item, index in array];', 
+      'let x = function () {\n    let forIn0 = [];\n    let index = 0;\n    for (let item of array) {\n        forIn0.push(item + index);\n        index++;\n    }\n    return forIn0;\n}();'));
  
  it('list comprehension with condition and with index', 
-    generateTest('var x = [item + index for item, index in array if index > 1];', 'let x = function () {\n    let forIn0 = [];\n    array.forEach(function (item, index) {\n        if (index > 1) {\n            forIn0.push(item + index);\n        }\n    }, this);\n    return forIn0;\n}();'));
+    generateTest('var x = [item + index for item, index in array if index > 1];', 
+      'let x = function () {\n    let forIn0 = [];\n    let index = 0;\n    for (let item of array) {\n        if (index > 1) {\n            forIn0.push(item + index);\n        }\n        index++;\n    }\n    return forIn0;\n}();'));
 });
 
 describe('switch statement:', function () {
@@ -1529,20 +1533,23 @@ describe('fat arrow:', function () {
 describe('for-in and for-of with break and return:', function () {
   it('for-in with break', 
     generateTest('for x in array { break; }',
-      'array.every(function (x) {\n    return false;\n}, this);'));
+      'for (let x of array) {\n    break;\n}'));
 
   it('for-in with conditional break', 
     generateTest('for x in array { if x == 5 { break; } }',
-      'array.every(function (x) {\n    if (x === 5) {\n        return false;\n    }\n    return true;\n}, this);'));
+      'for (let x of array) {\n    if (x === 5) {\n        break;\n    }\n}'));
 
   it('for-in with return', 
-    generateTest('for x in array { return 5; }', 'let returned0 = false, returnValue0;\narray.every(function (x) {\n    returned0 = true;\n    returnValue0 = 5;\n    return false;\n}, this);\nif (returned0) {\n    return returnValue0;\n}'));
+    generateTest('for x in array { return 5; }', 
+      'for (let x of array) {\n    return 5;\n}'));
 
   it('for-in with return w/o argument', 
-    generateTest('for x in array { return; }', 'let returned0 = false, returnValue0;\narray.every(function (x) {\n    returned0 = true;\n    return false;\n}, this);\nif (returned0) {\n    return returnValue0;\n}'));
+    generateTest('for x in array { return; }', 
+      'for (let x of array) {\n    return;\n}'));
 
   it('for-in with conditional return', 
-    generateTest('for x in array { if x == 5 { return 5; } }', 'let returned0 = false, returnValue0;\narray.every(function (x) {\n    if (x === 5) {\n        returned0 = true;\n        returnValue0 = 5;\n        return false;\n    }\n    return true;\n}, this);\nif (returned0) {\n    return returnValue0;\n}'));
+    generateTest('for x in array { if x == 5 { return 5; } }', 
+      'for (let x of array) {\n    if (x === 5) {\n        return 5;\n    }\n}'));
 
   it('for-of with break', 
     generateTest('for x of obj { break; }',
