@@ -145,22 +145,22 @@
               </div>
               <p>Spider is a programming language that compiles to JavaScript. It takes the best ideas of Go, Swift, Python, C# and CoffeeScript.</p>
               <p><strong>It's just JavaScript, but better.</strong></p>
-              <pre><code class="lang-js">func TimeMachine(pilot) {
+              <pre><code class="lang-js">fn TimeMachine(pilot) {
   this.pilot = pilot;
 
-  this.go = func (noise) {
+  this.go = fn (noise) {
     ::console.log(noise);
   };
 }
 
-func Tardis()
+fn Tardis()
   <span class="extends">extends</span> TimeMachine("The Doctor") {
 
   this.go = () =>
     super.go("vorp vorp");
 }
 
-func DeLorean()
+fn DeLorean()
   <span class="extends">extends</span> TimeMachine("Marty") {
 
   this.go = () =>
@@ -369,12 +369,12 @@ var message = "\(multiplier) times 2.5 is \(multiplier * 2.5)";
                 <a href="#functions-declaration" name="functions-declaration" class="anchor glyphicon glyphicon-link"></a>
               </h3>
 
-              <p>Functions in Spider are declared using the <code>func</code> keyword:</p>
-              <pre><code class="lang-js">func square(x) {
+              <p>Functions in Spider are declared using the <code>fn</code> keyword:</p>
+              <pre><code class="lang-js">fn square(x) {
   return x * x;
 }
 
-var cube = func (x) {
+var cube = fn (x) {
   return square(x) * x;
 };</code></pre>
 
@@ -390,7 +390,7 @@ app.controller("MyCtrl", ($scope, MyService) -> {
 
               <p>Spider provides the fat arrow syntax to bind the current scope:</p>
 
-              <pre><code class="lang-js">func Animal(name) {
+              <pre><code class="lang-js">fn Animal(name) {
   this.name = name;
 
   this.printName = () =>
@@ -401,7 +401,7 @@ app.controller("MyCtrl", ($scope, MyService) -> {
                 <a href="#functions-default-params-value" name="functions-default-params-value" class="anchor glyphicon glyphicon-link"></a>
               </h3>
               <p>Functions may also have default values for arguments, which will be used if the incoming argument is missing (<code>null</code> or <code>undefined</code>).</p>
-              <pre><code class="lang-js">func legCount(animal = "spider") {
+              <pre><code class="lang-js">fn legCount(animal = "spider") {
   switch animal {
     case "spider": {
       return 8;
@@ -420,7 +420,7 @@ app.controller("MyCtrl", ($scope, MyService) -> {
 
               <pre><code class="lang-js">var gold, silver, rest;
 
-func awardMedals(first, second, others...) {
+fn awardMedals(first, second, others...) {
   // others is an array
   gold = first;
   silver = second;
@@ -441,25 +441,25 @@ awardMedals(contenders...);</code></pre>
 
               <p>Instead of just adding classes, Spider embraces JavaScript prototypes and makes them much easier to use. <strong>Spider's inheritance is compatible with almost any JavaScript class implementation out there.</strong></p>
 
-              <pre><code class="lang-js">func Animal(name) {
-  this.move = func (distance) {
+              <pre><code class="lang-js">fn Animal(name) {
+  this.move = fn (distance) {
     alert("\(name) moved \(distance)m.");
   };
 }
 
-func Snake(name)
+fn Snake(name)
   <span class="extends">extends</span> Animal(name) {
 
-  this.move = func() {
+  this.move = fn() {
     alert("Slithering...");
     super.move(5);
   };
 }
 
-func Horse(name)
+fn Horse(name)
   <span class="extends">extends</span> Animal(name) {
 
-  this.move = func() {
+  this.move = fn() {
     alert("Galloping...");
     super.move(45);
   };
