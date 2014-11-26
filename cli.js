@@ -187,7 +187,8 @@ opts.files.forEach(function (fileName, fileIndex) {
             });
         }  
       } else {
-        var vm = new require('vm2').VM();
+        var VM = require('vm2').VM;
+        var vm = new VM();
         vm.run(compilerOutput.code);
       }
     }
