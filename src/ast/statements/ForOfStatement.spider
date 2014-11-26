@@ -1,6 +1,7 @@
 use :node;
 
-var Node = require('../Node').Node;
+var Node = require('../Node').Node,
+    ForInStatement = require('./ForInStatement').ForInStatement;
 
 func ForOfStatement(key, value, object, body)
   extends Node {
@@ -26,17 +27,12 @@ ForOfStatement.prototype.codegen = () -> {
   if !super.codegen() {
     return;
   }
-  
-  this.key = this.key.codegen(false);
-  this.defineIdentifier(this.key);
-  
+
   this.object = this.object.codegen();
   
   if this.value? {
     this.value = this.value.codegen(false);
-    this.defineIdentifier(this.value);
-    
-    this.body = this.body.blockWrap().codegen();
+    this.body.defineIdentifier(this.value);
     
     if this.object.hasCallExpression() {
       var id = {
@@ -61,6 +57,7 @@ ForOfStatement.prototype.codegen = () -> {
     
     this.body.body = [{
       "type": "VariableDeclaration",
+      "codeGenerated": true,
       "declarations": [{
         "type": "VariableDeclarator",
         "id": this.value,
@@ -73,60 +70,34 @@ ForOfStatement.prototype.codegen = () -> {
       }],
       "kind": "let",
     }].concat(this.body.body);
-  } else {
-    this.body = this.body.blockWrap().codegen();
   }
-
-  if this.body.body.length == 0 or
-     this.body.body[this.body.body.length - 1].type != "ReturnStatement" {
-    this.body.body.push({
-      "type": "ReturnStatement",
+  
+  var forInLoop = (new ForInStatement(this.key, 
+    null, 
+    {
+      "type": "CallExpression",
       "codeGenerated": true,
-      "argument": {
-        "type": "Literal",
-        "value": true
-      }
-    });
-  }
-
-  this.type = "ExpressionStatement";
-  this.expression = {
-    "type": "CallExpression",
-    "callee": {
-      "type": "MemberExpression",
-      "computed": false,
-      "object": {
-        "type": "CallExpression",
-        "callee": {
-          "type": "MemberExpression",
-          "computed": false,
-          "object": {
-            "type": "Identifier",
-            "name": "Object"
-          },
-          "property": {
-            "type": "Identifier",
-            "name": "keys"
-          }
+      "callee": {
+        "type": "MemberExpression",
+        "computed": false,
+        "object": {
+          "type": "Identifier",
+          "name": "Object"
         },
-        "arguments": [this.object]
+        "property": {
+          "type": "Identifier",
+          "name": "keys"
+        }
       },
-      "property": {
-        "type": "Identifier",
-        "name": "every"
-      }
+      "arguments": [this.object]
     },
-    "arguments": [{
-      "type": "FunctionExpression",
-      "id": null,
-      "params": [this.key],
-      "defaults": [],
-      "body": this.body,
-      "rest": null,
-      "generator": false,
-      "expression": false
-    }, { "type": "ThisExpression" }]
-  };
+    this.body
+  )).codegen();
+  
+  this.type = forInLoop.type;
+  this.right = forInLoop.right;
+  this.left = forInLoop.left;
+  this.each = forInLoop.each;
   
   return this;
 };

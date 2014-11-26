@@ -47,7 +47,9 @@ ForInStatement.prototype.codegen = () -> {
     });
   }
 
-  this.array = this.array.codegen();
+  if !this.array.codeGenerated {
+    this.array = this.array.codegen();
+  }
  
   this.body = this.body.blockWrap();
   this.body.defineIdentifier(this.item);

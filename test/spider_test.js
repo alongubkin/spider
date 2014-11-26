@@ -1386,18 +1386,19 @@ describe('for in statement:', function () {
 describe('for of statement:', function () {
   it('for of statement without value',
     generateTest('for key of object {}', 
-      'Object.keys(object).every(function (key) {\n    return true;\n}, this);'));
+      'for (let key of Object.keys(object)) {\n}'));
     
   it('for of statement with value',
     generateTest('for key, value of object {}', 
-      'Object.keys(object).every(function (key) {\n    let value = object[key];\n    return true;\n}, this);'));  
+      'for (let key of Object.keys(object)) {\n    let value = object[key];\n}'));  
     
   it('for of statement of call expression without value',
     generateTest('for key of f() {}', 
-      'Object.keys(f()).every(function (key) {\n    return true;\n}, this);'));
+      'for (let key of Object.keys(f())) {\n}'));
     
   it('for of statement of call expression  with value',
-    generateTest('for key, value of f() {}', 'let forOf0 = f();\nObject.keys(forOf0).every(function (key) {\n    let value = forOf0[key];\n    return true;\n}, this);'));    
+    generateTest('for key, value of f() {}', 
+      'let forOf0 = f();\nfor (let key of Object.keys(forOf0)) {\n    let value = forOf0[key];\n}'));    
 });
 
 describe('try statement:', function () {
@@ -1553,17 +1554,19 @@ describe('for-in and for-of with break and return:', function () {
 
   it('for-of with break', 
     generateTest('for x of obj { break; }',
-      'Object.keys(obj).every(function (x) {\n    return false;\n}, this);'));
+      'for (let x of Object.keys(obj)) {\n    break;\n}'));
 
   it('for-of with conditional break', 
     generateTest('for x of obj { if x == 5 { break; } }',
-      'Object.keys(obj).every(function (x) {\n    if (x === 5) {\n        return false;\n    }\n    return true;\n}, this);'));
+      'for (let x of Object.keys(obj)) {\n    if (x === 5) {\n        break;\n    }\n}'));
 
   it('for-of with return', 
-    generateTest('for x of obj { return 5; }', 'let returned0 = false, returnValue0;\nObject.keys(obj).every(function (x) {\n    returned0 = true;\n    returnValue0 = 5;\n    return false;\n}, this);\nif (returned0) {\n    return returnValue0;\n}'));
+    generateTest('for x of obj { return 5; }', 
+      'for (let x of Object.keys(obj)) {\n    return 5;\n}'));
 
   it('for-of with conditional return', 
-    generateTest('for x of obj { if x == 5 { return 5; } }', 'let returned0 = false, returnValue0;\nObject.keys(obj).every(function (x) {\n    if (x === 5) {\n        returned0 = true;\n        returnValue0 = 5;\n        return false;\n    }\n    return true;\n}, this);\nif (returned0) {\n    return returnValue0;\n}'));
+    generateTest('for x of obj { if x == 5 { return 5; } }', 
+      'for (let x of Object.keys(obj)) {\n    if (x === 5) {\n        return 5;\n    }\n}'));
 });
 
 describe('regular expression literals:', function () {
