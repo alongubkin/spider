@@ -137,6 +137,7 @@
                 <ul class="nav nav-stacked">
                   <li><a href="#switch-no-implicit-fallthrough">No Implicit Fallthrough</a></li>
                   <li><a href="#switch-range-matching">Range Matching</a></li>
+                  <li><a href="#switch-pattern-matching">Pattern Matching</a></li>
                 </ul>
               </li>
               <li>
@@ -797,15 +798,15 @@ var copy   = numbers[<span class="dot">..</span>];</code></pre>
               <pre><code class="lang-js">switch day {
   case "Monday": {
     go(work);
-  },
+  }
 
   case "Tuesday": {
     go(relax);
-  },
+  }
 
   case "Friday", "Saturday": {
     go(bingo);
-  },
+  }
 
   default: {
     go(work);
@@ -823,7 +824,7 @@ var copy   = numbers[<span class="dot">..</span>];</code></pre>
   case 2, 3, 5, 7, 11, 13, 17, 19: {
     description += " a prime number, and also";
     fallthrough;
-  },
+  }
 
   default: {
     description += " an integer.";
@@ -839,15 +840,15 @@ var copy   = numbers[<span class="dot">..</span>];</code></pre>
               <pre><code class="lang-js">switch score {
   case <span class="dot">.</span>.60: {
     return "F";
-  },
+  }
 
   case 60..70: {
     return "D";
-  },
+  }
 
   case 70..80: {
     return "C";
-  },
+  }
 
   case 80..90: {
     return "B";
@@ -858,6 +859,36 @@ var copy   = numbers[<span class="dot">..</span>];</code></pre>
   }
 }</code></pre>
 
+              <h3 class="docs-heading">Pattern Matching<span class="anchor-target" id="switch-pattern-matching"></span>
+                <a href="#switch-pattern-matching" name="switch-pattern-matching" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+              
+              <p>Spider provides pattern matching with array expressions.</p>
+              
+              <pre><code class="lang-js">fn fizzbuzz(i) {
+  var result = [i % 3, i % 5];
+  switch result {
+    case [0, ]: {
+      return "Fizz"
+    }
+
+    case [, 0]: {
+      return "Buzz"
+    }
+
+    case [0, 0]: {
+      return "FizzBuzz"
+    }
+    
+    default: {
+      return "\(i)"
+    }
+  }
+}
+
+for number in 1...100 {
+    console.log(fizzbuzz(number))
+}</code></pre>
             </div>
             <div class="docs-section">
               <div class="page-header">
