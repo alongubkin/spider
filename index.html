@@ -75,7 +75,13 @@
                   <li><a href="#code-safety-typeof">Typeof</a></li>
                 </ul>
               </li>
-              <li><a href="#string-interpolation">String Interpolation</a></li>
+              <li>
+                <a href="#strings">Strings</a>
+                <ul class="nav nav-stacked">
+                  <li><a href="#strings-string-interpolation">String Interpolation</a></li>
+                  <li><a href="#strings-multi-line-strings">Multi-line Strings</a></li>
+                </ul>
+              </li>
               <li>
                 <a href="#functions">Functions</a>
                 <ul class="nav nav-stacked">
@@ -364,17 +370,36 @@ typeof new Boolean(true); // "boolean"</code></pre>
             </div>
             <div class="docs-section">
               <div class="page-header">
-                <h1 class="docs-heading">String Interpolation<span class="anchor-target" id="string-interpolation"></span>
-                  <a href="#string-interpolation" name="string-interpolation" class="anchor glyphicon glyphicon-link"></a>
+                <h1 class="docs-heading">Strings<span class="anchor-target" id="strings"></span>
+                  <a href="#strings" name="strings" class="anchor glyphicon glyphicon-link"></a>
                 </h1>
               </div>
 
+              <h3 class="docs-heading">String Interpolation<span class="anchor-target" id="strings-string-interpolation"></span>
+                <a href="#strings-string-interpolation" name="strings-string-interpolation" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+              
               <p>String interpolation is a way to construct a new string from a mix of constants, variables, literals, and expressions by including their values inside a string literal.</p>
 
               <pre><code class="lang-js">var multiplier = 3;
 var message = "\(multiplier) times 2.5 is \(multiplier * 2.5)";
 
 // message is "3 times 2.5 is 7.5"</code></pre>
+
+              <h3 class="docs-heading">Multi-line Strings<span class="anchor-target" id="strings-multi-line-strings"></span>
+                <a href="#strings-multi-line-strings" name="strings-multi-line-strings" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+              
+              <p>Multiline strings are allowed in CoffeeScript. Lines are joined by a single space unless they end with a backslash. Indentation starts from the first quote character column. The tab character is calculated as 4 spaces.</p>
+              
+              <pre><code class="lang-js">var mobyDick = "Call me Ishmael. Some years ago --
+                never mind how long precisely -- having little
+                or no money in my purse, and nothing particular
+                to interest me on shore, I thought I would sail
+                about a little and see the watery part of the
+                world...";</code></pre>
+              
+              
             </div>
             <div class="docs-section">
               <div class="page-header">
