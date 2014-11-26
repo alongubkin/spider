@@ -3,7 +3,6 @@
 "use strict";
 
 var path = require("path");
-var vm = require("vm");
 var fs = require("fs");
 var chalk = require("chalk");
 var traceur = require("traceur");
@@ -161,7 +160,7 @@ opts.files.forEach(function (fileName, fileIndex) {
     } else {
       if (opts.target === "ES5") {
         compilerOutput.code = traceurCompiler.compile(compilerOutput.code, path.basename(fileName), outFileName);
-        if (enableSourceMap) {
+        if (opts.compile && enableSourceMap) {
           compilerOutput.map = transfer({
             toSourceMap: compilerOutput.map.toString(),
             fromSourceMap: traceurCompiler.getSourceMap().toString()
@@ -188,7 +187,8 @@ opts.files.forEach(function (fileName, fileIndex) {
             });
         }  
       } else {
-        vm.runInThisContext(compilerOutput.code);
+        var vm = new require('vm2').VM();
+        vm.run(compilerOutput.code);
       }
     }
   });
