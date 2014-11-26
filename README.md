@@ -32,6 +32,25 @@ Compile a script:
 
 ### Changelog
 
+2014 11 26 - **v0.1.0-alpha**
+
+ * Add a `--target=ES5|ES6` flag (ES5 target uses [Traceur Compiler](https://github.com/google/traceur-compiler))
+ * Change `func` keyword to `fn`
+ * [ES6 Import/Export support](http://spiderlang.org/#modules)
+ * [Curried Functions](http://spiderlang.org/#functions-curried-functions)
+ * [Destructring Assignments](http://spiderlang.org/#destructuring)
+ * [Object Initializer Shorthand](http://spiderlang.org/#shorthand-property-names)
+ * [Property Method Assignments](http://spiderlang.org/#shorthand-method-names)
+ * [Multi-line Strings](http://spiderlang.org/#strings-multi-line-strings)
+ * [Pattern Matching](http://spiderlang.org/#switch-pattern-matching)
+ * [Do-While Loop](http://spiderlang.org/#do-while-statement)
+ * Delete Statement
+ * Add JavaScript core global identifiers to defined identifiers
+ * Add `__dirname` and `__filename` to `use :node`
+ * Remove ES6 polyfills (Traceur is now responsible for that)
+ * Fix CLI execute script
+ * Fix source maps for function expressions
+
 2014 11 22 - **v0.0.7-alpha**
 
  * Fat Arrow (`=>`) Function Expressions
