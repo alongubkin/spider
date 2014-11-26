@@ -1,8 +1,8 @@
 use :node;
 
-var Node = require('../Node').Node;
+var Node = module.require('../Node').Node;
 
-func MemberExpression(left, right, computed)
+fn MemberExpression(left, right, computed)
   extends Node {
 
   this.type = 'MemberExpression';

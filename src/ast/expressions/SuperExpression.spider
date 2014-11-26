@@ -1,9 +1,9 @@
 use :node;
 
-var Node = require('../Node').Node;
+var Node = module.require('../Node').Node;
 var extend = require('util')._extend;
 
-func SuperExpression()
+fn SuperExpression()
   extends Node {
 
   this.type = 'SuperExpression';
@@ -130,7 +130,7 @@ SuperExpression.prototype.codegen = () -> {
       }
 
       // Make sure that the syntax is something like:
-      // Fn.prototype = { test: func () { ... } }
+      // Fn.prototype = { test: fn () { ... } }
       if contextNode?.type != 'Property' ||
          contextNode?.value?.type != 'FunctionExpression' {
         Node.getErrorManager().error({

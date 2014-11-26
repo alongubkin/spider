@@ -1,8 +1,8 @@
 use :node;
 
-var Node = require('./Node').Node;
+var Node = module.require('./Node').Node;
 
-func ImportNamespaceSpecifier(id)
+fn ImportNamespaceSpecifier(id)
   extends Node {
   
   this.type = "ImportNamespaceSpecifier";

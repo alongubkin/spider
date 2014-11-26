@@ -1,10 +1,10 @@
 use :node;
 
-var Node = require('../Node').Node,
-    Parameter = require('../Parameter').Parameter,
-    CallExpression = require('../expressions/CallExpression').CallExpression;
+var Node = module.require('../Node').Node,
+    Parameter = module.require('../Parameter').Parameter,
+    CallExpression = module.require('../expressions/CallExpression').CallExpression;
     
-func FunctionExpression (id, params, body, inheritsFrom, operator) 
+fn FunctionExpression (id, params, body, inheritsFrom, operator) 
   extends Node {
  
   if operator == "=>" {

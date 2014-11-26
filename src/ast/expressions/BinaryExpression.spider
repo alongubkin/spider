@@ -1,8 +1,8 @@
 use :node;
 
-var Node = require('../Node').Node;
+var Node = module.require('../Node').Node;
 
-func BinaryExpression(left, operator, right) 
+fn BinaryExpression(left, operator, right) 
   extends Node {
   
   this.type = 'BinaryExpression';

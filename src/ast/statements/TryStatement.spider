@@ -1,8 +1,8 @@
 use :node;
 
-var Node = require('../Node').Node;
+var Node = module.require('../Node').Node;
 
-func TryStatement(block, handler, finalizer)
+fn TryStatement(block, handler, finalizer)
   extends Node {
   
   this.type = 'TryStatement';

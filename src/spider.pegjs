@@ -1,5 +1,5 @@
 {
-  var ast = require('./ast');
+  var ast = module.require('./ast');
   
   function filledArray(count, value) {
     var result = new Array(count), i;

@@ -1,10 +1,10 @@
 use :node;
 
-var Node = require('../Node').Node,
-    ForInStatement = require('../statements/ForInStatement').ForInStatement,
-    BlockStatement = require('../statements/BlockStatement').BlockStatement;
+var Node = module.require('../Node').Node,
+    ForInStatement = module.require('../statements/ForInStatement').ForInStatement,
+    BlockStatement = module.require('../statements/BlockStatement').BlockStatement;
 
-func ForInExpression(expression, item, index, array, condition) 
+fn ForInExpression(expression, item, index, array, condition) 
   extends Node {
   
   this.type = 'ForInExpression';

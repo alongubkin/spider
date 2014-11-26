@@ -1,8 +1,8 @@
 use :node;
 
-var Node = require('../Node').Node;
+var Node = module.require('../Node').Node;
 
-func StringLiteral(chars, column)
+fn StringLiteral(chars, column)
   extends Node {
   
   this.type = 'StringLiteral';
@@ -74,7 +74,7 @@ StringLiteral.prototype.codegen = () -> {
 
 StringLiteral.prototype.hasCallExpression = () -> false;
 
-StringLiteral.NewLine = func (text) {
+StringLiteral.NewLine = fn (text) {
   this.type = "StringLiteralNewLine";
   
   this.toString = (column) -> {

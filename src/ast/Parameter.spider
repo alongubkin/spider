@@ -1,8 +1,8 @@
 use :node;
 
-var Node = require('./Node').Node;
+var Node = module.require('./Node').Node;
 
-func Parameter(id, defaultValue, splat)
+fn Parameter(id, defaultValue, splat)
   extends Node {
   
   this.type = 'Parameter';
@@ -37,7 +37,7 @@ Parameter.prototype.hasCallExpression = () -> {
   return false;
 };
 
-Parameter.generateFunctionBody = (fn, params, body, defaults) -> {
+Parameter.generateFunctionBody = (func, params, body, defaults) -> {
   var splatPosition = -1;
   
   for param, i in params {   
@@ -56,7 +56,7 @@ Parameter.generateFunctionBody = (fn, params, body, defaults) -> {
     param = param.codegen();
     defaults.push(param.defaultValue);
     params[i] = param.id;
-    fn.defineIdentifier(param.id);
+    func.defineIdentifier(param.id);
   }
   
   if splatPosition != -1 {

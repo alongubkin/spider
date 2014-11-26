@@ -1,8 +1,8 @@
 use :node;
 
-var Node = require('../Node').Node;
+var Node = module.require('../Node').Node;
 
-func InExpression(left, right)
+fn InExpression(left, right)
   extends Node {
   
   this.type = 'InExpression';

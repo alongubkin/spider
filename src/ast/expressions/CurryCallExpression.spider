@@ -1,9 +1,9 @@
 use :node;
 
-var Node = require('../Node').Node,
-    CallExpression = require('./CallExpression').CallExpression;
+var Node = module.require('../Node').Node,
+    CallExpression = module.require('./CallExpression').CallExpression;
     
-func CurryCallExpression(callee, args) 
+fn CurryCallExpression(callee, args) 
   extends Node {
   
   this.type = 'CurryCallExpression';

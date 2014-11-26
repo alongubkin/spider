@@ -73,5 +73,5 @@ module.exports = {};
 
 for node in nodes {
   var name = node.substring(node.lastIndexOf('/') + 1);
-  module.exports[name] = require('./ast/' + node)[name];
+  module.exports[name] = module.require('./ast/' + node)[name];
 }

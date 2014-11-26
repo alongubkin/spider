@@ -1,8 +1,8 @@
 use :node;
 
-var Node = require('../Node').Node;
+var Node = module.require('../Node').Node;
 
-func IfStatement(test, consequent, alternate)
+fn IfStatement(test, consequent, alternate)
   extends Node {
   
   this.type = 'IfStatement';

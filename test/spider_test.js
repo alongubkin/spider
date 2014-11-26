@@ -1,8 +1,10 @@
 /*global describe,it*/
 'use strict';
 
+require('traceur');
+
 var should = require('should'),
-    spider = require('../lib/spider.js');
+    spider = require('../lib/spider');
     
 function generateTest(code, expectation) {
   return function () {

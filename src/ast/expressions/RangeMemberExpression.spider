@@ -1,8 +1,8 @@
 use :node;
 
-var Node = require('../Node').Node;
+var Node = module.require('../Node').Node;
 
-func RangeMemberExpression(object, range)
+fn RangeMemberExpression(object, range)
   extends Node {
   
   this.type = 'RangeMemberExpression';
@@ -49,27 +49,27 @@ RangeMemberExpression.prototype.codegen = () -> {
     };
     
     var to;
-    var from = this.range.from.codegen() if this.range.from else {
+    var start = this.range.start.codegen() if this.range.start else {
                  "type": "Literal",
                  "value": 0
                };   
     
     if this.range.to? {
-      if isNumber(from.value) &&
+      if isNumber(start.value) &&
          isNumber(this.range.to.value) {
         to = {
           "type": "Literal",
-          "value": this.range.to.value - from.value + (1 if this.range.operator == '..' else 0)
+          "value": this.range.to.value - start.value + (1 if this.range.operator == '..' else 0)
         };
       } else {
         to = this.range.to.codegen();
         
-        if from.value != 0 {
+        if start.value != 0 {
           to = {
             "type": "BinaryExpression",
             "operator": "-",
             "left": to,
-            "right": from,
+            "right": start,
           };
         }
         
@@ -103,7 +103,7 @@ RangeMemberExpression.prototype.codegen = () -> {
             "computed": false,
             "object": {
               "type": "ArrayExpression",
-              "elements": [from, to]
+              "elements": [start, to]
             },
             "property": {
               "type": "Identifier",
@@ -133,13 +133,13 @@ RangeMemberExpression.prototype.codegen = () -> {
     
     var args = [];
     
-    if !this.range.from? {
+    if !this.range.start? {
       args.push({
         "type": "Literal",
         "value": 0
       });
     } else {
-      args.push(this.range.from.codegen());
+      args.push(this.range.start.codegen());
     }
     
     if this.range.to? {

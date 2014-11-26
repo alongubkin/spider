@@ -1,6 +1,6 @@
 use :node;
 
-func Node() {
+fn Node() {
   var self = this;
   self.codeGenerated = false;
   self.definedIdentifiers = [];
@@ -75,7 +75,7 @@ func Node() {
     }
     
     var myParent = self.parent;
-    var blockStatement = require('./statements/BlockStatement');
+    var blockStatement = module.require('./statements/BlockStatement');
     
     var block = new blockStatement.BlockStatement([self]);
     block.parent = myParent;

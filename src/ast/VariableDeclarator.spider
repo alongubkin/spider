@@ -1,8 +1,8 @@
 use :node;
 
-var Node = require('./Node').Node;
+var Node = module.require('./Node').Node;
 
-func VariableDeclarator(id, init) 
+fn VariableDeclarator(id, init) 
   extends Node {
   
   this.type = 'VariableDeclarator';

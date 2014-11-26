@@ -1,8 +1,8 @@
 use :node;
 
-var Node = require('../Node').Node;
+var Node = module.require('../Node').Node;
 
-func NewExpression(callee, args)
+fn NewExpression(callee, args)
   extends Node {
   
   this.type = 'NewExpression';

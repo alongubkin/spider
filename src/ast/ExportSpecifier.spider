@@ -1,8 +1,8 @@
 use :node;
 
-var Node = require('./Node').Node;
+var Node = module.require('./Node').Node;
 
-func ExportSpecifier(id, alias)
+fn ExportSpecifier(id, alias)
   extends Node {
   
   this.type = "ExportSpecifier";

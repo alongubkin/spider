@@ -1,17 +1,17 @@
 use :node;
 
-var Node = require('./Node').Node;
+var Node = module.require('./Node').Node;
 
-func Range(from, operator, to) 
+fn Range(start, operator, to) 
   extends Node {
   
   this.type = 'Range';
   this.operator = operator;
   
-  this.from = from;
+  this.start = start;
   
-  if this.from? {
-    this.from.parent = this;
+  if this.start? {
+    this.start.parent = this;
   }
   
   this.to = to;
@@ -27,23 +27,23 @@ Range.prototype.codegen = () -> {
   }
   
   var isNumber = (n) -> !::isNaN(::parseFloat(n)) && ::isFinite(n);
-  var isNumeric = isNumber(this.from.value) && isNumber(this.to.value);
+  var isNumeric = isNumber(this.start.value) && isNumber(this.to.value);
                   
-  this.from = this.from.codegen();
+  this.start = this.start.codegen();
   this.to = this.to.codegen();
   
   var updateOperator, testOperator;
   
   if isNumeric {
-    updateOperator = '++' if this.from.value < this.to.value else '--';
-    testOperator = '<' if this.from.value < this.to.value else '>';
+    updateOperator = '++' if this.start.value < this.to.value else '--';
+    testOperator = '<' if this.start.value < this.to.value else '>';
     
     if this.operator ==  '..' {
       testOperator += '=';
     }
   }
   
-  if isNumeric && ::Math.abs(this.to.value - this.from.value) <= 20 {
+  if isNumeric && ::Math.abs(this.to.value - this.start.value) <= 20 {
     this.type = 'ArrayExpression';
     this.elements = [];
     
@@ -67,7 +67,7 @@ Range.prototype.codegen = () -> {
       }
     };
     
-    for var i = this.from.value; 
+    for var i = this.start.value; 
         test.call(this, i);
         i++ if updateOperator == '++' else i-- {
       this.elements.push({
@@ -111,7 +111,7 @@ Range.prototype.codegen = () -> {
         "prefix": false
       };
     } else {
-      if this.from.hasCallExpression() {
+      if this.start.hasCallExpression() {
         var startId = {
           "type": "Identifier",
           "name": "_start"
@@ -120,10 +120,10 @@ Range.prototype.codegen = () -> {
         declarations.push({
           "type": "VariableDeclarator",
           "id": startId,
-          "init": this.from
+          "init": this.start
         });
         
-        this.from = startId;
+        this.start = startId;
       }
       
       if this.to.hasCallExpression() {
@@ -146,7 +146,7 @@ Range.prototype.codegen = () -> {
         "test": {
           "type": "BinaryExpression",
           "operator": "<=",
-          "left": this.from,
+          "left": this.start,
           "right": this.to
         },
         "consequent": {
@@ -174,7 +174,7 @@ Range.prototype.codegen = () -> {
         "test":  {
           "type": "BinaryExpression",
           "operator": "<=",
-          "left": this.from,
+          "left": this.start,
           "right": this.to
         },
         "consequent": {
@@ -226,7 +226,7 @@ Range.prototype.codegen = () -> {
                     "type": "Identifier",
                     "name": "_i"
                   },
-                  "init": this.from
+                  "init": this.start
                 }],
                 "kind": "let"
               },

@@ -1,8 +1,8 @@
 use :node;
 
-var Node = require('../Node').Node;
+var Node = module.require('../Node').Node;
 
-func ObjectExpression(properties)
+fn ObjectExpression(properties)
   extends Node {
   
   this.type = 'ObjectExpression';

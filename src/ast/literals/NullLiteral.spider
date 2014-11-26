@@ -1,8 +1,8 @@
 use :node;
 
-var Node = require('../Node').Node;
+var Node = module.require('../Node').Node;
 
-func NullLiteral()
+fn NullLiteral()
   extends Node {
   
   this.type = 'Literal';

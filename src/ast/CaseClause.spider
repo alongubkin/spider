@@ -1,8 +1,8 @@
 use :node;
 
-var Node = require('./Node').Node;
+var Node = module.require('./Node').Node;
 
-func CaseClause(tests, body) 
+fn CaseClause(tests, body) 
   extends Node {
   
   this.type = 'CaseClause';
@@ -38,12 +38,12 @@ CaseClause.prototype.codegen = (branchFallthrough) -> {
       
       if test.type == "Range" {
         var fromCheck;
-        if test.from {
+        if test.start {
           fromCheck = {
             "type": "BinaryExpression",
             "operator": ">=",
             "left": this.parent.discriminant,
-            "right": test.from
+            "right": test.start
           };
         }
         

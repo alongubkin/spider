@@ -1,8 +1,8 @@
 use :node;
 
-var Node = require('../Node').Node;
+var Node = module.require('../Node').Node;
 
-func ReturnStatement(argument)
+fn ReturnStatement(argument)
   extends Node {
   
   this.type = 'ReturnStatement';

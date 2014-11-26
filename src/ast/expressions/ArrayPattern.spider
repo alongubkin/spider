@@ -1,8 +1,8 @@
 use :node;
 
-var Node = require('../Node').Node;
+var Node = module.require('../Node').Node;
 
-func ArrayPattern(elements) 
+fn ArrayPattern(elements) 
   extends Node {
 
   this.type = 'ArrayPattern';
