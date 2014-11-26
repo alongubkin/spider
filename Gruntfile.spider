@@ -1,6 +1,6 @@
 use :node;
 
-module.exports = func (grunt) {
+module.exports = fn (grunt) {
   // Show elapsed time at the end
   require('time-grunt')(grunt);
   // Load all grunt tasks
