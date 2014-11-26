@@ -2,9 +2,6 @@
 coverage/
 npm-debug.log
 
-Gruntfile.js
-Gruntfile.js.map
-
 test.js
 test.spider
 
