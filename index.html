@@ -137,7 +137,17 @@
                 <ul class="nav nav-stacked">
                   <li><a href="#modules-default-exports">Default Exports</a></li>
                 </ul>
-              </li>              
+              </li>
+              <li>
+                <a href="#destructuring">Destructuring</a>
+                <ul class="nav nav-stacked">
+                  <li><a href="#destructuring-array-destructuring">Array destructuring</a></li>
+                  <li><a href="#destructuring-swapping-variables">Swapping Variables</a></li>
+                  <li><a href="#destructuring-multi-value-returns">Multiple-value returns</a></li>
+                  <li><a href="#destructuring-ignoring-some-returned-values">Ignoring some values</a></li>
+                  <li><a href="#destructuring-object-destructuring">Object destructuring</a></li>
+                </ul>
+              </li>               
             </ul>
           </div>
         </div>
@@ -859,10 +869,89 @@ export default jQuery;</code></pre>
               
               <pre><code class="lang-js">import 'jquery' as $;</code></pre>
               
-              <p>The default export of the "jquery" module is now aliased to $.</p>
+              <p>The default export of the "jquery" module is now aliased to <code>$</code>.</p>
 
               <p>A default export makes the most sense as a module's "main" export, like the jQuery object in jQuery. You can use default and named exports in parallel.</p>
             </div>
+            <div class="docs-section">
+              <div class="page-header">
+                <h1 class="docs-heading">Destructuring<span class="anchor-target" id="destructuring"></span>
+                  <a href="#destructuring" name="destructuring" class="anchor glyphicon glyphicon-link"></a>
+                </h1>
+              </div> 
+              
+              <p>Destructuring is a powerful technique that makes it possible to extract data from arrays or objects using a syntax that mirrors the construction of array and object literals.</p>
+
+              <h3 class="docs-heading">Array destructuring<span class="anchor-target" id="destructuring-array-destructuring"></span>
+                <a href="#destructuring-array-destructuring" name="destructuring-array-destructuring" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+              
+              <pre><code class="lang-js">var foo = ["one", "two", "three"];
+
+// without destructuring
+var one   = foo[0];
+var two   = foo[1];
+var three = foo[2];
+
+// with destructuring
+var [one, two, three] = foo;</code></pre>
+
+              <h3 class="docs-heading">Swapping Variables<span class="anchor-target" id="destructuring-swapping-variables"></span>
+                <a href="#destructuring-swapping-variables" name="destructuring-swapping-variables" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+              
+              <p>After executing this code, b is 1 and a is 3. Without destructuring, swapping two values requires a temporary variable (or, in some low-level languages, the XOR-swap trick).</p>
+              
+              <pre><code class="lang-js">var a = 1;
+var b = 3;
+
+[a, b] = [b, a];</code></pre>
+
+              <h3 class="docs-heading">Multiple-value returns<span class="anchor-target" id="destructuring-multi-value-returns"></span>
+                <a href="#destructuring-multi-value-returns" name="destructuring-multi-value-returns" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+              
+              <p>Thanks to destructuring assignment, functions can return multiple values. While it's always been possible to return an array from a function, this provides an added degree of flexibility.</p>
+              
+              <pre><code class="lang-js">fn f() {
+  return [1, 2];
+}</code></pre>
+
+              <p>As you can see, returning results is done using an array-like notation, with all the values to return enclosed in brackets. You can return any number of results in this way. In this example, <code>f()</code> returns the values [1, 2] as its output.</p>
+              
+              <pre><code class="lang-js">var [a, b] = f();
+console.log("A is \(a) and B is \(b)");</code></pre>   
+
+              <h3 class="docs-heading">Ignoring some returned values<span class="anchor-target" id="destructuring-ignoring-some-returned-values"></span>
+                <a href="#destructuring-ignoring-some-returned-values" name="destructuring-ignoring-some-returned-values" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+              
+              <p>You can also ignore return values that you're not interested in:</p>
+              
+              <pre><code class="lang-js">function f() {
+  return [1, 2, 3];
+}
+
+var [a, , b] = f();
+console.log("A is \(a) and B is \(b)");</code></pre>
+
+              <p>After running this code, a is 1 and b is 3. The value 2 is ignored.</p>
+              
+              <h3 class="docs-heading">Object destructuring<span class="anchor-target" id="destructuring-object-destructuring"></span>
+                <a href="#destructuring-object-destructuring" name="destructuring-object-destructuring" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+
+              <pre><code class="lang-js">var o = {p: 42, q: true};
+var {p, q} = o;
+
+console.log(p); // 42
+console.log(q); // true 
+
+// Assign new variable names
+var {p: foo, q: bar} = o;
+
+console.log(foo); // 42
+console.log(bar); // true</code></pre>          
           </div>
         </div>
       </div>
