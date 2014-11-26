@@ -1,6 +1,7 @@
 "use strict";
 (function () {
     module.exports = function (grunt) {
+        require("traceur");
         require("time-grunt")(grunt);
         require("load-grunt-tasks")(grunt);
         grunt.initConfig({

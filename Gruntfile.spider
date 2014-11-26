@@ -1,6 +1,8 @@
 use :node;
 
 module.exports = fn (grunt) {
+  require('traceur');
+  
   // Show elapsed time at the end
   require('time-grunt')(grunt);
   // Load all grunt tasks
