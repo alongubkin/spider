@@ -1716,8 +1716,13 @@ describe('property method assignments:', function () {
       'let object = {\n    value: 42,\n    toString() {\n        return this.value;\n    }\n};'));
 });
 
-describe('pattern matching', function () {
+describe('pattern matching:', function () {
   it('pattern match',
     generateTest('switch [a,b] { case [,5]: {} case [5,,,6]: {}}',
       'let switchStatement0 = [\n    a,\n    b\n];\nif (switchStatement0.length >= 2 && switchStatement0[1] === 5) {\n} else if (switchStatement0.length >= 4 && switchStatement0[0] === 5 && switchStatement0[3] === 6) {\n}'));
+});
+
+describe('delete statement:', function () {
+  it('delete statement',
+    generateTest('delete x;', 'delete x;'));
 });

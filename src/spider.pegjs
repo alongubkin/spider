@@ -199,6 +199,7 @@ Keyword
   / FromToken
   / AsToken
   / ExportToken
+  / DeleteToken
 
 Literal
   = NullLiteral
@@ -460,6 +461,7 @@ ImportToken       = "import"      !IdentifierPart
 FromToken         = "from"        !IdentifierPart
 AsToken           = "as"          !IdentifierPart
 ExportToken       = "export"      !IdentifierPart
+DeleteToken       = "delete"      !IdentifierPart
 
 __
   = (WhiteSpace / LineTerminatorSequence / Comment)*
@@ -971,7 +973,8 @@ UnaryExpression
   / PostfixExpression
 
 UnaryOperator
-  = $TypeofToken
+  = $DeleteToken
+  / $TypeofToken
   / $NotToken { return "!" }
   / "++"
   / "--"
