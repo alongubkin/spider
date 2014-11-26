@@ -64,6 +64,8 @@
                 <ul class="nav nav-stacked">
                   <li><a href="#using-spider-installation">Installation</a></li>
                   <li><a href="#using-spider-command-line-usage">Command-line usage</a></li>
+                  <li><a href="#using-spider-runtime-dependency">Runtime Dependency</a></li>
+                  <li><a href="#using-spider-compilation-target">Compilation Target</a></li>
                 </ul>
               </li>
               <li>
@@ -274,11 +276,49 @@ for timeMachine in ::getTimeMachines() {
 
               <p>To execute a script, run:</p>
               <pre><code class="lang-js">spider /path/to/script.spider</code></pre>
-
+              
               <p>To compile a script:</p>
               <pre><code class="lang-js">spider -c /path/to/script.spider</code></pre>
 
               <p>The compiler will generate the output JavaScript file and a source map file for debugging. Note that the original spider file and the source map file aren't necessary for production.</p>
+              
+              <h3 class="docs-heading">Runtime Dependency<span class="anchor-target" id="using-spider-runtime-dependency"></span>
+                <a href="#using-spider-runtime-dependency" name="using-spider-runtime-dependency" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+              
+              <p>Spider scripts require the Traceur Runtime in order to run.</p>
+              
+              <p><strong>Node.js</strong></p>
+              
+              <p>Install traceur-runtime via npm:</p>
+              
+              <pre><code class="lang-js">npm install traceur-runtime</code></pre>
+              
+              <p>Then, simply call it before requiring your compiled Spider script.</p>
+              
+              <pre><code class="lang-js">require("traceur-runtime");
+require("compiled-spider-code.js");</code></pre>
+              
+              <p><strong>Browser</strong></p>
+              
+              <p>Install traceur-runtime via Bower:</p>
+              
+              <pre><code class="lang-js">bower install traceur-runtime</code></pre>
+              
+              <p>And add a <code>&lt;script&gt;</code> tag to your html:</p>
+              
+              <pre><code class="lang-js">&lt;script src=&quot;/bower_components/traceur-runtime/traceur-runtime.js&quot;&gt;&lt;/script&gt;</code></pre>
+              
+              <h3 class="docs-heading">Compilation Target<span class="anchor-target" id="using-spider-compilation-target"></span>
+                <a href="#using-spider-compilation-target" name="using-spider-compilation-target" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+              
+              <p>Spider provides 2 targets: <strong>ES5</strong> and <strong>ES6</strong>, where ES5 is the default target.</p>
+              <p>To compile to ES6, use the <code>--target</code> option:</p>
+              
+              <pre><code class="lang-js">spider -c --target=ES6 /path/to/script.spider</code></pre>
+              
+              <p>Note that ES6 code doesn't depend on the Traceur Runtime.</p>
             </div>
             <div class="docs-section">
               <div class="page-header">
