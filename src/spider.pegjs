@@ -462,6 +462,7 @@ FromToken         = "from"        !IdentifierPart
 AsToken           = "as"          !IdentifierPart
 ExportToken       = "export"      !IdentifierPart
 DeleteToken       = "delete"      !IdentifierPart
+DoToken           = "do"          !IdentifierPart
 
 __
   = (WhiteSpace / LineTerminatorSequence / Comment)*
@@ -505,6 +506,7 @@ Statement
   / FallthroughStatement
   / ImportDeclarationStatement
   / ExportDeclarationStatement
+  / DoWhileStatement
   
 Block
   = "{" __ body:(StatementList __)? "}" {
@@ -683,7 +685,14 @@ ExportSpecifier
   / id:Identifier {
     return insertLocationData(new ast.ExportSpecifier(id, null), text(), line(), column());
   }
-  
+
+DoWhileStatement
+  = DoToken __
+    body:Statement __
+    WhileToken __ test:Expression EOS {
+      return insertLocationData(new ast.DoWhileStatement(test, body), text(), line(), column());
+    }
+    
 DebuggerStatement
   = DebuggerToken EOS {
       return insertLocationData(new ast.DebuggerStatement(), text(), line(), column());

@@ -1726,3 +1726,8 @@ describe('delete statement:', function () {
   it('delete statement',
     generateTest('delete x;', 'delete x;'));
 });
+
+describe('do-while loop:', function () {
+  it('do-while loop',
+    generateTest('do { f(); } while true;', 'do {\n    f();\n} while (true);'));
+});

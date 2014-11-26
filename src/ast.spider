@@ -60,6 +60,7 @@ var nodes = [
   'statements/FallthroughStatement',
   'statements/ImportDeclarationStatement',
   'statements/ExportDeclarationStatement',
+  'statements/DoWhileStatement',
   'literals/BooleanLiteral',
   'literals/NumberLiteral',
   'literals/StringLiteral',
