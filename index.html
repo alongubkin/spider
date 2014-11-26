@@ -84,6 +84,7 @@
                   <li><a href="#functions-default-params-value">Default Params Value</a></li>
                   <li><a href="#functions-splats">Splats</a></li>
                   <li><a href="#functions-inheritance">Inheritance</a></li>
+                  <li><a href="#functions-curried-functions">Curried Functions</a></li>
                 </ul>
               </li>
               <li>
@@ -142,7 +143,7 @@
                   <a href="#getting-started" name="getting-started" class="anchor glyphicon glyphicon-link"></a>
                 </h1>
               </div>
-              <p>Spider is a programming language that compiles to JavaScript. It takes the best ideas of Swift, Python, C# and CoffeeScript.</p>
+              <p>Spider is a programming language that compiles to JavaScript. It takes the best ideas of Go, Swift, Python, C# and CoffeeScript.</p>
               <p><strong>It's just JavaScript, but better.</strong></p>
               <pre><code class="lang-js">func TimeMachine(pilot) {
   this.pilot = pilot;
@@ -469,6 +470,40 @@ var tom = new Horse("Tommy the Palomino");
 
 sam.move();
 tom.move();</code></pre>
+
+              <h3 class="docs-heading">Curried Functions<span class="anchor-target" id="functions-curried-functions"></span>
+                <a href="#functions-curried-functions" name="functions-curried-functions" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+              
+              <p>Currying is a technique of transforming a function which takes multiple arguments in such a way that it can be called as a chain of functions.</p>
+              
+              <pre><code class="lang-js">fn add(a, b, c) {
+  return a + b + c;
+}
+
+var addOne = add^(1);
+console.log(add-one(2, 3)); // => 6
+
+var addFive = add-one^(4);
+console.log(add-five(1));   // => 6</code></pre>
+            
+            <p>Curried functions work extremely well in functional-style programming.</p>
+            
+            <pre><code class="lang-js">fn sortBy(key, array) {
+  return array.sort((a, b) -> a[key] - b[key]);
+}
+
+var sortById = sortBy^("id");
+var sortByAge = sortBy^("age");
+
+var people = [
+  { id: 1, name: "Daniel", age: 27 },
+  { id: 5, name: "John", age: 18 },
+  { id: 2, name: "Robot", age: 70 }
+];
+
+var peopleById = sortById(people);
+var peopleByAge = sortByAge(people);</code></pre>
 
             </div>
             <div class="docs-section">
