@@ -166,7 +166,13 @@
                   <li><a href="#shorthand-property-names">Shorthand Property Names</a></li>
                   <li><a href="#shorthand-method-names">Shorthand Method Names</a></li>
                 </ul>
-              </li>               
+              </li>
+              <li>
+                <a href="#async">Async</a>
+                <ul class="nav nav-stacked">
+                  <li><a href="#async-nodejs-callbacks">Node.js-style callbacks</a></li>
+                </ul>
+              </li>  
             </ul>
           </div>
         </div>
@@ -254,11 +260,12 @@ for timeMachine in ::getTimeMachines() {
                 <li><a href="https://github.com/izolate/gulp-spider">gulp-spider</a></li>
                 <li><a href="https://github.com/FullR/gulp-spider-script">gulp-spider-script</a></li>
               </ul>
-
+              
               <p><strong>Other</strong></p>
 
               <ul>
                 <li><a href="https://github.com/sagiegurari/node-spider-script">node-spider-script</a></li>
+                <li><a href="https://github.com/zekesonxx/SublimeLinter-contrib-spider">SublimeLinter</a></li>
               </ul>
             </div>
             <div class="docs-section">
@@ -1102,6 +1109,47 @@ console.log(bar); // true</code></pre>
     return this.value;
   }
 };</code></pre>
+            </div>
+            <div class="docs-section">
+              <div class="page-header">
+                <h1 class="docs-heading">Async<span class="anchor-target" id="async"></span>
+                  <a href="#async" name="async" class="anchor glyphicon glyphicon-link"></a>
+                </h1>
+              </div>
+              
+              <p>Spider provides C#-like async functions.</p>
+
+              <p>With async functions, you can await on a promise. This halts the function in a non-blocking way, waits for the promise to resolve & returns the value. If the promise rejects, it throws with the rejection value, so you can deal with it using <code>catch</code>.</p>
+              
+              <pre><code class="lang-js">async fn loadStory() {
+  try {
+    var story = await getJSON('story.json');
+    addHtmlToPage(story.heading);
+    for (var chapter of story.chapterURLs.map(getJSON)) {
+      addHtmlToPage((await chapter).html);
+    }
+    addTextToPage("All done");
+  } catch err {
+    addTextToPage("Argh, broken: " + err.message);
+  }
+}</code></pre>
+
+              <h3 class="docs-heading">Node.js-style callbacks<span class="anchor-target" id="async-nodejs-callbacks"></span>
+                <a href="#async-nodejs-callbacks" name="async-nodejs-callbacks" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+              
+              <p>Spider's <code>await</code> works with promises by default. If you want to use it with Node.js-style callbacks, you can use the <a href="https://github.com/petkaantonov/bluebird">bluebird</a> library.</p>
+              <p>This technique completely solves <a href="http://callbackhell.com/">callback hell</a>.</p>
+              
+              <pre><code class="lang-js">var fs = Promise.promisifyAll(require("fs"));
+
+async fn readFiles() {
+  var file1 = await fs.readFileAsync("file1.json");
+  var file2 = await fs.readFileAsync("file2.json");
+  var file3 = await fs.readFileAsync("file3.json");
+  var file4 = await fs.readFileAsync("file4.json");
+  console.log(file1, file2, file3, file4);
+}</code></pre>
             </div>
           </div>
         </div>
