@@ -18,8 +18,20 @@ ObjectPattern.prototype.codegen = () -> {
     return;
   }
     
+  var context = this.getContext().node;
   for property, i in this.properties {
     this.properties[i] = property.codegen();
+    
+    
+    if property.value? {
+      if property.value.type == "Identifier" {
+        context.defineIdentifier(property.value);
+      }    
+    } else {
+      if property.key.type == "Identifier" {
+        context.defineIdentifier(property.key);
+      }
+    }   
   }
   
   return this;

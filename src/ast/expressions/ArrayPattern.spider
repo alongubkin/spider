@@ -20,8 +20,13 @@ ArrayPattern.prototype.codegen = () -> {
     return;
   }
   
+  var context = this.getContext().node;
   for element, i in this.elements {
     this.elements[i] = element?.codegen(false);
+    
+    if element? and element.type == "Identifier" {
+      context.defineIdentifier(element);
+    }
   }
   
   return this;
