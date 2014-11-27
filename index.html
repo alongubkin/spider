@@ -126,6 +126,8 @@
                   <li><a href="#operators-exponentiation">Exponentiation (**)</a></li>
                   <li><a href="#operators-integer-division">Integer division (#)</a></li>
                   <li><a href="#operators-math-modulo">Math modulo (%%)</a></li>
+                  <li><a href="#operators-push-and-get">Push and Get (<-)</a></li>
+                  
                 </ul>
               </li>
               <li>
@@ -809,6 +811,24 @@ console.log("address" in details) // => true</code></pre>
 
               <p>The <code>%%</code> operator provides true mathematical modulo.</p>
               <pre><code class="lang-js">var modulo = a %% b; // => (a % b + b) % b</code></pre>
+
+              <h3 class="docs-heading">Push and Get (<-)<span class="anchor-target" id="operators-push-and-get"></span>
+                <a href="#operators-push-and-get" name="operators-push-and-get" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+              
+              <p>Spider provides the <code><-</code> operator that can be used either with one argument or with two arguments. If used with two argument, e.g:</p>
+              
+              <pre><code class="lang-js">apples <- apple;</code></pre>
+              
+              <p>Then it behaves as a push operator, and compiles to <code>apples.push(apple);</code></p>
+              
+              <p>If <code><-</code> is used with one argument, e.g:</p>
+              
+              <pre><code class="lang-js">console.log(<-channel);</code></pre>
+              
+              <p>Then it behaves as a get operator, and compiles to <code>await channel.get()</code>.</p>
+              
+              <p>Note that the <code><-</code> operator is mostly used for <a href="#channels">Channels</a>.</p>
             </div>
             <div class="docs-section">
               <div class="page-header">
