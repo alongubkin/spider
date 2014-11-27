@@ -5,6 +5,7 @@
 var path = require("path");
 var fs = require("fs");
 var chalk = require("chalk");
+var vm = require("vm");
 var traceur = require("traceur");
 var transfer = require("multi-stage-sourcemap").transfer;
 var spider = require("./lib/spider");
@@ -188,9 +189,9 @@ opts.files.forEach(function (fileName, fileIndex) {
             });
         }  
       } else {
-        var VM = require('vm2').VM;
-        var vm = new VM();
-        vm.run(compilerOutput.code);
+        var sandbox = global;
+        sandbox.require = require;
+        vm.runInNewContext(compilerOutput.code, sandbox);
       }
     }
   });
