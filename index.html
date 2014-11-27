@@ -172,7 +172,14 @@
                 <ul class="nav nav-stacked">
                   <li><a href="#async-nodejs-callbacks">Node.js-style callbacks</a></li>
                 </ul>
-              </li>  
+              </li> 
+              <li>
+                <a href="#channels">Channels</a>
+                <ul class="nav nav-stacked">
+                  <li><a href="#channels-installation">Installation</a></li>
+                </ul>
+              </li> 
+              
             </ul>
           </div>
         </div>
@@ -1150,6 +1157,56 @@ async fn readFiles() {
   var file4 = await fs.readFileAsync("file4.json");
   console.log(file1, file2, file3, file4);
 }</code></pre>
+            </div>
+            <div class="docs-section">
+              <div class="page-header">
+                <h1 class="docs-heading">Channels<span class="anchor-target" id="channels"></span>
+                  <a href="#channels" name="channels" class="anchor glyphicon glyphicon-link"></a>
+                </h1>
+              </div>
+              
+              <p>Spider provides Go-like channels. Channels are an easy way to communicate between sequential processes. Channels can be used everywhere: UI abstraction, Node.js services (e.g: Mailing List), and more.</p>
+              <pre><code class="lang-js">var channel = new Channel();
+  
+fn sendMail(title, body) {
+  var message = { title, body };
+  channel <- message;
+  
+  console.log("Message added to queue.");
+}
+
+go {
+  while true {
+    smtp.send(<-channel);
+  }
+};</code></pre>
+              
+              <h3 class="docs-heading">Installation<span class="anchor-target" id="channels-installation"></span>
+                <a href="#channels-installation" name="channels-installation" class="anchor glyphicon glyphicon-link"></a>
+              </h3>
+              
+              <p>To use channels, you must install the <a href="https://github.com/alongubkin/spider-channels">spider-channels</a> runtime library.</p>
+
+              <p><strong>Browser</strong></p>
+              
+              <p>Install the library via Bower:</p>
+              
+              <pre><code class="lang-js">bower install --save spider-channels</code></pre>
+              
+              <p><strong>Node.js</strong></p>
+              
+              <p>Install the library via npm:</p>
+               
+              <pre><code class="lang-js">npm install --save spider-channels</code></pre>
+              
+              <p>You can then import <code>Channel</code> with:</p>
+              
+              <pre><code class="lang-js">var { Channel } = require("spider-channels");
+var chan = new Channel();
+...
+</code></pre>
+  
+
             </div>
           </div>
         </div>
