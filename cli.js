@@ -76,7 +76,8 @@ var traceurCompiler;
 
 if (opts.target === "ES5") {
   traceurCompiler = new traceur.NodeCompiler({
-    sourceMaps: true
+    sourceMaps: true,
+    asyncFunctions: true
   });
 }
 

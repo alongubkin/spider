@@ -200,6 +200,8 @@ Keyword
   / AsToken
   / ExportToken
   / DeleteToken
+  / AsyncToken
+  / AwaitToken
 
 Literal
   = NullLiteral
@@ -463,6 +465,8 @@ AsToken           = "as"          !IdentifierPart
 ExportToken       = "export"      !IdentifierPart
 DeleteToken       = "delete"      !IdentifierPart
 DoToken           = "do"          !IdentifierPart
+AsyncToken        = "async"       !IdentifierPart
+AwaitToken        = "await"       !IdentifierPart
 
 __
   = (WhiteSpace / LineTerminatorSequence / Comment)*
@@ -535,7 +539,27 @@ Initialiser
   = "=" !"=" __ expression:AssignmentExpression { return expression; }
   
 FunctionDeclaration
-  = FnToken __ id:Identifier __
+  = AsyncToken __ FnToken __ id:Identifier __
+    "(" __ params:(FormalParameterList __)? ")" __
+    inheritsFrom:InheritsFrom?
+    __ body:Block __ 
+    {
+      return insertLocationData(
+          new ast.VariableDeclarationStatement(
+            [new ast.VariableDeclarator(id, 
+              new ast.UnaryExpression("async", 
+                new ast.FunctionExpression(
+                  null, 
+                  optionalList(extractOptional(params, 0)),
+                  body,
+                  inheritsFrom
+                )
+              )
+            )]
+          ), 
+        text(), line(), column());
+    }
+  / FnToken __ id:Identifier __
     "(" __ params:(FormalParameterList __)? ")" __
     inheritsFrom:InheritsFrom?
     __ body:Block __ 
@@ -984,6 +1008,8 @@ UnaryExpression
 UnaryOperator
   = $DeleteToken
   / $TypeofToken
+  / $AsyncToken
+  / $AwaitToken
   / $NotToken { return "!" }
   / "++"
   / "--"
