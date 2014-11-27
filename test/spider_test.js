@@ -1743,3 +1743,31 @@ describe('do-while loop:', function () {
   it('do-while loop',
     generateTest('do { f(); } while true;', 'do {\n    f();\n} while (true);'));
 });
+
+describe('channels:', function () {
+  it('get expression',
+    generateTest('f(<-x);', 
+      'f(await x.get());'));
+      
+  it('push statement',
+    generateTest('a <- b;', 
+      'a.push(b);'));
+      
+  it('go statement',
+    generateTest('go { f(); };', 
+      '(async function () {\n    f();\n})();'));
+
+  it('get operator in global context',
+    generateErrorTest('::f(<-::x);', 
+      [{ type: "GetExpressionRequiresAsync" }]));
+      
+  it('get operator in a normal function',
+    generateErrorTest('fn h() { ::f(<-::x); }', 
+      [{ type: "GetExpressionRequiresAsync" }]));     
+      
+  it('get operator in an async function',
+    generateErrorTest('async fn h() { ::f(<-::x); }', []));
+    
+  it('get operator in an go statement',
+    generateErrorTest('go { ::f(<-::x); };', []));    
+});

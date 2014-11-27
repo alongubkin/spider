@@ -115,6 +115,37 @@ UnaryExpression.prototype.codegen = () -> {
         enumerable: true 
       });
     }
+  } else if this.operator == "<-" {
+    var parent = this.parent;
+    while parent? and parent.type != "FunctionExpression" and parent.type != "GoStatement" {
+      parent = parent.parent;
+    }
+    
+    if not parent? or
+       (parent.type != "GoStatement" and 
+          (parent.parent.type != "UnaryExpression" or
+          parent.parent.operator != "async")) {
+      Node.getErrorManager().error({
+        type: "GetExpressionRequiresAsync",
+        message: "unary <- must be in a go statement or an async function",
+        loc: this.loc
+      });
+    }
+        
+    this.operator = "await";
+    this.argument = {
+      "type": "CallExpression",
+      "callee": {
+        "type": "MemberExpression",
+        "object": this.argument,
+        "property": {
+          "type": "Identifier",
+          "name": "get"
+        },
+        "computed": false
+      },
+      "arguments": []
+    };
   }
   
   return this;

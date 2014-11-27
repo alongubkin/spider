@@ -1,0 +1,40 @@
+use :node;
+
+var Node = module.require('../Node').Node;
+
+fn PushStatement(left, right)
+  extends Node {
+  
+  this.type = 'PushStatement';
+  
+  this.left = left;
+  this.left.parent = this;
+
+  this.right = right;
+  this.right.parent = this;  
+}
+
+PushStatement.prototype.codegen = () -> {
+  if !super.codegen() {
+    return;
+  }
+    
+  this.type = "ExpressionStatement";
+  this.expression = {
+    "type": "CallExpression",
+    "callee": {
+      "type": "MemberExpression",
+      "object": this.left.codegen(),
+      "property": {
+        "type": "Identifier",
+        "name": "push"
+      },
+      "computed": false
+    },
+    "arguments": [this.right.codegen()]
+  };
+  
+  return this;
+};
+
+exports.PushStatement = PushStatement;

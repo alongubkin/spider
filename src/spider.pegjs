@@ -202,6 +202,7 @@ Keyword
   / DeleteToken
   / AsyncToken
   / AwaitToken
+  / GoToken
 
 Literal
   = NullLiteral
@@ -467,6 +468,7 @@ DeleteToken       = "delete"      !IdentifierPart
 DoToken           = "do"          !IdentifierPart
 AsyncToken        = "async"       !IdentifierPart
 AwaitToken        = "await"       !IdentifierPart
+GoToken           = "go"          !IdentifierPart
 
 __
   = (WhiteSpace / LineTerminatorSequence / Comment)*
@@ -495,6 +497,7 @@ Statement
   / VariableStatement
   / FunctionDeclaration
   / IfStatement
+  / PushStatement  
   / ExpressionStatement
   / ReturnStatement
   / ForStatement
@@ -511,7 +514,8 @@ Statement
   / ImportDeclarationStatement
   / ExportDeclarationStatement
   / DoWhileStatement
-  
+  / GoStatement
+
 Block
   = "{" __ body:(StatementList __)? "}" {
       return insertLocationData(new ast.BlockStatement(optionalList(extractOptional(body, 0))), text(), line(), column());
@@ -717,6 +721,16 @@ DoWhileStatement
       return insertLocationData(new ast.DoWhileStatement(test, body), text(), line(), column());
     }
     
+PushStatement
+  = left:LeftHandSideExpression __ "<-" __ right:AssignmentExpression EOS {
+      return insertLocationData(new ast.PushStatement(left, right), text(), line(), column()); 
+  }
+  
+GoStatement 
+  = GoToken __ body:Block EOS {
+    return insertLocationData(new ast.GoStatement(body), text(), line(), column());
+  }
+  
 DebuggerStatement
   = DebuggerToken EOS {
       return insertLocationData(new ast.DebuggerStatement(), text(), line(), column());
@@ -1011,12 +1025,13 @@ UnaryOperator
   / $AsyncToken
   / $AwaitToken
   / $NotToken { return "!" }
+  / "<-"
   / "++"
   / "--"
   / $("+" !"=")
   / $("-" !"=")
   / "!"
-
+  
 PostfixExpression
   = argument:ExistentialExpression _ operator:PostfixOperator? {
       if (operator) {

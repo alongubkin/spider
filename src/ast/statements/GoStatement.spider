@@ -1,0 +1,44 @@
+use :node;
+
+var Node = module.require('../Node').Node;
+
+fn GoStatement(body)
+  extends Node {
+  
+  this.type = 'GoStatement';
+  
+  this.body = body;
+  this.body.parent = this;
+}
+
+GoStatement.prototype.codegen = () -> {
+  if !super.codegen() {
+    return;
+  }
+    
+  this.body = this.body.codegen();
+  
+  this.type = "ExpressionStatement";
+  this.expression = {
+    "type": "CallExpression",
+    "callee": {
+      "type": "UnaryExpression",
+      "operator": "async",
+      "argument": {
+        "type": "FunctionExpression",
+        "id": null,
+        "params": [],
+        "defaults": [],
+        "body": this.body,
+        "rest": null,
+        "generator": false,
+        "expression": false
+      }
+    },
+    "arguments": []
+  };
+  
+  return this;
+};
+
+exports.GoStatement = GoStatement;

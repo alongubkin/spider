@@ -61,6 +61,8 @@ var nodes = [
   'statements/ImportDeclarationStatement',
   'statements/ExportDeclarationStatement',
   'statements/DoWhileStatement',
+  'statements/PushStatement',
+  'statements/GoStatement',
   'literals/BooleanLiteral',
   'literals/NumberLiteral',
   'literals/StringLiteral',
