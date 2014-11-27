@@ -203,9 +203,12 @@ Keyword
   / AsyncToken
   / AwaitToken
   / GoToken
+  / NullToken
+  / UndefinedToken
 
 Literal
   = NullLiteral
+  / UndefinedLiteral
   / BooleanLiteral
   / NumericLiteral
   / StringLiteral
@@ -214,6 +217,9 @@ Literal
 NullLiteral
   = NullToken { return insertLocationData(new ast.NullLiteral(), text(), line(), column()); }
 
+UndefinedLiteral
+  = UndefinedToken { return insertLocationData(new ast.UndefinedLiteral(), text(), line(), column()); }
+  
 BooleanLiteral
   = TrueToken  { return insertLocationData(new ast.BooleanLiteral("true"), text(), line(), column()); }
   / FalseToken { return insertLocationData(new ast.BooleanLiteral("false"), text(), line(), column()); }
@@ -469,6 +475,7 @@ DoToken           = "do"          !IdentifierPart
 AsyncToken        = "async"       !IdentifierPart
 AwaitToken        = "await"       !IdentifierPart
 GoToken           = "go"          !IdentifierPart
+UndefinedToken    = "undefined"   !IdentifierPart
 
 __
   = (WhiteSpace / LineTerminatorSequence / Comment)*

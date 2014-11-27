@@ -1,0 +1,30 @@
+use :node;
+
+var Node = module.require('../Node').Node;
+
+fn UndefinedLiteral()
+  extends Node {
+  
+  this.type = 'UndefinedLiteral';
+}
+
+UndefinedLiteral.prototype.codegen = () -> {
+  if !super.codegen() {
+    return;
+  }
+  
+  this.type = "UnaryExpression";
+  this.operator = "void";
+  this.argument = {
+    "type": "Literal",
+    "value": 0,
+    "raw": "0"
+  };
+  this.prefix = true;
+  
+  return this;
+};
+
+UndefinedLiteral.prototype.hasCallExpression = () -> false;
+
+exports.UndefinedLiteral = UndefinedLiteral;

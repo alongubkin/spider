@@ -1771,3 +1771,8 @@ describe('channels:', function () {
   it('get operator in an go statement',
     generateErrorTest('go { ::f(<-::x); };', []));    
 });
+
+describe('undefined literals:', function () {
+  it('undefined literal', 
+    generateTest('undefined;', 'void 0;'));
+});

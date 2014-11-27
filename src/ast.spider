@@ -67,6 +67,7 @@ var nodes = [
   'literals/NumberLiteral',
   'literals/StringLiteral',
   'literals/NullLiteral',
+  'literals/UndefinedLiteral',
   'literals/Identifier',
   'literals/RegularExpressionLiteral'
 ];
