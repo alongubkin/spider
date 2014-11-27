@@ -34,8 +34,8 @@ Compile a script:
 
 2014 11 27 - **v0.1.1-alpha**
 
- * [Async/Await](file:///C:/Users/Alon/Documents/GitHub/spider-web/index.html#async)
- * [Channels](file:///C:/Users/Alon/Documents/GitHub/spider-web/index.html#channels)
+ * [Async/Await](http://spiderlang.org/#async)
+ * [Channels](http://spiderlang.org/#channels)
  * Add undefined keyword
  * Fix an undefined bug with destructing patterns
  * Fix CLI execute and remove dependency on vm2
