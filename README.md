@@ -32,6 +32,14 @@ Compile a script:
 
 ### Changelog
 
+2014 11 27 - **v0.1.1-alpha**
+
+ * [Async/Await](file:///C:/Users/Alon/Documents/GitHub/spider-web/index.html#async)
+ * [Channels](file:///C:/Users/Alon/Documents/GitHub/spider-web/index.html#channels)
+ * Add undefined keyword
+ * Fix an undefined bug with destructing patterns
+ * Fix CLI execute and remove dependency on vm2
+ 
 2014 11 26 - **v0.1.0-alpha**
 
  * Add a `--target=ES5|ES6` flag (ES5 target uses [Traceur Compiler](https://github.com/google/traceur-compiler))
