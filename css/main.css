@@ -44,8 +44,7 @@ body{
 .docs-header .container {
   position: relative;
   text-align: left;
-  padding-top: 35px;
-  margin-bottom: 15px;
+  padding-top: 50px;
 }
 
 @media (min-width: 992px) {
@@ -243,4 +242,12 @@ h1, h2, h3 {
 position: relative;
 padding-left: 60px;
 margin-left: -60px;
+}
+
+.banner {
+padding: 15px 20px;
+color: #777;
+background-color: #fafafa;
+border-top: 1px solid #fff;
+border-bottom: 1px solid #e5e5e5;
 }
