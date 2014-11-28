@@ -32,6 +32,10 @@ Compile a script:
 
 ### Changelog
 
+2014 11 29 - **v0.1.2-alpha**
+
+ * CLI bug fixes
+ 
 2014 11 27 - **v0.1.1-alpha**
 
  * [Async/Await](http://spiderlang.org/#async)

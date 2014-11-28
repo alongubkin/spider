@@ -1,6 +1,6 @@
 {
   "name": "spider-script",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "lib/spider.js",
   "description": "The Next-Gen Programming Language for the Web",
   "homepage": "http://spiderlang.org",
