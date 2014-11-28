@@ -9,8 +9,9 @@ var vm = require("vm");
 var traceur = require("traceur");
 var transfer = require("multi-stage-sourcemap").transfer;
 var spider = require("./lib/spider");
+var nomnom = require("nomnom");
 
-var opts = require("nomnom")
+var opts = nomnom
   .option("files", {
     position: 0,
     help: "files to compile",
@@ -80,6 +81,11 @@ if (opts.target === "ES5") {
     sourceMaps: true,
     asyncFunctions: true
   });
+}
+
+if (!opts.files) {
+  console.log(nomnom.getUsage());
+  process.exit(0);
 }
 
 opts.files.forEach(function (fileName, fileIndex) {
