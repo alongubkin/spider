@@ -195,7 +195,10 @@ opts.files.forEach(function (fileName, fileIndex) {
             });
         }  
       } else {
-        var sandbox = global;
+        var sandbox = {};
+        for (var key in global) {
+          sandbox[key] = global[key];
+        }
         sandbox.require = require;
         vm.runInNewContext(compilerOutput.code, sandbox);
       }
