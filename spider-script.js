@@ -1,2 +1,6 @@
 require("traceur");
-exports = require("./lib/spider");
+
+var spider = require("./lib/spider");
+for (var prop in spider) {
+	exports[prop] = spider[prop];
+}
