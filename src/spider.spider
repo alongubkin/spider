@@ -2,8 +2,159 @@ use :node;
 
 var parser = module.require('./parser'),
     escodegen = require('escodegen'),
-    ast = module.require('./ast');
+    ast = module.require('./ast'),
+    traceur = require("traceur"),
+    chalk = require("chalk"),
+    transfer = require("multi-stage-sourcemap").transfer;
+
+/**
+ * Compiles Spider code to JavaScript.
+ *
+ * @param {string} options.text
+ * @param {string} options.fileName 
+ * @param {string} options.target
+ * @param {boolean} [options.verbose]
+ * @param {boolean} [options.generateSourceMap]
+ * @param {boolean} [options.iifi]
+ * @param {boolean} [options.useStrict]
+ */
+exports.compile = fn (options) {
+  var result = {
+    errors: [],
+    result: null,
+    sourceMap: null
+  };
+
+  options.fileName = options.fileName ?? "tmp";
   
+  var outFileNameWithoutExtension = options.fileName.substring(0, 
+    options.fileName.lastIndexOf('.'));    
+    
+  var outFileName = outFileNameWithoutExtension + ".js";
+  var mapFileName = outFileNameWithoutExtension + ".map";
+    
+  ::resetVariableNames();  
+  ast.Node.setErrorManager(new ::ErrorManager(result.errors));
+  
+  var parsed;
+  
+  try {
+    parsed = parser.parse(options.text);
+  } catch e {
+    result.errors.push(::getParsingError(e));
+  }
+  
+  if not parsed {
+    return result;
+  }
+  
+  var tree = parsed.codegen();
+  if options.target != "ES5" {
+    tree = ::wrapCode(tree, 
+      options.useStrict ?? true, 
+      options.iifi ?? true);
+  }
+    
+  var output = escodegen.generate(tree, {
+    sourceMap: options.fileName if options.generateSourceMap else null,
+    sourceMapWithCode: options.generateSourceMap,
+    format: { 
+      quotes: 'double'
+    }
+  });
+  
+  if options.generateSourceMap { 
+    result.result = output.code;
+    result.sourceMap = output.map.toString();
+  } else {
+    result.result = output;
+  }
+  
+  if options.target == "ES5" {
+    var traceurCompiler = new traceur.NodeCompiler({
+      sourceMaps: options.generateSourceMap,
+      asyncFunctions: true
+    });
+    
+    result.result = traceurCompiler.compile(result.result, options.fileName, outFileName);
+    
+    if options.generateSourceMap {
+      result.sourceMap = transfer({
+        toSourceMap: result.sourceMap,
+        fromSourceMap: traceurCompiler.getSourceMap().toString()
+      });
+    }
+  } else if options.generateSourceMap {
+    result.result = result.result + "\n\n//# sourceMappingURL=" + mapFileName;
+  }
+  
+  if options.verbose {
+    console.log(JSON.stringify(parsed, null, 4));
+    console.log(result.result);
+  }
+  
+  return result;
+};
+
+/**
+ * Format errors array with colors
+ */
+exports.formatErrors = fn (fileName, content, errors) {
+  var output = [];
+  
+  var maxCol = 0;
+  var maxLine = 0;
+  
+  output.push(chalk.white(fileName), "\n");
+  
+  var lines = content.split("\n");
+  var tabCharacter = "__SPIDER_TAB";
+  
+  for error, errorIndex in errors {
+    var line = error.loc.start.line;
+    var column = error.loc.start.column + 1;
+
+    var lineCharCount = line.toString().length;
+    var columnCharCount = column.toString().length;
+    
+    maxCol = Math.max(maxCol, columnCharCount);
+    maxLine = Math.max(maxCol, lineCharCount);
+    
+    output.push(tabCharacter);
+    output.push(chalk.gray("line", line));
+    output.push(tabCharacter, lineCharCount);
+    output.push(chalk.gray("col", column));
+    output.push(tabCharacter, columnCharCount);
+                            
+    output.push(chalk.red(error.message), "\n");
+    
+    if error.loc?.start {
+      var start = error.loc.start;
+      var end = error.loc.end;
+      
+      if 0 < start.line <= lines.length {
+        output.push(tabCharacter, tabCharacter, tabCharacter);
+        
+        output.push(chalk.green(lines[start.line - 1].replace(/(\r\n|\n|\r)/gm, ""), 
+          "\n", tabCharacter, tabCharacter));
+        output.push(chalk.red(::generateErrorColumnString(start.column, end.column - 1 if end else 0)));
+      }
+    }
+    
+    output.push("\n");
+  }
+  
+  var str = output.join("");
+  var tabLength = Math.max(maxLine, maxCol);
+  
+  for var i = 1; i <= tabLength; i++ {
+    var regex = new RegExp(tabCharacter + i, "g");
+    str = str.replace(regex, ::generateSpace(Math.max(2 + tabLength - i, 2)));
+  }
+  
+  return str.replace(new RegExp(tabCharacter, "g"), ::generateSpace(2));
+};
+
 fn ErrorManager(errors) {
   this.errors = errors;
 }
@@ -12,9 +163,32 @@ ErrorManager.prototype.error = (e) -> {
   this.errors.push(e);
 };
 
-exports.compile = (text, verbose, errors, sourceMap, sourceMapUrl, iifi, useStrict) -> {
-  ast.Node.setErrorManager(new ErrorManager(errors));
+fn getParsingError(e) {
+  var message;
   
+  if e.expected {
+    if e.found {
+      message = "unexpected " + e.found;
+    } else {
+      message = "unexpected end of input";
+    }
+  } else {
+    message = e.message;
+  }
+  
+  return {
+    type: "SyntaxError",
+    message: message,
+    loc: {
+      start: {
+        line: e.line,
+        column: e.column - 1
+      }
+    }
+  };
+}
+
+fn resetVariableNames() {
   ast.NullPropagatingExpression.resetVariableNames();
   ast.NullCoalescingExpression.resetVariableNames();
   ast.NullCheckCallExpression.resetVariableNames();
@@ -24,101 +198,79 @@ exports.compile = (text, verbose, errors, sourceMap, sourceMapUrl, iifi, useStri
   ast.ForInExpression.resetVariableNames();  
   ast.FallthroughStatement.resetVariableNames();  
   ast.SwitchStatement.resetVariableNames();
-  
-  var parsed;
-  
-  try {
-    parsed = parser.parse(text);
-  } catch e {
-    var message;
+}
+
+fn wrapCode(tree, useStrict = false, iifi = false) {
+  if iifi or useStrict {
+    var body = [];
     
-    if e.expected {
-      if e.found {
-        message = "unexpected " + e.found;
-      } else {
-        message = "unexpected end of input";
-      }
-    } else {
-      message = e.message;
-    }
-    
-    errors.push({
-      type: "SyntaxError",
-      message: message,
-      loc: {
-        start: {
-          line: e.line,
-          column: e.column - 1
+    if useStrict {
+      body.push({
+        "type": "ExpressionStatement",
+        "expression": {
+          "type": "Literal",
+          "value": "use strict"
         }
-      }
-    });
+      });
+    }
+    
+    // Add (function () { ... })()
+    if iifi {
+      body.push({
+        "type": "ExpressionStatement",
+        "expression": {
+          "type": "CallExpression",
+          "callee": {
+            "type": "FunctionExpression",
+            "id": null,
+            "params": [],
+            "defaults": [],
+            "body": {
+              "type": "BlockStatement",
+              "body": tree.body
+            },
+            "rest": null,
+            "generator": false,
+            "expression": false
+          },
+          "arguments": []
+        }
+      });
+    }
+      
+    tree = {
+      "type": "Program",
+      "body": body
+    };
   }
   
-  if parsed {
-    var tree = parsed.codegen();
-    
-    if iifi or useStrict {
-      // Add ;(function () { ... })()
-      var body = [];
-      
-      if useStrict {
-        body.push({
-          "type": "ExpressionStatement",
-          "expression": {
-            "type": "Literal",
-            "value": "use strict"
-          }
-        });
-      }
-      
-      if iifi {
-        body.push({
-          "type": "ExpressionStatement",
-          "expression": {
-            "type": "CallExpression",
-            "callee": {
-              "type": "FunctionExpression",
-              "id": null,
-              "params": [],
-              "defaults": [],
-              "body": {
-                "type": "BlockStatement",
-                "body": tree.body
-              },
-              "rest": null,
-              "generator": false,
-              "expression": false
-            },
-            "arguments": []
-          }
-        });
-      }
-        
-      tree = {
-        "type": "Program",
-        "body": body
-      };
-    }
-      
-    var output = escodegen.generate(tree, {
-      sourceMap: sourceMap,
-      sourceMapWithCode: sourceMap?,
-      format: { 
-        quotes: 'double'
-      }
-    });
-    
-    var js = output;
-    if sourceMap {
-      js = output.code + "\n\n//# sourceMappingURL=" + sourceMapUrl;
-      output.code = js;
-    } 
-    
-    if verbose {
-      console.log(::JSON.stringify(parsed, null, 4));
-      console.log(js);
-    }
-    
-    return output;
+  return tree;
+}
+
+fn generateSpace(len) {
+  var chars = [];
+  for var i = 0; i < len; i++ {
+    chars.push(' ');
   }
-};
+  
+  return chars.join('');
+}
+
+fn generateErrorColumnString(errorStartIndex, errorEndIndex) {
+  var chars = [];
+  var i = 0;
+  
+  if (!errorEndIndex) {
+    errorEndIndex = errorStartIndex;
+  }
+  
+  for ; i < errorStartIndex; i++ {
+    chars.push(' ');
+  }
+  
+  for i = errorStartIndex; i <= errorEndIndex; i++ {
+    chars.push('^');
+  }
+  
+  return chars.join('');
+}

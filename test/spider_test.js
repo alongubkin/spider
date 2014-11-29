@@ -8,15 +8,24 @@ var should = require('should'),
     
 function generateTest(code, expectation) {
   return function () {
-    should(spider.compile(code, false, []))
-      .be.exactly(expectation);
+    should(spider.compile({ text: code, 
+      generateSourceMap: false, 
+      target: "ES6", 
+      iifi: false, 
+      useStrict: false 
+    }).result).be.exactly(expectation);
   };
 }
 
 function generateErrorTest(code, expectedErrors) {
   return function () {
-    var errors = [];
-    spider.compile(code, false, errors);
+    var errors = spider.compile({ 
+      text: code, 
+      generateSourceMap: false, 
+      target: "ES6", 
+      iifi: false, 
+      useStrict: false 
+    }).errors;
     
     should(errors.map(function (error) {
       delete error.message;
