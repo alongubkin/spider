@@ -1,5 +1,13 @@
 ### Changelog
 
+2014 11 29 - **v0.1.3-alpha**
+
+ * Separate a lot of CLI logic to lib/spider
+ * Default behaviour for CLI
+ * Refactor `spider.compile` API
+ * Fix source map path bug with ES5 target
+ * Fix "System is not defined" error when using Spider API
+
 2014 11 29 - **v0.1.2-alpha**
 
  * CLI bug fixes
