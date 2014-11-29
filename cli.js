@@ -43,7 +43,12 @@ var opts = nomnom
     }
   })
   .parse();
-  
+
+if (!opts.files) {
+  console.log(nomnom.getUsage());
+  process.exit(0);
+}
+
 var generateSourceMap = !opts['disable-source-map'] && opts.compile;
 var problems = 0;
 
