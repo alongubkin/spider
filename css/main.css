@@ -251,3 +251,9 @@ background-color: #fafafa;
 border-top: 1px solid #fff;
 border-bottom: 1px solid #e5e5e5;
 }
+
+@media(max-width: 992px) {
+	.col-xs-3 {
+		display: none;
+	}
+}
