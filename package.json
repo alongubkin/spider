@@ -44,7 +44,7 @@
     "grunt": "~0.4.5"
   },
   "scripts": {
-    "test": "spider -c Gruntfile.spider && grunt && rm Gruntfile.js"
+    "test": "grunt"
   },
   "bin": {
     "spider": "cli.js"
