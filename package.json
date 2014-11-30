@@ -33,7 +33,7 @@
     "grunt-mocha-cli": "^1.9.0",
     "grunt-mocha-istanbul": "~2.2.0",
     "grunt-peg": "~1.5.0",
-    "grunt-spider-script": "0.0.7",
+    "grunt-spider-script": "0.0.9",
     "istanbul": "~0.3.2",
     "load-grunt-tasks": "^0.4.0",
     "mocha": "~2.0.1",
