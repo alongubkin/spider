@@ -960,16 +960,16 @@ var copy   = numbers[<span class="dot">..</span>];</code></pre>
               <pre><code class="lang-js">fn fizzbuzz(i) {
   var result = [i % 3, i % 5];
   switch result {
+    case [0, 0]: {
+      return "FizzBuzz"
+    }
+    
     case [0, ]: {
       return "Fizz"
     }
 
     case [, 0]: {
       return "Buzz"
-    }
-
-    case [0, 0]: {
-      return "FizzBuzz"
     }
     
     default: {
@@ -978,8 +978,8 @@ var copy   = numbers[<span class="dot">..</span>];</code></pre>
   }
 }
 
-for number in 1...100 {
-    console.log(fizzbuzz(number))
+for number in [1...100] {
+  console.log(fizzbuzz(number))
 }</code></pre>
             </div>
             <div class="docs-section">
@@ -1160,7 +1160,7 @@ console.log(bar); // true</code></pre>
   try {
     var story = await getJSON('story.json');
     addHtmlToPage(story.heading);
-    for (var chapter of story.chapterURLs.map(getJSON)) {
+    for chapter in story.chapterURLs.map(getJSON) {
       addHtmlToPage((await chapter).html);
     }
     addTextToPage("All done");
