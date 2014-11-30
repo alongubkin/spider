@@ -1,6 +1,6 @@
 {
   "name": "spider-script",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "main": "spider-script.js",
   "description": "The Next-Gen Programming Language for the Web",
   "homepage": "http://spiderlang.org",
@@ -16,7 +16,8 @@
   "license": "Apache",
   "files": [
     "lib",
-    "cli.js"
+    "cli.js",
+    "spider-script.js"
   ],
   "keywords": [
     "spider",
