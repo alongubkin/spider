@@ -62,22 +62,6 @@ module.exports = fn (grunt) {
     clean: {
       build: ["lib/"],
     },
-    traceur: {
-      options: {
-        includeRuntime: false,
-        traceurOptions: "",
-        traceurCommand: "node_modules/traceur/src/node/command.js"
-      },
-      build: {
-        files: [{
-          expand: true,
-          cwd: 'lib',
-          src: ['**/*.js', '!parser.js'],
-          dest: 'lib/',
-          ext: '.js'
-        }]
-      }
-    },
     spider_script: {
       options: {},
       build: {
@@ -103,7 +87,7 @@ module.exports = fn (grunt) {
   });
 
   // Default task.
-  grunt.registerTask('default', ['build', /*'eslint', */'mochacli']);
-  grunt.registerTask('build', ['clean:build', 'peg', 'spider_script:build', 'copy:build', 'traceur:build']);
+  grunt.registerTask('default', ['build', 'mochacli']);
+  grunt.registerTask('build', ['clean:build', 'peg', 'spider_script:build', 'copy:build']);
   grunt.registerTask('coverage', ['mocha_istanbul:coverage']);
 };
