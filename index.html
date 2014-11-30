@@ -1185,6 +1185,21 @@ async fn readFiles() {
   var file4 = await fs.readFileAsync("file4.json");
   console.log(file1, file2, file3, file4);
 }</code></pre>
+              
+              <p>Parallel version:</p>
+              
+              <pre><code class="lang-js">var fs = Promise.promisifyAll(require("fs"));
+
+async fn readFiles() {
+  var [file1, file2, file3, file4] = await Promise.all([
+    fs.readFileAsync("file1.json"), 
+    fs.readFileAsync("file2.json"),
+    fs.readFileAsync("file3.json"),
+    fs.readFileAsync("file4.json")
+  ]);
+
+  console.log(file1, file2, file3, file4);
+}</code></pre>
             </div>
             <div class="docs-section">
               <div class="page-header">
