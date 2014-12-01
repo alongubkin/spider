@@ -88,7 +88,22 @@ opts.files.forEach(function (fileName, fileIndex) {
         for (var key in global) {
           sandbox[key] = global[key];
         }
-        sandbox.require = require;
+        var Module, _module, _require;
+        Module = require('module');
+        sandbox.module = _module = new Module(outFileNameWithoutExtension || 'eval');
+        sandbox.require = _require = function(path) {
+          return Module._load(path, _module, true);
+        };
+        _module.filename = sandbox.__filename;
+        Object.getOwnPropertyNames(require).forEach(function(r){
+          if (r !== 'paths' && r !== 'arguments' && r !== 'caller') {
+            _require[r] = require[r];
+          }            
+        })
+        _require.paths = _module.paths = Module._nodeModulePaths(process.cwd());
+        _require.resolve = function(request) {
+          return Module._resolveFilename(request, _module);
+        };
         vm.runInNewContext(compilerOutput.result, sandbox);
       }
     }
