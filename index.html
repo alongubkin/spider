@@ -507,13 +507,17 @@ app.controller("MyCtrl", ($scope, MyService) -> {
   $scope.items = [];
 });</code></pre>
 
-              <p>Spider provides the fat arrow syntax to bind the current scope:</p>
+              <p>You can use the "fat arrow" <code>=&gt;</code> to bind the function's <code>this</code>
+              value, removing the need for <code>var self = this</code>:</p>
 
               <pre><code class="lang-js">fn Animal(name) {
   this.name = name;
 
-  this.printName = () =>
-    console.log(this.name);
+  this.printNameLater = () => {
+    setTimeout(() => {
+      console.log(this.name);
+    }, 1000);
+  };
 }</code></pre>
 
               <h3 class="docs-heading">Default Params Value<span class="anchor-target" id="functions-default-params-value"></span>
@@ -547,8 +551,8 @@ fn awardMedals(first, second, others...) {
 }
 
 var contenders = [
-  "Michael Phelps"
-  "Liu Xiang"
+  "Michael Phelps",
+  "Liu Xiang",
   "Yao Ming"
 ];
 
@@ -757,7 +761,7 @@ var doubles = [x * 2 for x in list];</code></pre>
                 <a href="#operators-existential-operator" name="operators-existential-operator" class="anchor glyphicon glyphicon-link"></a>
               </h3>
 
-              <p>It's a little difficult to check for the existence of a variable in JavaScript. <code>if (variable) ...</code> comes close, but fails for zero, the empty string, and false. The existential operator <code>?</code> returns true unless a variable is <strong>null</strong> or <strong>undefined</strong></p>
+              <p>It's a little difficult to check for the existence of a variable in JavaScript. <code>if (variable) ...</code> comes close, but fails for zero, the empty string, and false. The existential operator <code>?</code> returns true unless a variable is <strong>null</strong> or <strong>undefined</strong></p>.
               <pre><code class="lang-js">if game? {
   play();
 }</code></pre>
@@ -770,7 +774,8 @@ var doubles = [x * 2 for x in list];</code></pre>
                 <a href="#operators-null-coalescing-operator" name="operators-null-coalescing-operator" class="anchor glyphicon glyphicon-link"></a>
               </h3>
 
-              <p>The null-coalescing operator <code>??</code> returns the right expression if the left expression is null or undefined.</p>
+              <p>The null-coalescing operator <code>??</code> returns the right expression if the left expression is null or undefined, and
+              the left expression otherwise.</p>
 
               <pre><code class="lang-js">var name = options.name ?? "default name";</code></pre>
 
@@ -1060,7 +1065,7 @@ var [one, two, three] = foo;</code></pre>
                 <a href="#destructuring-swapping-variables" name="destructuring-swapping-variables" class="anchor glyphicon glyphicon-link"></a>
               </h3>
               
-              <p>After executing this code, b is 1 and a is 3. Without destructuring, swapping two values requires a temporary variable (or, in some low-level languages, the XOR-swap trick).</p>
+              <p>After executing this code, <code>b</code> is 1 and <code>a</code> is 3. Without destructuring, swapping two values requires a temporary variable (or, in some low-level languages, the XOR-swap trick).</p>
               
               <pre><code class="lang-js">var a = 1;
 var b = 3;
@@ -1071,15 +1076,13 @@ var b = 3;
                 <a href="#destructuring-multi-value-returns" name="destructuring-multi-value-returns" class="anchor glyphicon glyphicon-link"></a>
               </h3>
               
-              <p>Thanks to destructuring assignment, functions can return multiple values. While it's always been possible to return an array from a function, this provides an added degree of flexibility.</p>
+              <p>Thanks to destructuring assignment, functions can return multiple values. While it's always been possible to return an array from a function, this provides an added degree of convenience.</p>
               
               <pre><code class="lang-js">fn f() {
   return [1, 2];
-}</code></pre>
+}
 
-              <p>As you can see, returning results is done using an array-like notation, with all the values to return enclosed in brackets. You can return any number of results in this way. In this example, <code>f()</code> returns the values <code>[1, 2]</code> as its output.</p>
-              
-              <pre><code class="lang-js">var [a, b] = f();
+var [a, b] = f();
 console.log("A is \(a) and B is \(b)");</code></pre>   
 
               <h3 class="docs-heading">Ignoring some returned values<span class="anchor-target" id="destructuring-ignoring-some-returned-values"></span>
@@ -1155,7 +1158,7 @@ console.log(bar); // true</code></pre>
               
               <p>Spider provides C#-like async functions.</p>
 
-              <p>With async functions, you can await on a promise. This halts the function in a non-blocking way, waits for the promise to resolve & returns the value. If the promise rejects, it throws with the rejection value, so you can deal with it using <code>catch</code>.</p>
+              <p>With async functions, you can await on a promise using the <code>await</code> operator. This halts the function (without blocking the event loop), waits for the promise to resolve, and returns the value. If the promise is rejected, the <code>await</code> throws with the rejection value, so you can deal with it using <code>catch</code>.</p>
               
               <pre><code class="lang-js">async fn loadStory() {
   try {
@@ -1169,6 +1172,11 @@ console.log(bar); // true</code></pre>
     addTextToPage("Argh, broken: " + err.message);
   }
 }</code></pre>
+
+              <p>The async function itself returns a promise which is resolved when the function
+              body is completed. If a value is returned from inside the function body, the promise will be resolved
+              with that value. If an uncaught <code>Error</code> occurs inside the function body, the promise will be
+              rejected with that <code>Error</code>.</p>
 
               <h3 class="docs-heading">Node.js-style callbacks<span class="anchor-target" id="async-nodejs-callbacks"></span>
                 <a href="#async-nodejs-callbacks" name="async-nodejs-callbacks" class="anchor glyphicon glyphicon-link"></a>
