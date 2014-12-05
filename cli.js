@@ -53,18 +53,17 @@ var generateSourceMap = !opts['disable-source-map'] && opts.compile;
 var problems = 0;
 
 opts.files.forEach(function (fileName, fileIndex) {
-  var baseName = path.basename(fileName);
 
-  fs.readFile(baseName, "utf-8", function (error, content) {
+  fs.readFile(fileName, "utf-8", function (error, content) {
     var compilerOutput = spider.compile({
       text: content,
-      fileName: baseName,
+      fileName: fileName,
       target: opts.target,
       generateSourceMap: generateSourceMap
     });
     
     if (compilerOutput.errors.length > 0) {
-      console.log(spider.formatErrors(baseName, content, compilerOutput.errors));
+      console.log(spider.formatErrors(fileName, content, compilerOutput.errors));
       problems += compilerOutput.errors.length;
       
       if (problems > 0 && 
