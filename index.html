@@ -188,7 +188,7 @@
                   <li><a href="#channels-installation">Installation</a></li>
                 </ul>
               </li> 
-              
+
             </ul>
           </div>
         </div>
@@ -238,7 +238,7 @@ for timeMachine in ::getTimeMachines() {
               <p>But all of them have problems:</p>
 
               <ul class="ul-space">
-                <li><strong>CoffeeScript</strong> (and its derivatives: LiveScript, Coco, etc) have serious issues of <a href="http://ceronman.com/2012/09/17/coffeescript-less-typing-bad-readability/">ambiguous code</a>, alien syntax and scoping problems.</li>
+                <li><strong>CoffeeScript</strong> (and its derivatives: LiveScript, Coco, etc) have serious issues of <a href="http://ceronman.com/2012/09/17/coffeescript-less-typing-bad-readability/">ambiguous code</a>, alien syntax (<code>foo 1</code> compiles to <code>foo(1);</code>, but <code>foo</code> compiles to <code>foo;</code>) and scoping problems.</li>
                 <li><strong>TypeScript</strong> (and AtScript) are supersets of JavaScript, so they inherit all of its problems. Additionally, loose typing can be one of JavaScript's best features if used correctly.</li>
                 <li><strong>Dart</strong> is an extreme departure from JavaScript, which makes it impossible to interact with JavaScript libraries <em>directly</em>. Instead, you must use a <a href="https://www.dartlang.org/articles/js-dart-interop/">special interop library</a> that exposes wrapped versions of any JavaScript objects you access.</li>
               </ul>
@@ -283,7 +283,7 @@ for timeMachine in ::getTimeMachines() {
 
               <ul>
                 <li><a href="https://github.com/sagiegurari/node-spider-script">node-spider-script</a></li>
-                <li><a href="https://github.com/zekesonxx/SublimeLinter-contrib-spider">SublimeLinter</a></li>
+                <li><a href="https://github.com/zekesonxx/SublimeLinter-contrib-spider">SublimeLinter-contrib-spider</a></li>
               </ul>
             </div>
             <div class="docs-section">
@@ -610,7 +610,7 @@ console.log(addOne(2, 3)); // => 6
 var addFive = addOne^(4);
 console.log(addFive(1));   // => 6</code></pre>
             
-            <p>Curried functions work extremely well in functional-style programming.</p>
+            <p>Curried functions can also be seen as shorthand for <code>.bind()</code> (<code>x^("2")</code> will compile into <code>x.bind(x, "2")</code>), and work extremely well in functional-style programming.</p>
             
             <pre><code class="lang-js">fn sortBy(key, array) {
   return array.sort((a, b) -> a[key] - b[key]);
@@ -761,9 +761,14 @@ var doubles = [x * 2 for x in list];</code></pre>
                 <a href="#operators-existential-operator" name="operators-existential-operator" class="anchor glyphicon glyphicon-link"></a>
               </h3>
 
-              <p>It's a little difficult to check for the existence of a variable in JavaScript. <code>if (variable) ...</code> comes close, but fails for zero, the empty string, and false. The existential operator <code>?</code> returns true unless a variable is <strong>null</strong> or <strong>undefined</strong></p>.
+              <p>It's a little difficult to check for the existence of a variable in JavaScript. <code>if (variable) ...</code> comes close, but fails for zero, the empty string, and false. The existential operator <code>?</code> returns true unless a variable is <strong>null</strong> or <strong>undefined</strong>.</p>
               <pre><code class="lang-js">if game? {
   play();
+}</code></pre>
+
+              <p>The existential operator's function variant, <code>?(<i>params</i>)</code>, can be used to easily call a function without worrying if it exists or not.</p>
+              <pre><code class="lang-js">for object in game.objects {
+  object.ontick?();
 }</code></pre>
 
               <p>The accessor variant of the existential operator <code>?.</code> can be used to soak up null references in a chain of properties. Use it instead of the dot accessor <code>.</code> in cases where the base value may be <strong>null</strong> or <strong>undefined</strong>. If all of the properties exist then you'll get the expected result, if the chain is broken, <strong>undefined</strong> is returned instead of the <strong>TypeError</strong> that would be raised otherwise.</p>
