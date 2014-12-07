@@ -2,13 +2,15 @@
 
 "use strict";
 
-var fs = require("fs"),
-    path = require("path"),
-    vm = require("vm"),
-    traceur = require("traceur"),
-    nomnom = require("nomnom"),
-    chalk = require("chalk"),
-    spider = require("./lib/spider");
+var fs = require("fs");
+var path = require("path");
+var vm = require("vm");
+var nomnom = require("nomnom");
+var chalk = require("chalk");
+var spider = require("./lib/spider");
+
+//This can be removed when grunt-spider-script updates or is replaced.
+require('traceur');
 
 var opts = nomnom
   .option("files", {

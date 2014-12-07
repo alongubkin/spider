@@ -20,8 +20,7 @@
     "spider-script.js"
   ],
   "keywords": [
-    "spider",
-    ""
+    "spider"
   ],
   "devDependencies": {
     "coveralls": "~2.11.2",
@@ -51,11 +50,12 @@
   },
   "preferGlobal": "true",
   "dependencies": {
-    "escodegen": "estools/escodegen#21a9331",
-    "pegjs": "~0.8.0",
-    "nomnom": "~1.8.1",
+    "6to5": "^1.14.17",
     "chalk": "~0.5.1",
-    "traceur": "0.0.74",
-    "multi-stage-sourcemap": "~0.2.1"
+    "escodegen": "estools/escodegen#21a9331",
+    "multi-stage-sourcemap": "~0.2.1",
+    "nomnom": "~1.8.1",
+    "pegjs": "~0.8.0",
+    "traceur": "0.0.74"
   }
 }
