@@ -60,7 +60,8 @@ opts.files.forEach(function (fileName, fileIndex) {
       text: content,
       fileName: baseName,
       target: opts.target,
-      generateSourceMap: generateSourceMap
+      generateSourceMap: generateSourceMap,
+      modules: 'commonjs'
     });
     
     if (compilerOutput.errors.length > 0) {
@@ -100,11 +101,21 @@ opts.files.forEach(function (fileName, fileIndex) {
             _require[r] = require[r];
           }            
         })
-        _require.paths = _module.paths = Module._nodeModulePaths(process.cwd());
+        _require.paths = _module.paths = Module._nodeModulePaths(process.cwd()).concat(process.cwd());
         _require.resolve = function(request) {
           return Module._resolveFilename(request, _module);
         };
-        vm.runInNewContext(compilerOutput.result, sandbox);
+        _require.extensions['.spider'] = function(module, fname){
+          var content = require('fs').readFileSync(fname, 'utf8');
+          var src = spider.compile({
+            modules: 'commonjs', 
+            text: content, 
+            filename: fname, 
+            target: opts.target
+          }).result;
+          module._compile(src, fname);
+        };
+        vm.runInNewContext(compilerOutput.result, sandbox, fileName);
       }
     }
   });
