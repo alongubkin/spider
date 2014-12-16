@@ -73,6 +73,7 @@ exports.compile = fn (options) {
   if options.target == "ES5" {
     var traceurCompiler = new traceur.NodeCompiler({
       sourceMaps: options.generateSourceMap,
+      modules: options.modules,
       asyncFunctions: true
     });
     
