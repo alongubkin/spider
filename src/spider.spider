@@ -237,6 +237,8 @@ fn wrapCode(tree, useStrict = false, iifi = false) {
           "arguments": []
         }
       });
+    } else {
+      body = body.concat(tree.body);
     }
       
     tree = {
