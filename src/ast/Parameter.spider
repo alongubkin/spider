@@ -4,15 +4,15 @@ var Node = module.require('./Node').Node;
 
 fn Parameter(id, defaultValue, splat)
   extends Node {
-  
+
   this.type = 'Parameter';
   this.splat = splat;
-  
+
   this.id = id;
   this.id.parent = this;
-  
+
   this.defaultValue = defaultValue;
-  
+
   if this.defaultValue? {
     this.defaultValue.parent = this;
   }
@@ -22,13 +22,13 @@ Parameter.prototype.codegen = () -> {
   if !super.codegen() {
     return;
   }
-  
+
   this.id = this.id.codegen(false);
-  
+
   if this.defaultValue? {
     this.defaultValue = this.defaultValue.codegen();
   }
-  
+
   return this;
 };
 
@@ -39,8 +39,8 @@ Parameter.prototype.hasCallExpression = () -> {
 
 Parameter.generateFunctionBody = (func, params, body, defaults) -> {
   var splatPosition = -1;
-  
-  for param, i in params {   
+
+  for param, i in params {
     if param.splat {
       if splatPosition != -1 {
         Node.getErrorManager().error({
@@ -49,16 +49,16 @@ Parameter.generateFunctionBody = (func, params, body, defaults) -> {
           loc: param.loc
         });
       }
-      
+
       splatPosition = i;
     }
-    
+
     param = param.codegen();
     defaults.push(param.defaultValue);
     params[i] = param.id;
     func.defineIdentifier(param.id);
   }
-  
+
   if splatPosition != -1 {
     var declarations = [{
       "type": "VariableDeclarator",
@@ -68,7 +68,7 @@ Parameter.generateFunctionBody = (func, params, body, defaults) -> {
       },
       "init": null
     }];
-    
+
     for param, i in params {
       var init;
       if i < splatPosition {
@@ -103,7 +103,7 @@ Parameter.generateFunctionBody = (func, params, body, defaults) -> {
               },
               "property": {
                 "type": "Identifier",
-                "name": "length" 
+                "name": "length"
               }
             }
           },
@@ -142,7 +142,7 @@ Parameter.generateFunctionBody = (func, params, body, defaults) -> {
             "elements": []
           }
         };
-            
+
         if splatPosition < params.length - 1 {
           init.consequent.arguments.push({
             "type": "AssignmentExpression",
@@ -172,7 +172,7 @@ Parameter.generateFunctionBody = (func, params, body, defaults) -> {
               }
             }
           });
-          
+
           init.alternate = {
             "type": "SequenceExpression",
             "expressions": [{
@@ -192,7 +192,9 @@ Parameter.generateFunctionBody = (func, params, body, defaults) -> {
             }]
           };
         }
-      } else {
+      }
+      else
+      {
         init = {
           "type": "MemberExpression",
           "computed": true,
@@ -211,21 +213,21 @@ Parameter.generateFunctionBody = (func, params, body, defaults) -> {
           }
         };
       }
-      
+
       declarations.push({
         "type": "VariableDeclarator",
         "id": param,
         "init": init
       });
     }
-    
+
     body.body = [{
       "type": "VariableDeclaration",
       "codeGenerated": true,
       "declarations": declarations,
       "kind": "let"
     }].concat(body.body);
-    
+
     params.length = 0;
   }
 };
