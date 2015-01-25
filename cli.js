@@ -31,7 +31,7 @@ var opts = nomnom
     help: "disable source map files (.map) generation"
   })
   .option("target", {
-    choices: ["ES6", "ES5"],
+    choices: ["ES6", "es6", "ES5", "es5"],
     default: "ES5",
     help: "target"
   })
@@ -59,7 +59,7 @@ opts.files.forEach(function (fileName, fileIndex) {
     var compilerOutput = spider.compile({
       text: content,
       fileName: baseName,
-      target: opts.target,
+      target: opts.target.toUpperCase(),
       generateSourceMap: generateSourceMap,
       modules: 'commonjs'
     });
