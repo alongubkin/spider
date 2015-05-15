@@ -5,6 +5,7 @@ var parser = module.require('./parser'),
     ast = module.require('./ast'),
     traceur = require("traceur"),
     chalk = require("chalk"),
+    babel = require("babel-core"),
     transfer = require("multi-stage-sourcemap").transfer;
 
 /**
@@ -49,44 +50,39 @@ exports.compile = fn (options) {
   }
   
   var tree = parsed.codegen();
-  if options.target != "ES5" {
-    tree = ::wrapCode(tree, 
-      options.useStrict ?? true, 
-      options.iifi ?? true);
-  }
     
-  var output = escodegen.generate(tree, {
-    sourceMap: options.fileName if options.generateSourceMap else null,
-    sourceMapWithCode: options.generateSourceMap,
-    format: { 
-      quotes: 'double'
-    }
-  });
-  
-  if options.generateSourceMap { 
-    result.result = output.code;
-    result.sourceMap = output.map.toString();
-  } else {
-    result.result = output;
-  }
-  
-  if options.target == "ES5" {
-    var traceurCompiler = new traceur.NodeCompiler({
-      sourceMaps: options.generateSourceMap,
-      modules: options.modules,
-      asyncFunctions: true
-    });
-    
-    result.result = traceurCompiler.compile(result.result, options.fileName, outFileName);
-    
-    if options.generateSourceMap {
-      result.sourceMap = transfer({
-        toSourceMap: result.sourceMap,
-        fromSourceMap: traceurCompiler.getSourceMap().toString()
+  switch options.target {
+    case "ES5": {
+      var transformed = babel.transform.fromAst(tree, options.text, {
+        sourceMaps: options.generateSourceMap
       });
+
+      console.log(transformed);
+
+      result.result = transformed.code;
+      if options.generateSourceMap {
+
+      }
+    },
+
+    default: {
+      tree = ::wrapCode(tree, options.useStrict ?? true, options.iifi ?? true);
+      var output = escodegen.generate(tree, {
+        sourceMap: options.fileName if options.generateSourceMap else null,
+        sourceMapWithCode: options.generateSourceMap,
+        format: { 
+          quotes: 'double'
+        }
+      });
+      
+      if options.generateSourceMap { 
+        result.result = output.code;
+        result.sourceMap = output.map.toString();
+        result.result = result.result + "\n\n//# sourceMappingURL=" + mapFileName;
+      } else {
+        result.result = output;
+      }
     }
-  } else if options.generateSourceMap {
-    result.result = result.result + "\n\n//# sourceMappingURL=" + mapFileName;
   }
   
   if options.verbose {
