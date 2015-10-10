@@ -5,7 +5,7 @@ Spider
 
 The Next-Gen Programming Language for the Web. 
 
-> **Note:** This project is no longer active.
+**Note:** This project is no longer active.
 
 [Documentation](http://spiderlang.org/)
 
